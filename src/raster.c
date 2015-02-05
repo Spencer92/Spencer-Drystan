@@ -44,17 +44,21 @@ void plotHorzLine(char *fbstart, int xstart, int ystart, int xfin)
 	int intialShift = 8 -(xstart & 7);
 	int i;
 
+	char *tmpPtr;
+
+	tmpPtr = fbstart;
+
 	if ((xstart >= 0 && xstart + length < SCREEN_WIDTH) && (ystart >= 0 && ystart < SCREEN_HEIGHT))
 	{
 
-		fbstart += (ystart*80); /*line start offset */
+		tmpPtr += (ystart*80); /*line start offset */
 
-		*(fbstart += ((startingByte)* 8)) |= ( ( 2<< (intialShift) ) - 1);
+		*(tmpPtr += ((startingByte)* 8)) |= ( ( 2<< (intialShift) ) - 1);
 
 		if(length > 8)
 		{
 
-			fbstart += ((xstart & 7) + 1);
+			tmpPtr += ((xstart & 7) + 1);
 
 			remaining = length -((startingByte + 1)* 8);
 
@@ -62,8 +66,8 @@ void plotHorzLine(char *fbstart, int xstart, int ystart, int xfin)
 					for(i = 0; i < bytelen; i++)
 					{
 
-						*(fbstart )|= 0xff;
-						 fbstart += (8);
+						*(tmpPtr )|= 0xff;
+						 tmpPtr += (8);
 						 remaining -= 8;
 
 
@@ -71,7 +75,7 @@ void plotHorzLine(char *fbstart, int xstart, int ystart, int xfin)
 
 					if(remaining != 0)
 					{
-						*(fbstart)|= (2 << (8 - remaining));
+						*(tmpPtr)|= (2 << (8 - remaining));
 
 					}
 
@@ -81,6 +85,6 @@ void plotHorzLine(char *fbstart, int xstart, int ystart, int xfin)
 
 		void plotVertLine(char *fbstart, int xstart, int ystart, int yfin){}
 		void plotArbLine(char *fbstart, int xstart, int ystart, int xfin, int yfin){}
-		void plotSprite(char *fbstart, int xpos, int ypos){}
+		void plotSprite( char *fbstart, int xpos, int ypos){}
 
 

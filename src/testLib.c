@@ -7,7 +7,7 @@
 
 #define BUFFER_SIZE   0x8100L /*Screen buffer needed 32KB plus space to align */
 #define CON 2
-#define SCREEN_SIZE_CLEAR 8120
+#define SCREEN_SIZE_CLEAR 0x8000
 #define CLEAR 0x00000000
 
 void printMenu();
@@ -32,17 +32,22 @@ int main(int argc, char **argv) {
 
 	fbAltscreen = Malloc(BUFFER_SIZE);
 
+
+
 	fbAltscreen = (void*) (((uintptr_t) fbAltscreen + 256)
 			& (uintptr_t) 0x00FFFF00);
 
+	clearScreen(fbAltscreen);
 
 	do {
+
+		Bconout(CON,27);
 
 		printMenu();
 
 		scanf("%c", &selection);
 
-
+		Cnecin();
 
 		switch (selection) {
 
@@ -58,11 +63,12 @@ int main(int argc, char **argv) {
 
 			Setscreen(fbAltscreen, fbAltscreen, -1L);
 
-			Vsync();
-
 			waitForinput();
 
+			Vsync();
+
 			Setscreen(fbstart, fbstart, -1L);
+
 
 			clearScreen(fbAltscreen);
 
@@ -71,7 +77,7 @@ int main(int argc, char **argv) {
 
 		case 'b':
 
-			plotHorzLine(fbAltscreen, 271, 200, 402);
+			plotHorzLine(fbAltscreen, 264, 200, 280);
 
 			Vsync();
 
@@ -80,13 +86,11 @@ int main(int argc, char **argv) {
 
 			waitForinput();
 
-
 			Vsync();
 
 			Setscreen(fbstart, fbstart, -1L);
 
 			clearScreen(fbAltscreen);
-
 
 			break;
 
@@ -131,16 +135,21 @@ void printMenu()
 
 void clearScreen(char *fbstart)
 {
+
 int i;
 
+char *tmpPtr;
+
+	tmpPtr = fbstart;
+
 for (i = 0; i <SCREEN_SIZE_CLEAR ; ++i) {
+		tmpPtr[i] = 0;
 
-	*(fbstart) &= CLEAR;
-
-	fbstart += 4;
 
 
 }
+
+
 
 }
 
