@@ -11,11 +11,12 @@
 #ifndef RASTER_H_
 #define RASTER_H_
 
-void plotPixel(char *fbstart, int x, int y);
-void plotHorzLine( char *fbstart, int xstart, int ystart, int xfin);
+void plotPixel(unsigned char *fbstart, int x, int y);
+void plotHorzLine( unsigned int *fbstart, int xstart, int ystart, int xfin);
 void plotVertLine( char *fbstart, int xstart, int ystart, int yfin);
 void plotArbLine(char *fbstart, int xstart, int ystart, int xfin, int yfin);
 void plotSprite( char *fbstart, int xpos, int ypos);
-
+void printvertical(unsigned char* base, unsigned int x_loc, unsigned int y_loc,
+					unsigned int length);
 
 #endif /* RASTER_H_ */
