@@ -18,5 +18,8 @@ void plotArbLine(char *fbstart, int xstart, int ystart, int xfin, int yfin);
 void plotSprite( char *fbstart, int xpos, int ypos);
 void printvertical(unsigned char* base, unsigned int x_loc, unsigned int y_loc,
 					unsigned int length);
+void printArbitrary(unsigned char* base, unsigned int x_loc_start,
+					unsigned int y_loc_start, unsigned int x_loc_end,
+					unsigned int y_loc_end);
 
 #endif /* RASTER_H_ */
