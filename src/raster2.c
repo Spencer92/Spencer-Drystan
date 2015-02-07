@@ -7,17 +7,11 @@
 void printvertical(unsigned char* base, unsigned int x_loc, unsigned int y_loc,
 		unsigned int length) {
 	unsigned int counter;
-	FILE* file;
-
-	file = fopen("output.txt", "w+");
 
 	for (counter = 0; counter < length; counter++) {
-		fprintf(file, "Printing at %u\n", y_loc);
 		plotPixel(base, x_loc, y_loc);
 		y_loc++;
 	}
-
-	fclose(file);
 
 }
 
@@ -25,14 +19,11 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
 					unsigned int y_loc_start, unsigned int x_loc_end,
 					unsigned int y_loc_end) {
 
-	unsigned int x_length = x_loc_start;
-	unsigned int y_length = y_loc_start;
-	unsigned int ratio;
+	register unsigned int x_length = x_loc_start;
+	register unsigned int y_length = y_loc_start;
+	register unsigned int ratio;
 
-	register unsigned int x_traverse;
-	register unsigned int y_traverse;
-
-	if ((y_loc_end - y_loc_start) > (x_loc_end - x_loc_start)) {
+	if ((y_loc_end - y_loc_start) > (x_loc_end - x_loc_start) && (x_loc_end - x_loc_start > 0)) {
 		ratio = (y_loc_end - y_loc_start) / (x_loc_end - x_loc_start);
 
 		for (; y_length < y_loc_end && x_length < x_loc_end; y_length++) {
@@ -44,7 +35,9 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
 
 		}
 
-	} else {
+	} 
+	else if((x_loc_end - x_loc_start) > (y_loc_end-y_loc_start) &&(y_loc_end - y_loc_start) > 0)
+	{
 		ratio = (x_loc_end - x_loc_start) / (y_loc_end - y_loc_start);
 
 		for (; x_length < x_loc_end && y_length < y_loc_end; x_length++) {
@@ -55,6 +48,14 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
 
 		}
 
+	}
+	else if((y_loc_end - y_loc_start <= 0))
+	{
+		plotHorzLine((char*)base, x_loc_start, y_loc_start, x_loc_end);
+	}
+	else if((x_loc_end - x_loc_start) <= 0)
+	{
+		printvertical(base, x_loc_start, y_loc_start, y_length);
 	}
 	/*printf("x is %u\n", x_length);
 	 printf("ratio is %u\n", ratio);
@@ -74,7 +75,7 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 	int screenOffset = (xpostoPlot >> 3);
 	int offset = size >> 1;
 	int i = 0;
-	int postionMod = xpostoPlot &= 7;
+	int postionMod = (xpostoPlot &= 7);
 
 	/*Sprites at 16 x 16 max */
 
@@ -82,22 +83,23 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 
 
 	destPtr += (ypostoPlot - offset) * 80;
-	destPtr += screenOffset;
+	destPtr += ((xpostoPlot - offset) >> 3);
 
-	if(postionMod == 7){
+/* 	if(postionMod == 7){
 
 		leftBuffershift = rightBuffershift = 4;
 
 	}
 
-
-	leftBuffershift = 8 - (7 - (xpostoPlot & 7));
+ */
+	leftBuffershift = ((xpostoPlot - (size/2)) % 8) + 1;
+	/*8 - (7 - (xpostoPlot & 7));*/
 	rightBuffershift = 8 - leftBuffershift;
 
 	while (size--) {
 
 		buffer2 = buffer1 = spriteLocation[i];
-
+		
 		buffer1 <<= leftBuffershift;
 		buffer2 >>= rightBuffershift;
 
