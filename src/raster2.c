@@ -64,26 +64,57 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
 
 void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size) {
-	char *destPtr = fbstart;
+	char* destPtr = fbstart;
 	UINT8 *srcPtr = spriteLocation;
-
-	int leftBuffershift = 0;
-	int rightBuffershift = 0;
-	int buffer1 = 0;
-	int buffer2 = 0;
-
+	static FILE* output;
+	static int opened = 0;
+	unsigned int leftBuffershift = 0;
+	unsigned int rightBuffershift = 0;
+	unsigned int buffer1 = 0;
+	unsigned int buffer2 = 0;
+	static int pass = 0;
+	char* testPtr = destPtr;
+	char* testPtr2 = destPtr;
+	int guy;
 	int screenOffset = (xpostoPlot >> 3);
 	int offset = size >> 1;
 	int i = 0;
 	int postionMod = (xpostoPlot &= 7);
 
+	if(!opened)
+	{
+		output = fopen("output.txt", "w");
+		opened = 1;
+	}
+	
 	/*Sprites at 16 x 16 max */
 
 	/*TODO shift is incorrect for other postions than 271 = x*/
 
-
-	destPtr += (ypostoPlot - offset) * 80;
+	destPtr += ((ypostoPlot - offset) * 80);
 	destPtr += ((xpostoPlot - offset) >> 3);
+
+	
+	
+	fprintf(output, "pass %i\n", pass);
+	fprintf(output, "destPtr before equation %i\n", testPtr);
+	fprintf(output, "ypostoPlot - offset = %i\n", ypostoPlot - offset);
+	fprintf(output, "(ypostoPlot - offset) * 80 = %i\n", (ypostoPlot - offset) * 80);
+	testPtr += (ypostoPlot-offset);
+	fprintf(output, "destPtr current 01: %i\n", testPtr);
+	testPtr = (testPtr + (ypostoPlot - offset) * 80);
+	fprintf(output, "destPtr current 02: %i\n", testPtr);
+	fprintf(output, "xpostoPlot - offset = %i\n", xpostoPlot - offset);
+	fprintf(output, "(xpostoplot - offset) >> 3 = %i\n", (xpostoPlot - offset) >> 3);
+	testPtr += ((xpostoPlot - offset) >> 3);
+	fprintf(output, "destPtr current: %i\n", testPtr);
+	
+	
+	fprintf(output, "destPtr is %i\n\0", destPtr );
+	fprintf(output, "ypostoPlot is %i\n\0", ypostoPlot);
+	fprintf(output, "xpostoPlot is %i\n\0", xpostoPlot);
+	fprintf(output, "offset is %i\n\n", offset);
+	pass++;
 
 /* 	if(postionMod == 7){
 
@@ -92,7 +123,7 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 	}
 
  */
-	leftBuffershift = ((xpostoPlot - (size/2)) % 8) + 1;
+	leftBuffershift = ((xpostoPlot - offset) % 8) + 1;
 	/*8 - (7 - (xpostoPlot & 7));*/
 	rightBuffershift = 8 - leftBuffershift;
 
@@ -100,8 +131,8 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 
 		buffer2 = buffer1 = spriteLocation[i];
 		
-		buffer1 <<= leftBuffershift;
-		buffer2 >>= rightBuffershift;
+		buffer1 >>= leftBuffershift;
+		buffer2 <<= rightBuffershift;
 
 		*destPtr++ = buffer1;
 		*destPtr   = buffer2;
