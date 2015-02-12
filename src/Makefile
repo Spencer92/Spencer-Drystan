@@ -1,43 +1,14 @@
-# Atari (GCC/VBCC) Makefile 
-#Drystan Mazur 2 Feb 2015
 
+tst_rast.tos: testLib.o raster.o clrScrn.o
+	cc68x -g testLib.o raster.o clrScrn.o -o tst_rast.tos
 
-PATH := ${PATH}:/opt/vbcc/bin
-VBCC := /opt/vbcc
-CC = vc
-ASM = vasm
-ASMFLAGS = -m68000 -Felf 
+testLib.o: testLib.c raster.h
+	cc68x -g -c -v testLib.c
 
-LD = vlink
+raster.o: raster.c raster.h
+	cc68x -g -c -v raster.c
 
-CFLAGS = +tos -g -vv
-CDFLAGS = +tos -c -vv
-
-RM = rm
-LFLAGS = -I/home/drystan/workspace2015/game-stage2/src/
-#The above directory name depends where your header file is residing
-
-TARGET = test.tos
-
-OBJS = testLib.o raster.o
-
-all:$(TARGET)
-
-$(TARGET): $(OBJS) 
-	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
-
-
-raster.o: raster.c
-	$(CC) $(CDFLAGS) $(LFLAGS) raster.c
-
-
-
-testLib.o: testLib.c
-	$(CC) $(CDFLAGS) $(LFLAGS) testLib.c
-
-.s.o:
-	$(ASM) $(ASMFLAGS) $< -o $@
-
-
-clean:
-	$(RM) *.o *.tos
+clrScrn.o: clrScrn.s
+	gen -D -L2 clrScrn.s
+#raster2.o: raster2.c raster.h
+#	cc68x -g -c -v raster2.c
