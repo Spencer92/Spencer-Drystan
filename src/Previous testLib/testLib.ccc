@@ -27,7 +27,6 @@
 #include <stdio.h>
 /*#include <stdint.h>*/
 #include <stdlib.h>
-#include "clrScrn.h"
 
 #define BUFFER_SIZE   0x8100L /*Screen buffer needed 32KB plus space to align */
 #define CON 2
@@ -36,9 +35,8 @@
 
 
 void printMenu();
-/* void clearScreen(char *fbstart);
- */void waitForinput();
- void pause();
+void clearScreen(char *fbstart);
+void waitForinput();
 
 int main(int argc, char **argv) {
 
@@ -64,8 +62,7 @@ int main(int argc, char **argv) {
 	fbAltscreen = (char*) (((UINT32) fbAltscreen + 256)
 			               & (UINT32) 0x00FFFF00); /* The screens have to be 256 byte alligned */
 
-	pause();
-	clear(fbAltscreen); /* If there was anything on the second screen, there isn't any more */
+	clearScreen(fbAltscreen); /* If there was anything on the second screen, there isn't any more */
 
 	do {
 
@@ -90,7 +87,7 @@ int main(int argc, char **argv) {
 
 			Setscreen(fbstart, fbstart, -1L); /* Go back to the first screen */
 
-			clear(fbAltscreen); /* Clear the other screen */
+			clearScreen(fbAltscreen); /* Clear the other screen */
 
 			break;
 
@@ -108,7 +105,7 @@ int main(int argc, char **argv) {
 
 			Setscreen(fbstart, fbstart, -1L); /* Go back to the first screen */
 
-			clear(fbAltscreen); /* Clear the alternate screen */
+			clearScreen(fbAltscreen); /* Clear the alternate screen */
 
 			break;
 
@@ -124,7 +121,7 @@ int main(int argc, char **argv) {
 
 			Setscreen(fbstart, fbstart, -1L); /* Go back to the first screen */
 
-			clear(fbAltscreen); /* Clear the althernate screen */
+			clearScreen(fbAltscreen); /* Clear the althernate screen */
 
 
 			break;
@@ -152,7 +149,7 @@ int main(int argc, char **argv) {
 			/*Go back to the first screen */
 			Setscreen(fbstart, fbstart, -1L);
 
-			clear(fbAltscreen); /* Clear the alternate screen */
+			clearScreen(fbAltscreen); /* Clear the alternate screen */
 
 			break;
 
@@ -163,13 +160,13 @@ int main(int argc, char **argv) {
 			plotSprite(fbAltscreen, arrayPtr, 271, 200, 8);
 
 			Setscreen(fbAltscreen, fbAltscreen, -1L);
-			clear(fbstart);
+			clearScreen(fbstart);
 
 			Vsync();
 			/* Make the sprite move */
 			for (i = 0; i < 5; i++) {
 
-				clear(fbAltscreen);
+				clearScreen(fbAltscreen);
 
 				plotSprite(fbstart, arrayPtr, 272 + i, 200 + i, 8);
 
@@ -177,20 +174,20 @@ int main(int argc, char **argv) {
 
 				Setscreen(fbstart, fbstart, -1L);
 
-				clear(fbAltscreen);
+				clearScreen(fbAltscreen);
 				
-				
+				Vsync();
 				plotSprite(fbAltscreen, arrayPtr, 273 + i, 201 + i, 8);
 				Vsync();
 				
 				Setscreen(fbAltscreen, fbAltscreen, -1L);
-				clear(fbstart);
+				clearScreen(fbstart);
 				Vsync();
 
 			}
 				
 			Setscreen(fbstart, fbstart, -1L);
-			clear(fbAltscreen);
+			clearScreen(fbAltscreen);
 			
 			break;
 
@@ -210,7 +207,7 @@ int main(int argc, char **argv) {
 
 			Setscreen(fbstart, fbstart, -1L); /* Go back to the first screen */
 
-			clear(fbAltscreen); /* Clear the alternate screen */
+			clearScreen(fbAltscreen); /* Clear the alternate screen */
 
 
 			break;
@@ -247,17 +244,6 @@ int main(int argc, char **argv) {
  *  
  =============================================================================*/
 
- 
-void pause()
-{
-	int i;
-	for(i = 0; i < 10; i++)
-	{
-		Vsync();
-	}
-} 
- 
-
 void printMenu() {
 
 	 Cconws("\r\n\0");
@@ -290,7 +276,7 @@ void printMenu() {
  * Input Parameters : char *fbstart - the screen.
  * 
  =============================================================================*/
-/*
+
 void clearScreen(char *fbstart) {
 
 	char *tmpPtr = fbstart;
@@ -302,7 +288,7 @@ void clearScreen(char *fbstart) {
 	}
 
 }
-*/
+
 
 /*
  =============================================================================

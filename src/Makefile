@@ -9,6 +9,6 @@ raster.o: raster.c raster.h
 	cc68x -g -c -v raster.c
 
 clrScrn.o: clrScrn.s
-	gen -D -L2 clrScrn.s
+	gen -g -D -L2 clrScrn.s
 #raster2.o: raster2.c raster.h
 #	cc68x -g -c -v raster2.c
