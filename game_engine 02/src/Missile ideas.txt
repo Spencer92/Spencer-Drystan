@@ -1,0 +1,14 @@
+There's only certain directions the missile can move
+(Up, Down, Left, Right)
+
+The missile can either exist or not
+The missile can look like an alien missile, or a player missile
+
+If it hits something, or the time runs out (maybe?) the missile disappears
+
+and existance = false;
+
+
+Check if player/tank is firing
+
+
