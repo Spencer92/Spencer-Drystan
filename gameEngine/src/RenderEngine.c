@@ -1,35 +1,8 @@
-/*
- ============================================================================
- *Title       : raster library
- *Author      : Drystan Mazur & Spencer Maslen
- *Email       : dmazu602@mtroyal.ca & smasl811@mtroyal.ca
- Due on       : Feb 8th 2015
- *Version     : 1
- *Assignment  : Stage 2
- *Course      : Comp 2659
- *Instructor  : Paul Pospisil
- *Copyright   : Released under GPL v3
- *Description : Raster library for Atarti St, ANSI-style C89
- *Source File : raster.c
- =============================================================================
- Purpose      : To provide a set of basic graphic routines
- =============================================================================
- Method       : Outlined in the function headers.
-
- Limations    : Currently the plot sprite function can not handle
- 	 	 	 	ploting to the edge of the screen.
-
- ============================================================================
- */
-
-#include <stdio.h>
-#include <stdlib.h>
-#include "raster.h"
-#include "types.h"
-
 /*Define screen dimensions  */
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 400
+
+#include "RenderEngine.h"
 
 /*
  =============================================================================
@@ -54,8 +27,6 @@
  *
  *=============================================================================*/
 
-
-
 void plotPixel(char *fbstart, int x, int y) {
 	if (x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT) {
 
@@ -74,8 +45,8 @@ void plotPixel(char *fbstart, int x, int y) {
  *
  *
  * Method           :The values are checked against the bounds of the screen.
- * 					 Then a mask is set to the x position, this mask is logically
- * 					 OR'ed with the Frame Buffer byte and moves though line by line
+ * 							  Then a mask is set to the x position, this mask is logically
+ * 					          OR'ed with the Frame Buffer byte and moves though line by line
  *
  *
  * Input Parameters :(x,y) start position and x finish position. A pointer to the
@@ -96,8 +67,7 @@ void plotHorzLine(char *fbstart, int xstart, int ystart, int xfin) {
 	UINT8 intialShift = 8 - (xstart & 7);
 	UINT16 i;
 
-	char *tmpPtr = fbstart;;
-
+	char *tmpPtr = fbstart;
 
 
 	if ((xstart >= 0 && xstart + length < SCREEN_WIDTH)
@@ -156,8 +126,8 @@ void plotHorzLine(char *fbstart, int xstart, int ystart, int xfin) {
 void plotVertLine(char *fbstart, int xstart, int ystart, int yfin) {
 
 	UINT16 length = yfin - ystart;
-	UINT8  startByte = xstart >> 3;
-	UINT8  maskBit = 2 << (7 - (xstart & 7));
+	UINT8 startByte = xstart >> 3;
+	UINT8 maskBit = 2 << (7 - (xstart & 7));
 
 	char* tmpPtr = fbstart;
 
@@ -167,23 +137,19 @@ void plotVertLine(char *fbstart, int xstart, int ystart, int yfin) {
 		tmpPtr += (ystart * 80);
 		tmpPtr += startByte;
 
-		if(length & 1)
-		{
+		if (length & 1) {
 			*(tmpPtr) |= maskBit;
 			tmpPtr += 80;
 		}
 
 		length >>= 1;
 
-		while (length--)
-		{
+		while (length--) {
 
 			*(tmpPtr) |= maskBit;
 			tmpPtr += 80;
 			*(tmpPtr) |= maskBit;
 			tmpPtr += 80;
-
-
 
 		}
 
@@ -193,15 +159,15 @@ void plotVertLine(char *fbstart, int xstart, int ystart, int yfin) {
 
 /*
  =============================================================================
- * 
+ *
  * Function Name    : plotArbLine
- * 
+ *
  * Purpose          : To plot a line with arbitrary parameters
  *
- * 
- * Method           : By checking how much the line moves horizontally and 
+ *
+ * Method           : By checking how much the line moves horizontally and
  *					  vertically, a ratio can be determined which shows
- *					  how much the line should move horizontally to 
+ *					  how much the line should move horizontally to
  *					  it moving vertically. Depending on which direction
  * 					  was longer it will move that direction a certain amount
  * 					  of pixels before moving in the other direction one pixel.
@@ -211,30 +177,30 @@ void plotVertLine(char *fbstart, int xstart, int ystart, int yfin) {
  *                    then the appropriate functions will be called to handle those
  *                    cases
  *
- * 
+ *
  * Input Parameters : char *fbstart - the screen.
  *                    int x_loc_start    - where the horizontal start of the line will be on the screen
  *                    int y_loc_start    - where the vertical start of the line will be on the screen
  *                    int x_loc_end      - where the horizontal end of the line will be on the screen
  *                    int y_loc_end      - where the vertical end of the line will be on the screen
  *
- * 
+ *
  * Return Value     : An arbitrary line on the screen.
  *
- * 
+ *
  =============================================================================*/
 
-void plotArbLine(char *fbstart, int x_loc_start, int y_loc_start, int x_loc_end, int y_loc_end)
+void plotArbLine(char *fbstart, int x_loc_start, int y_loc_start, int x_loc_end,
+		int y_loc_end)
 
- {
+{
 
+	register unsigned int x_length = x_loc_start;
+	register unsigned int y_length = y_loc_start;
+	register unsigned int ratio;
 
- register unsigned int x_length = x_loc_start;
- register unsigned int y_length = y_loc_start;
- register unsigned int ratio;
-
-
-	if ((y_loc_end - y_loc_start) > (x_loc_end - x_loc_start) && (x_loc_end - x_loc_start > 0)) {
+	if ((y_loc_end - y_loc_start) > (x_loc_end - x_loc_start)
+			&& (x_loc_end - x_loc_start > 0)) {
 		ratio = (y_loc_end - y_loc_start) / (x_loc_end - x_loc_start);
 
 		for (; y_length < y_loc_end && x_length < x_loc_end; y_length++) {
@@ -243,41 +209,36 @@ void plotArbLine(char *fbstart, int x_loc_start, int y_loc_start, int x_loc_end,
 			if (y_length % ratio == 0) {
 				x_length++;
 			}
-	 }
- }
- else if((x_loc_end - x_loc_start) > (y_loc_end-y_loc_start) &&(y_loc_end - y_loc_start) > 0)
- {
-	 ratio = (x_loc_end - x_loc_start) / (y_loc_end - y_loc_start);
+		}
+	} else if ((x_loc_end - x_loc_start) > (y_loc_end - y_loc_start)
+			&& (y_loc_end - y_loc_start) > 0) {
+		ratio = (x_loc_end - x_loc_start) / (y_loc_end - y_loc_start);
 
-	 for (; x_length < x_loc_end && y_length < y_loc_end; x_length++) {
-		 plotPixel(fbstart, x_length, y_length);
-		 if (x_length % ratio == 0) {
-			 y_length++;
-		 }
-	 }
- }
+		for (; x_length < x_loc_end && y_length < y_loc_end; x_length++) {
+			plotPixel(fbstart, x_length, y_length);
+			if (x_length % ratio == 0) {
+				y_length++;
+			}
+		}
+	}
 
- else if((y_loc_end - y_loc_start <= 0))
- {
-	 plotHorzLine((char*)fbstart, x_loc_start, y_loc_start, x_loc_end);
- }
+	else if ((y_loc_end - y_loc_start <= 0)) {
+		plotHorzLine((char*) fbstart, x_loc_start, y_loc_start, x_loc_end);
+	}
 
- else if((x_loc_end - x_loc_start) <= 0)
- {
-	 plotVertLine(fbstart, x_loc_start, y_loc_start, y_length);
- }
+	else if ((x_loc_end - x_loc_start) <= 0) {
+		plotVertLine(fbstart, x_loc_start, y_loc_start, y_length);
+	}
 
+}
 
- }
-
-
- /*=============================================================================
- * 
+/*=============================================================================
+ *
  * Function Name    : plotSprite
- * 
+ *
  * Purpose          : To plot a bitmapped sprite (small image) to the screen
  *
- * 
+ *
  * Method           :The screen pointer is shifted to the top of the sprite
  *					 The sprite is aligned by splitting the sprite and shifting,
  *					 left and right as required. Then the two half's are plotted
@@ -288,7 +249,7 @@ void plotArbLine(char *fbstart, int x_loc_start, int y_loc_start, int x_loc_end,
  * 					 screen buffer memory, sprite size and a
  * 					 a pointer to the sprite array.
  *
- * 
+ *
  * Return Value     :A modified screen buffer
  *
  * Limitations      :The sprite must be in 8bit format ie if size is 32x32
@@ -296,11 +257,11 @@ void plotArbLine(char *fbstart, int x_loc_start, int y_loc_start, int x_loc_end,
  * 					for the first line of the sprite. Limited to 8x8 sprites
  * 					and no clipping as of yet.
  *
- * 
+ *
  =============================================================================*/
 
 void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
-				int ypostoPlot, int size) {
+		int ypostoPlot, int size) {
 
 	char *destPtr = fbstart;
 
@@ -308,8 +269,8 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 	UINT8 leftBuffershift = 0;
 	UINT8 rightBuffershift = 0;
 
-	UINT8  buffer1 = 0;
-	UINT8  buffer2 = 0;
+	UINT8 buffer1 = 0;
+	UINT8 buffer2 = 0;
 
 	UINT8 screenOffset = (xpostoPlot >> 3);
 	UINT8 offset = size >> 1;
@@ -318,14 +279,13 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 
 	if ((xpostoPlot - offset >= 0 && xpostoPlot + offset <= SCREEN_WIDTH)
 			&& ((ypostoPlot + offset <= SCREEN_HEIGHT)
-				&& ypostoPlot - offset >= 0)) {
+					&& ypostoPlot - offset >= 0)) {
 
 		destPtr += (ypostoPlot - offset) * 80;
 		destPtr += ((xpostoPlot - offset) >> 3);
 
 		leftBuffershift = ((xpostoPlot - offset) & 7) + 1;
 		rightBuffershift = 8 - leftBuffershift;
-
 
 		while (size--) {
 
@@ -346,4 +306,19 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 
 	return;
 }
+void clear(char* screen)
+{
+xdef	_clear
 
+SCREEN		EQU	8
+
+
+_clear:		link	a6,#0
+						movea.l	SCREEN(a6),a0;
+						move.l	#$1FFF,d1
+
+clr:					clr.l	(a0)+
+						dbra	d1,clr
+						unlk	a6
+						rts
+}

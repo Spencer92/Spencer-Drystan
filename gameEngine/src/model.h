@@ -23,8 +23,8 @@ typedef enum V_DIRECTION
 
 typedef struct Tank
 {
-	int x_coordinate;
-	int y_coordinate;
+	UINT16 x_coordinate;
+	UINT16 y_coordinate;
 	UINT32 hitpoints;
 	UINT8  max_speed;
 	BOOL is_moving;
@@ -38,8 +38,8 @@ typedef struct Tank
 
 typedef struct Missile
 {
-	int x_coordinate;
-	int y_coordinate;
+	UINT16 x_coordinate;
+	UINT16 y_coordinate;
 	UINT8 max_speed;
 	UINT8 *sprite;
 	BOOL is_visable;
@@ -47,8 +47,8 @@ typedef struct Missile
 
 typedef struct Stationary_Object
 {
-	int x_coordinate;
-	int y_coordinate;
+	UINT16 x_coordinate;
+	UINT16 y_coordinate;
 	UINT32 *sprite;
 
 }Stationary_Object;

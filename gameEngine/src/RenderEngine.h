@@ -1,20 +1,14 @@
-/*
- * raster.h
- *
- *  Created on: Feb 2, 2015
- *  Authors: Drystan Mazur & Spencer Masen
- *  Project BattleTank stage 2
- *
- * Overview : Basic graphic Library header file
- */
+#ifndef RENDERENGINE_H
+#define RENDERENGINE_H
 
-#ifndef RASTER_H_
-#define RASTER_H_
 
 #include "types.h"
 
+#define START_OF_RENDER_AREA 0
+#define SCORE_AREA_OFFSET 0
+#define SCREEN_SIZE 0x8000
 
-
+void clear(char* screen);
 
 void plotPixel(char *fbstart, int x, int y);
 
@@ -33,4 +27,16 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
                     unsigned int y_loc_start, unsigned int x_loc_end,
                     unsigned int y_loc_end);
 
-#endif /* RASTER_H_ */
+typedef stuct Screen
+		{
+	long *startOfSrcreen;
+
+	long *displayArea;
+
+
+
+		}Screen;
+
+#endif /* RENDERENGINE_H*/
+
+#endif
