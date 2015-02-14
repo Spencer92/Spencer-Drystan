@@ -2,21 +2,24 @@
 #define MODEL_H
 
 #include "types.h"
+#include "Enemy.h"
 
-#define BOOL UINT8
+typedef UINT8 BOOL;
 
 
 typedef enum H_DIRECTION
 {
 	RIGHT = 1,
-	LEFT = -1
+	LEFT = -1,
+	VERTICAL = 0
 	
 }H_DIRECTION;
 
 typedef enum V_DIRECTION
 {
 	UP = -1,
-	DOWN = 1
+	DOWN = 1,
+	HORIZONTAL = 0
 	
 }V_DIRECTION;
 
@@ -34,15 +37,20 @@ typedef struct Tank
 	H_DIRECTION h_facing;
 	V_DIRECTION v_facing;
 	BOOL is_visable;
+	BEHAVIOUR current_behaviour;
+	
 }Tank;
 
 typedef struct Missile
 {
 	int x_coordinate;
 	int y_coordinate;
+	V_DIRECTION vertical_movement;
+	H_DIRECTION horizontal_movement;
 	UINT8 max_speed;
 	UINT8 *sprite;
 	BOOL is_visable;
+	BOOL moving_vertical;
 }Missile;
 
 typedef struct Stationary_Object
