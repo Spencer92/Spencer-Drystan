@@ -11,14 +11,14 @@
 typedef enum H_DIRECTION
 {
 	RIGHT = 1,
-	LEFT = -1
+	LEFT  = -1
 	
 }H_DIRECTION;
 
 typedef enum V_DIRECTION
 {
 	UP = -1,
-	HORIZTIAL = 0;
+	HORIZTIAL = 0,
 	DOWN = 1
 	
 }V_DIRECTION;
@@ -33,8 +33,9 @@ typedef struct Tank
 	BOOL is_moving;
 	BOOL is_firing;
 	/*UINT32 *sprite;*/
-	UINT 8 *sprite;
-	UINT8 *Missile;
+
+	UINT8  *sprite;
+	UINT8  *Missile;
 	H_DIRECTION h_facing;
 	V_DIRECTION v_facing;
 	BOOL is_visable;

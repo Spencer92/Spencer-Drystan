@@ -26,17 +26,14 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
                     unsigned int y_loc_start, unsigned int x_loc_end,
                     unsigned int y_loc_end);
 
-typedef stuct Screen
-		{
+typedef struct Screen
+{
 
 	UINT32 *startOfSrcreen;
 
 	UINT32 *displayArea;
 
-
-
-		}Screen;
+} Screen;
 
 #endif /* RENDERENGINE_H*/
 
-#endif

@@ -24,28 +24,28 @@
 /*===================================================*/
 /*Header files authored by Others*/
 #include "font.h"
-#include  "types.h"
+#include "types.h"
 /*===================================================*/
 /*Header files authored by Spencer Maslen or Drystan Mazur*/
 
 #include  "model.h"
-#include  "clrScrn.h"
 #include  "Keyboard.h"
 #include  "AIsystem.h"
 #include  "CollsionDetect.h"
 #include  "TileControl.h"
 #include  "RenderEngine.h"
 #include  "AssemblerRoutines.h"
-
-#include   "tankimage.h"
+#include  "tankimage.h"
 
 /*===================================================*/
 #define  NUMBER_OFLIVES 3
 #define  PLAYER_HITPOINTS 50
-#define  ENEMY_TANKHITPOINTS 5
+#define  ENEMY_HITPOINTS 5
 #define  NUMBER_OFENEMYTANKS 5
 #define  NUMBER_TILES 1
-#define  MAXSPEED = 5
+#define  MAXSPEED  5
+
+
 
 #define BUFFER_SIZE   0x8100L
 
@@ -54,34 +54,37 @@ void pauseAndchill(int duration);
 
 int main() {
 
-	UINT8 playerSprite[8] = { 0xff, 0x18, 0x18, 0xff, 0x18, 0xff, 0x18, 0xff };
-	UINT8 enemySprite[8] = { 0xf1, 0xfd, 0xfd, 0x00, 0xff, 0x18, 0xfd, 0xff };
-	/* TODO Screen *screenAray[2] = {};*/
+UINT8 playerSprite[8] = { 0xff, 0x18, 0x18, 0xff, 0x18, 0xff, 0x18, 0xff };
+UINT8 enemySprite[8] = { 0xf1, 0xfd, 0xfd, 0x00, 0xff, 0x18, 0xfd, 0xff };
 
-Tank *playerTank = {200,200,PLAYER_HITPOINTS,MAXSPEED,TRUE,FALSE,playerSprite,null,1,0,TRUE}
-;
-Tank *enemyTank = {300,300, ENEMY_TANKHITPOINTS,MAXSPEED,TRUE,FALSE,enemySprite,null,-1,0,TRUE};
+/* TODO Screen *screenAray[2] = {};*/
+
+Tank playerTank = {200,200,PLAYER_HITPOINTS,MAXSPEED,TRUE,FALSE,playerSprite,NULL, , ,TRUE};
+Tank enemyTank = { 300,300,ENEMY_HITPOINTS,MAXSPEED,TRUE,FALSE,enemySprite,  NULL,-1,0,TRUE};
 Missile *missiles[2] = { };
 
 char keypress;
-UNIT16 playerScore = 0;
 
-UNIT32 mainScreen;
-UNIT32 gameScreen;
+UINT16 playerScore = 0;
+
+UINT32 mainScreen;
+UINT32 gameScreen;
 /*=========Will Change in next system=========================*/
 mainScreen = (char*) (Physbase());
 
 gameScreen = Malloc(BUFFER_SIZE);
 
-gameScreen = (char*) ((gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte alligned */
+gameScreen = (char*) ((gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
 
 clear( gameScreen);
 /*===========================================================*/
 
-/* TODO Intaiate game system */
+/* TODO Initiate game system */
 
 plotSprite(gameScreen, playerTank->sprite, playerTank->x_coordinate,playerTank->y_coordinate, 8);
 plotSprite(gameScreen, enemyTank->sprite, enemyTank->x_coordinate, enemyTank->y_coordinate, 8);
+
+
 
 Cconws("\r\n\0");
 Cconws("On first screen \r\n\0");
@@ -99,7 +102,7 @@ while (!Cconis()) {
 keypress = Cnecin();
 
 if(keypress != 'q') {
-	/*=====================here is main game loop==================*/
+/*=====================here is main game loop==================*/
 
 	do {
 
@@ -139,8 +142,10 @@ return 0;
 }
 
 void pauseAndchill(int duration) {
+
+	/*TODO some kind of pause function*/
 }
 
 void gameReset() {
-/*TODO Here we need to reset all varibles and game states*/
+/*TODO Here we need to reset all variables and game states*/
 }
