@@ -94,7 +94,13 @@ BEHAVIOUR shoot(Tank *enemy, Tank *player, Missile *missile)
 	}
 }
 
-
+BEHAVIOUR turn(Tank *enemy, Tank *player)
+{
+	if(((enemy->x_location == player->x_location) && enemy->v_facing == HORIZONTAL) || ((enemy->y_location == player->y_location) && enemy->h_facing == VERTICAL))
+	{
+		
+	}
+}
 
 
 

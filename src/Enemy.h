@@ -9,7 +9,8 @@ typedef enum BEHAVIOUR
 	MOVE_X,
 	MOVE_Y,
 	DIE,
-	RESPAWN
+	RESPAWN,
+	TURN,
 
 }BEHAVIOUR
 
