@@ -8,7 +8,7 @@
 #define SCORE_AREA_OFFSET 0
 #define SCREEN_SIZE 0x8000
 
-void clear(char* screen);
+
 
 void plotPixel(char *fbstart, int x, int y);
 
@@ -29,6 +29,7 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
 
 typedef stuct Screen
 		{
+
 	long *startOfSrcreen;
 
 	long *displayArea;

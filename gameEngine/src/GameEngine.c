@@ -36,6 +36,7 @@
 #include  "CollsionDetect.h"
 #include  "TileControl.h"
 #include  "RenderEngine.h"
+#include  "AssemblerRoutines.h"
 
 /*===================================================*/
 #define  NUMBER_OFLIVES 3
@@ -43,6 +44,8 @@
 #define  ENEMY_TANKHITPOINTS 5
 #define  NUMBER_OFENEMYTANKS 5
 #define  NUMBER_TILES 1
+
+#define BUFFER_SIZE   0x8100L
 
 
 void gameReset();
@@ -53,7 +56,10 @@ int main() {
 
 	UINT8 playerSprite[8] = { 0xff, 0x18, 0x18, 0xff, 0x18, 0xff, 0x18, 0xff };
 	UINT8 enemySprite[8] ={0xf1,0xfd,0xfd, 0x00,0xff,0x18,0xfd,0xff};
+
 	Screen *screenAray[2] = {};
+
+	Missile *missiles[2]  = {};
 
 	char keypress;
 
@@ -62,6 +68,10 @@ int main() {
 
 
 /*Intaiate game */
+
+
+
+
 
 
 
