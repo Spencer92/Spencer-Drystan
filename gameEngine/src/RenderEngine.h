@@ -2,13 +2,12 @@
 #define RENDERENGINE_H
 
 
-#include "types.h"
-
 #define START_OF_RENDER_AREA 0
 #define SCORE_AREA_OFFSET 0
 #define SCREEN_SIZE 0x8000
 
 
+#include "types.h"
 
 void plotPixel(char *fbstart, int x, int y);
 
@@ -30,9 +29,9 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
 typedef stuct Screen
 		{
 
-	long *startOfSrcreen;
+	UINT32 *startOfSrcreen;
 
-	long *displayArea;
+	UINT32 *displayArea;
 
 
 

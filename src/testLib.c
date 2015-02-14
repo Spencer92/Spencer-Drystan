@@ -25,7 +25,7 @@
 /*#include <tos.h> */
 #include <osbind.h>
 #include <stdio.h>
-/*#include <stdint.h>*/
+
 #include <stdlib.h>
 #include "clrScrn.h"
 
@@ -273,36 +273,6 @@ void printMenu() {
 }
 
 
-/*
- =============================================================================
- * 
- * Function Name    : clearScreen
- * 
- * Purpose          : To clear the screen
- *
- * 
- * Method           : By setting a temporary pointer to the start of the screen (so the start of the screen doesn't move)
- *                    and by setting every point in the screen to zero it turns everything to white, thus clearing the
- *                    screen
- *
- *
- * 
- * Input Parameters : char *fbstart - the screen.
- * 
- =============================================================================*/
-/*
-void clearScreen(char *fbstart) {
-
-	char *tmpPtr = fbstart;
-
-	int i;
-
-	for (i = 0; i < SCREEN_SIZE_CLEAR; i++) {
-		tmpPtr[i] = 0;
-	}
-
-}
-*/
 
 /*
  =============================================================================

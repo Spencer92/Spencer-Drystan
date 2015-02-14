@@ -4,6 +4,8 @@
 #include "types.h"
 
 #define BOOL UINT8
+#define TRUE 1
+#define FALSE 0
 
 
 typedef enum H_DIRECTION
@@ -16,6 +18,7 @@ typedef enum H_DIRECTION
 typedef enum V_DIRECTION
 {
 	UP = -1,
+	HORIZTIAL = 0;
 	DOWN = 1
 	
 }V_DIRECTION;
@@ -30,7 +33,7 @@ typedef struct Tank
 	BOOL is_moving;
 	BOOL is_firing;
 	UINT32 *sprite;
-	UINT8 *bullets;
+	UINT8 *Missile;
 	H_DIRECTION h_facing;
 	V_DIRECTION v_facing;
 	BOOL is_visable;
