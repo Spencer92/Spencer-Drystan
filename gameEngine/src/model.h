@@ -32,7 +32,8 @@ typedef struct Tank
 	UINT8  max_speed;
 	BOOL is_moving;
 	BOOL is_firing;
-	UINT32 *sprite;
+	/*UINT32 *sprite;*/
+	UINT 8 *sprite;
 	UINT8 *Missile;
 	H_DIRECTION h_facing;
 	V_DIRECTION v_facing;

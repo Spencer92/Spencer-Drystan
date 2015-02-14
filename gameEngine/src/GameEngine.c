@@ -37,6 +37,8 @@
 #include  "RenderEngine.h"
 #include  "AssemblerRoutines.h"
 
+#include   "tankimage.h"
+
 /*===================================================*/
 #define  NUMBER_OFLIVES 3
 #define  PLAYER_HITPOINTS 50
@@ -48,6 +50,11 @@
 #define BUFFER_SIZE   0x8100L
 
 void gameReset();
+void pauseAndchill(int duration);
+
+
+
+
 
 int main() {
 
@@ -55,8 +62,8 @@ int main() {
 	UINT8 enemySprite[8] = { 0xf1, 0xfd, 0xfd, 0x00, 0xff, 0x18, 0xfd, 0xff };
 	/* TODO Screen *screenAray[2] = {};*/
 
-	Tank *playerTank = {200,200,PLAYER_HITPOINTS,MAXSPEED,TRUE,FALSE,}
-	Tank *enemyTank = {}
+	Tank *playerTank = {200,200,PLAYER_HITPOINTS,MAXSPEED,TRUE,FALSE,playerSprite,null,1,0,TRUE};
+	Tank *enemyTank = {300,300, ENEMY_TANKHITPOINTS,MAXSPEED,TRUE,FALSE,enemySprite,null,-1,0,TRUE};
 	Missile *missiles[2] = {};
 
 	char keypress;
@@ -76,12 +83,26 @@ int main() {
 
 	/* TODO Intaiate game system */
 
-	plotSprite(gameScreen, playerSprite, 200, 200, 8);
-	plotSprite(gameScreen, enemySprite, 400, 300, 8);
+	plotSprite(gameScreen, playerTank->sprite, playerTank->x_coordinate,playerTank->y_coordinate, 8);
+	plotSprite(gameScreen, enemyTank->sprite, enemyTank->x_coordinate,  enemyTank->y_coordinate, 8);
+
+
+
+
+
+
+
+
+
 
 	return 0;
 
 }
+
+void pauseAndchill(int duration)
+{}
+
+
 
 void gameReset() {
 	/*TODO Here we need to reset all varibles and game states*/
