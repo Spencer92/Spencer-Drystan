@@ -10,7 +10,7 @@
  *Instructor  : Paul Pospisil
  *Copyright   : Released under GPL v3
  *Description : Raster library for Atarti St, ANSI-style C89
- *Source File : testLib.c
+ *Source File : GameEngine.c
  =============================================================================
  Purpose      : To demonstrate a working game model
  =============================================================================
@@ -51,7 +51,18 @@ void gameReset();
 
 int main() {
 
+	UINT8 playerSprite[8] = { 0xff, 0x18, 0x18, 0xff, 0x18, 0xff, 0x18, 0xff };
+	UINT8 enemySprite[8] ={0xf1,0xfd,0xfd, 0x00,0xff,0x18,0xfd,0xff};
+	Screen *screenAray[2] = {};
+
+	char keypress;
+
+	UNIT16 playerScore  = 0;
+
+
+
 /*Intaiate game */
+
 
 
 
@@ -59,4 +70,6 @@ int main() {
 }
 
 void gameReset()
-{}
+{
+	/*Here we need to reset all varibles and game states*/
+}
