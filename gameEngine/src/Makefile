@@ -1,6 +1,7 @@
 # Atari (GCC/VBCC) Makefile 
 #Drystan Mazur 2 Feb 2015
-# use hexdump -C <file.o>on linux to check for symbols being exported
+#Use hexdump -C <file.o>on linux to check for symbols being exported
+#Uses auto depencies to compile all the files without having lots of lines
 PATH := ${PATH}:/opt/vbcc/bin
 VBCC := /opt/vbcc
 #comment the above out for cc68x
@@ -8,11 +9,11 @@ CC = vc
 #change to cc68x for  crappy compiler
 ASM = vasmm68k_mot 
 ASMFLAGS = -Faout  -m68000 -spaces -x -showopt 
-# ASMFLAGS =  -g -D -L2
+#ASMFLAGS =  -g -D -L2
 #ASM = gen
-CFLAGS =   +tos   -g 
+CFLAGS =  +tos -g 
 CDFLAGS = +tos  -c  
-#CFLAGS =   -g
+#CFLAGS =  -g
 #CDFLAGS = -g -c -v
 
 

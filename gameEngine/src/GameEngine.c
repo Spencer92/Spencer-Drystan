@@ -17,9 +17,10 @@
  Method       :
 
  ============================================================================ */
-
-#include <osbind.h>
+#include <tos.h>
+/*#include <osbind.h>*/
 #include <stdio.h>
+#include <ctype.h>
 #include <stdlib.h>
 /*===================================================*/
 /*Header files authored by Others*/
@@ -44,9 +45,6 @@
 #define  NUMBER_OFENEMYTANKS 5
 #define  NUMBER_TILES 1
 #define  MAXSPEED  5
-
-
-
 #define BUFFER_SIZE   0x8100L
 
 void gameReset();
@@ -59,19 +57,23 @@ UINT8 enemySprite[8] = { 0xf1, 0xfd, 0xfd, 0x00, 0xff, 0x18, 0xfd, 0xff };
 
 /* TODO Screen *screenAray[2] = {};*/
 
-Tank playerTank;
 
-/*playerTank = {200,200,PLAYER_HITPOINTS,MAXSPEED,TRUE,FALSE,playerSprite,NULL,1,0,TRUE};*/
+/*playerTank.x_coordinate = 200;*/
 
-/*Tank enemyTank = { 300,300,ENEMY_HITPOINTS,MAXSPEED,TRUE,FALSE,enemySprite,  NULL,-1,0,TRUE};*/
+/*Tank enemyTank = { 300,300,ENEMY_HITPOINTS,MAXSPEED,TRUE,FALSE,enemySprite,NULL,-1,0,TRUE};*/
 /*Missile *missiles[2] = { };*/
 
 char keypress;
 
 UINT16 playerScore = 0;
 
-char* mainScreen;
-char* gameScreen;
+char  *mainScreen;
+char  *gameScreen;
+
+Tank playerTank; /*= {200,200,PLAYER_HITPOINTS,MAXSPEED,TRUE,FALSE,playerSprite,NULL,1,0,TRUE};*/
+
+playerTank.x_coordinate = 200;
+
 /*=========Will Change in next system=========================*/
 mainScreen =  (Physbase());
 
