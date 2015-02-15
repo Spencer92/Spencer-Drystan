@@ -59,36 +59,41 @@ UINT8 enemySprite[8] = { 0xf1, 0xfd, 0xfd, 0x00, 0xff, 0x18, 0xfd, 0xff };
 
 /* TODO Screen *screenAray[2] = {};*/
 
-Tank playerTank = {200,200,PLAYER_HITPOINTS,MAXSPEED,TRUE,FALSE,playerSprite,NULL, , ,TRUE};
-Tank enemyTank = { 300,300,ENEMY_HITPOINTS,MAXSPEED,TRUE,FALSE,enemySprite,  NULL,-1,0,TRUE};
-Missile *missiles[2] = { };
+Tank playerTank;
+
+/*playerTank = {200,200,PLAYER_HITPOINTS,MAXSPEED,TRUE,FALSE,playerSprite,NULL,1,0,TRUE};*/
+
+/*Tank enemyTank = { 300,300,ENEMY_HITPOINTS,MAXSPEED,TRUE,FALSE,enemySprite,  NULL,-1,0,TRUE};*/
+/*Missile *missiles[2] = { };*/
 
 char keypress;
 
 UINT16 playerScore = 0;
 
-UINT32 mainScreen;
-UINT32 gameScreen;
+char* mainScreen;
+char* gameScreen;
 /*=========Will Change in next system=========================*/
-mainScreen = (char*) (Physbase());
+mainScreen =  (Physbase());
 
-gameScreen = Malloc(BUFFER_SIZE);
+gameScreen = (char*)Malloc(BUFFER_SIZE);
 
-gameScreen = (char*) ((gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
+gameScreen = (char*)((UINT32)(gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
 
-clear( gameScreen);
+clear(gameScreen);
 /*===========================================================*/
 
 /* TODO Initiate game system */
+/*
 
 plotSprite(gameScreen, playerTank->sprite, playerTank->x_coordinate,playerTank->y_coordinate, 8);
 plotSprite(gameScreen, enemyTank->sprite, enemyTank->x_coordinate, enemyTank->y_coordinate, 8);
+*/
 
 
 
 Cconws("\r\n\0");
 Cconws("On first screen \r\n\0");
-Cconws("Please press any key to start \r\n\0")
+Cconws("Please press any key to start \r\n\0");
 
 while (!Cconis()) {
 
@@ -101,7 +106,8 @@ while (!Cconis()) {
 
 keypress = Cnecin();
 
-if(keypress != 'q') {
+if(keypress != 'q')
+{
 /*=====================here is main game loop==================*/
 
 	do {
@@ -123,8 +129,8 @@ if(keypress != 'q') {
 
 			while (!Cconis())
 			{
-				Cconws("In pause game loop \r\n\0")
-				Cconws("Please press any key to start \r\n\0")
+				Cconws("In pause game loop \r\n\0");
+				Cconws("Please press any key to start \r\n\0");
 
 			}
 
@@ -133,9 +139,13 @@ if(keypress != 'q') {
 
 keypress = Cnecin();
 
-	}while(keypress != 'q')
+	}while(keypress != 'q');
 
 }
+
+
+/*TODO clean up*/
+
 
 return 0;
 
