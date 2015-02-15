@@ -1,7 +1,0 @@
-
-
-
-void hideMouse()
-{}
-void showMouse()
-{}
