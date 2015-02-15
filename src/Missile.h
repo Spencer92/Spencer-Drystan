@@ -1,0 +1,27 @@
+#ifndef MISSILE_H
+#define MISSILE_H
+
+
+typedef enum MISSILE_BEHAVIOUR
+{
+	MOVE_UP,
+	MOVE_DOWN,
+	MOVE_LEFT,
+	MOVE_RIGHT,
+	EXPLODE
+
+}MISSILE_BEHAVIOUR;
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
