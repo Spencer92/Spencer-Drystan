@@ -7,6 +7,7 @@ VBCC := /opt/vbcc
 #comment the above out for cc68x
 CC = vc
 #change to cc68x for  crappy compiler
+
 ASM = vasmm68k_mot 
 ASMFLAGS = -Faout  -m68000 -spaces -x -showopt 
 #ASMFLAGS =  -g -D -L2
