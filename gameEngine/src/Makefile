@@ -1,5 +1,5 @@
 # Atari (GCC/VBCC) Makefile 
-#Drystan Mazur 2 Feb 2015
+#Drystan Mazur 13 Feb 2015
 #Use hexdump -C <file.o>on linux to check for symbols being exported
 #Uses auto depencies to compile all the files without having lots of lines
 PATH := ${PATH}:/opt/vbcc/bin
@@ -8,7 +8,7 @@ VBCC := /opt/vbcc
 CC = vc
 #change to cc68x for  crappy compiler
 
-ASM = vasmm68k_mot 
+ASM 	 = vasmm68k_mot 
 ASMFLAGS = -Faout  -m68000 -spaces -x -showopt 
 #ASMFLAGS =  -g -D -L2
 #ASM = gen
@@ -32,7 +32,7 @@ OBJS = $(SOURCES:.c=.o) $(ASMSOURCES:.s=.o)
 TARGET = test.tos
 #change to what you want your target to be called
 
-all:$(TARGET)
+all:$(TARGET) object gamedev
 
 
 $(TARGET):  $(OBJS)
@@ -49,3 +49,10 @@ $(TARGET):  $(OBJS)
 
 clean:
 	$(RM) *.o *.tos
+
+object:
+	mv *.o objects
+
+gamedev:
+	mv *.tos /home/drystan/hatarti-data/gamedev/
+
