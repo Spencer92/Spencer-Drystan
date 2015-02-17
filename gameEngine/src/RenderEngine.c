@@ -306,3 +306,15 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 
 	return;
 }
+
+void plotLargeSprite(char *fbstart,UINT32 *spriteLocationint,int  xpostoPlot,int ypostoPlot)
+{
+
+
+
+
+}
+
+
+void blankSprite(char *fbstart,UINT8 *spriteLocation, int xpostoPlot, int ypostoPlot, int size )
+{}

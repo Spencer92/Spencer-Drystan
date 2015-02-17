@@ -21,7 +21,7 @@ CDFLAGS = +tos  -c
 
 RM = rm
 
-SOURCES= AIsystem.c  CollsionDetect.c  font.c GameEngine.c Keyboard.c RenderEngine.c  TileControl.c
+SOURCES=GameEngine.c  RenderEngine.c
 #change to whatever you called all of your srouce files
 ASMSOURCES = AsemblerRoutines.s
 #change to whatever your asslembler stuff is called
@@ -54,5 +54,5 @@ object:
 	mv *.o objects
 
 gamedev:
-	mv *.tos /home/drystan/hatarti-data/gamedev/
+	mv *.tos  /home/drystan/hatari-data/game/
 

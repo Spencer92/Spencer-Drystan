@@ -24,16 +24,12 @@
 #include <stdlib.h>
 /*===================================================*/
 /*Header files authored by Others*/
-#include "font.h"
+/*#include "font.h"*/
 #include "types.h"
 /*===================================================*/
 /*Header files authored by Spencer Maslen or Drystan Mazur*/
 
 #include  "model.h"
-#include  "Keyboard.h"
-#include  "AIsystem.h"
-#include  "CollsionDetect.h"
-#include  "TileControl.h"
 #include  "RenderEngine.h"
 #include  "AssemblerRoutines.h"
 #include  "tankimage.h"
@@ -92,7 +88,7 @@ int main() {
 	backGamescreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
 	clear(gameScreen);
 	clear(backGamescreen);
-	/*clear(mainScreen);*/
+
 	/*===========================================================*/
 
 	/* TODO Initiate game system */
@@ -126,86 +122,75 @@ int main() {
 	keypress = Cnecin();
 
 	if (keypress != 'q') {
-/*=====================here is main game loop==================*/
-					Cursconf(0,0); /* removes cusors*/
-		             Vsync();
-		             Vsync();
-					Setscreen(gameScreen, gameScreen, -1L);
+		/*=====================here is main game loop==================*/
+		Cursconf(0, 0); /* removes cursor*/
 
+		Vsync();
+		Setscreen(gameScreen, gameScreen, -1L);
 
-					do {
-						if(!(playerTank.x_coordinate  >= SCREEN_WIDTH ))
-						{
-							playerTank.x_coordinate += 5;
+		do {
+			if (!(playerTank.x_coordinate >= SCREEN_WIDTH)) {
+				playerTank.x_coordinate += 5;
 
-							enemyTank.x_coordinate -= 5;
+				enemyTank.x_coordinate -= 5;
 
+			} else {
+				playerTank.x_coordinate = 20;
 
-						}
-						else
-						{
-							playerTank.x_coordinate = 20;
+				enemyTank.x_coordinate = 600;
+			}
 
-							enemyTank.x_coordinate  = 600;
-						}
-
-
-						plotSprite(backGamescreen, playerTank.sprite,
-								playerTank.x_coordinate, playerTank.y_coordinate, 8);
-						plotSprite(backGamescreen, enemyTank.sprite, enemyTank.x_coordinate,
-								enemyTank.y_coordinate, 8);
-
-					/*	pauseAndchill(1);*/
-						Vsync();
-						Vsync();
-						Setscreen(backGamescreen, backGamescreen, -1L);
-						clear(gameScreen);
-
-
-						if(!(playerTank.x_coordinate  >= SCREEN_WIDTH ))
-						{
-							playerTank.x_coordinate += 5;
-
-							enemyTank.x_coordinate -= 5;
-
-
-						}
-						else
-						{
-							playerTank.x_coordinate = 20;
-
-							enemyTank.x_coordinate  = 600;
-						}
-
-						plotSprite(gameScreen, playerTank.sprite, playerTank.x_coordinate,
-								playerTank.y_coordinate, 8);
-						plotSprite(gameScreen, enemyTank.sprite, enemyTank.x_coordinate,
-								enemyTank.y_coordinate, 8);
-
-						Vsync();
-						Setscreen(gameScreen, gameScreen, -1L);
-						clear(backGamescreen);
-						/*pauseAndchill(1);*/
+			plotSprite(backGamescreen, playerTank.sprite,
+					playerTank.x_coordinate, playerTank.y_coordinate, 8);
+			plotSprite(backGamescreen, enemyTank.sprite, enemyTank.x_coordinate,
+					enemyTank.y_coordinate, 8);
 
 
 
-						if (keypress == 'p') {
-							/*=====================here is pause game loop==================*/
-							clear(mainScreen);
-							Vsync();
-							Setscreen(logMainscreen, mainScreen, -1L);
-							Cconws("In pause game loop \r\n\0");
-							Cconws("Please press any key to start \r\n\0");
+			Vsync();
+			Setscreen(backGamescreen, backGamescreen, -1L);
 
-							while (!Cconis()) {
-							}
-							keypress = Cnecin();
-						}
+			clear(gameScreen);
 
-						if(Cconis()){
-						keypress = Cnecin();}
+			if (!(playerTank.x_coordinate >= SCREEN_WIDTH)) {
+				playerTank.x_coordinate += 5;
 
-					} while (keypress != 'q');
+				enemyTank.x_coordinate -= 5;
+
+			} else {
+				playerTank.x_coordinate = 20;
+
+				enemyTank.x_coordinate = 600;
+			}
+
+			plotSprite(gameScreen, playerTank.sprite, playerTank.x_coordinate,
+					playerTank.y_coordinate, 8);
+			plotSprite(gameScreen, enemyTank.sprite, enemyTank.x_coordinate,
+					enemyTank.y_coordinate, 8);
+
+			Vsync();
+			Setscreen(gameScreen, gameScreen, -1L);
+			clear(backGamescreen);
+
+
+			if (keypress == 'p') {
+/*=====================here is pause game loop==================*/
+				clear(mainScreen);
+				Vsync();
+				Setscreen(logMainscreen, mainScreen, -1L);
+				Cconws("In pause game loop \r\n\0");
+				Cconws("Please press any key to start \r\n\0");
+
+				while (!Cconis()) {
+				}
+				keypress = Cnecin();
+			}
+
+			if (Cconis()) {
+				keypress = Cnecin();
+			}
+
+		} while (keypress != 'q');
 
 	}
 
