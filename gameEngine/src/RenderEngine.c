@@ -307,10 +307,58 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 	return;
 }
 
-void plotLargeSprite(char *fbstart,UINT32 *spriteLocationint,int  xpostoPlot,int ypostoPlot)
+void plotLargeSprite(char *fbstart, UINT16 *spriteLocation,int xpostoPlot,int ypostoPlot ,int size)
 {
 
+	UNIT16 writePtr = (UINT16*)fbstart;
+	UNIT16 bufferleft;
+	UNIT16 bufferright;
 
+	UINT8 offset = size >> 1;
+	UINT16 yposoffset = yostoPlot + offset;
+	UINT16 xposoffset = xpostoPlot + offset;
+	UINT8 stopPoint = size -1;
+	UINT32 mask = 0;
+	int ynegoffset = yostoPlot - offset;
+
+
+/*Clipping section====================================*/
+	if(yposoffset > SCREEN_HEIGHT)
+	{
+		stopPoint = 31 -((yposoffset - SCREEN_HEIGHT));
+	}
+
+	else if((ynegoffset) < 0)
+	{
+		spriteLocation+=(31 +(31 + ynegoffset));
+	}
+
+
+
+	if(xposoffset > SCREEN_WIDTH)
+	{
+		mask = rightmask[((xposoffset - SCREEN_WIDTH) -1)];
+	}
+
+	else if((xpostoPlot - offset) < 0)
+	{
+
+  mask = leftmask[(SCREEN_WIDTH -(SCREEN_WIDTH + xpostoPlot)) -1 ];
+	}
+
+/*Clipping section====================================*/
+
+	writePtr += (20*ypostoPlot);
+	shiftleft = (xpostoPlot & 15);
+	shiftright = 16 - shiftleft;
+
+
+	while(offset--)
+	{
+
+
+
+	}
 
 
 }
@@ -318,3 +366,5 @@ void plotLargeSprite(char *fbstart,UINT32 *spriteLocationint,int  xpostoPlot,int
 
 void blankSprite(char *fbstart,UINT8 *spriteLocation, int xpostoPlot, int ypostoPlot, int size )
 {}
+
+
