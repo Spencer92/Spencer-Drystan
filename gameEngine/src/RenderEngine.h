@@ -38,7 +38,7 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
 		unsigned int y_loc_start, unsigned int x_loc_end,
 		unsigned int y_loc_end);
 
-void plotLargeSprite(char *fbstart, UINT32 *spriteLocationint, int xpostoPlot,
+void plotLargeSprite(char *fbstart, UINT16 *spriteLocationint, int xpostoPlot,
 		int ypostoPlot);
 
 typedef struct Screen {

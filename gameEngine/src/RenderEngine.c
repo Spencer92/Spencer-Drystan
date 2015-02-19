@@ -295,7 +295,7 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 			buffer2 <<= rightBuffershift;
 
 			*destPtr++ = buffer1;
-			*destPtr = buffer2;
+			*destPtr  = buffer2;
 			i++;
 
 			destPtr--;
@@ -310,15 +310,18 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 void plotLargeSprite(char *fbstart, UINT16 *spriteLocation,int xpostoPlot,int ypostoPlot ,int size)
 {
 
-	UNIT16 writePtr = (UINT16*)fbstart;
-	UNIT16 bufferleft;
-	UNIT16 bufferright;
-
+	UINT16 writePtrLh   = (UINT16*)fbstart;
+	UINT16 writePtrRh;
+	UINT16 bufferleft;
+	UINT16 bufferright;
 	UINT8 offset = size >> 1;
 	UINT16 yposoffset = yostoPlot + offset;
 	UINT16 xposoffset = xpostoPlot + offset;
 	UINT8 stopPoint = size -1;
+	UINT8 i = 0;
+
 	UINT32 mask = 0;
+
 	int ynegoffset = yostoPlot - offset;
 
 
@@ -348,15 +351,29 @@ void plotLargeSprite(char *fbstart, UINT16 *spriteLocation,int xpostoPlot,int yp
 
 /*Clipping section====================================*/
 
-	writePtr += (20*ypostoPlot);
+	writePtrLH += (40*(ypostoPlot - offset));
+	writePtrLH += ((xpostoPlot - offset) >> 3)
+	writePtrRH = writePtrLH + 1;
 	shiftleft = (xpostoPlot & 15);
 	shiftright = 16 - shiftleft;
 
+	size =>>1;
 
-	while(offset--)
+	while(size--)
 	{
+		bufferleft = spriteLocation[i]
+		bufferright = spriteLocation[i +1]
 
+		bufferleft   <<= shiftleft;
+		bufferright >>= shiftright;
 
+		*(writePtrLH) |= bufferleft;
+		*(writePtrLH) |= bufferright;
+
+		 writePtrLH +=40;
+		 writePtrRh = writePtrLh +1;
+
+		 i++;
 
 	}
 

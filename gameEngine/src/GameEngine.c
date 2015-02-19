@@ -33,6 +33,7 @@
 #include  "RenderEngine.h"
 #include  "AssemblerRoutines.h"
 #include  "tankimage.h"
+#include  "bitmap.h"
 
 /*===================================================*/
 #define  NUMBER_OFLIVES 3

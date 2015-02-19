@@ -20,27 +20,25 @@
 
  ============================================================================ */
 
-#include "raster.h"
+#include "RenderEngine.h"
 #include "types.h"
-/*#include <tos.h> */
+#include "bitmap.h"
+#include "AssemblerRoutines.h"
 #include <osbind.h>
 #include <stdio.h>
 
 #include <stdlib.h>
-#include "clrScrn.h"
+
 
 #define BUFFER_SIZE   0x8100L /*Screen buffer needed 32KB plus space to align */
 #define CON 2
-#define SCREEN_SIZE_CLEAR 0x8000
-#define CLEAR 0x00000000
 
 
 void printMenu();
-/* void clearScreen(char *fbstart);
- */void waitForinput();
- void pause();
+void waitForinput();
+void pause();
 
-int main(int argc, char **argv) {
+int main() {
 
 
 	char selection = '0';
@@ -50,7 +48,8 @@ int main(int argc, char **argv) {
 
 
 	UINT8 testSprite[8] = { 0xff, 0x18, 0x18, 0xff, 0x18, 0xff, 0x18, 0xff }; /* The sprite that will be used for printsprite */
-	UINT8 *arrayPtr;
+	
+	UINT32  *arrayPtr  = data_Weird_Tank_Player_Two_East_png;
 
 	int i;
 
@@ -59,13 +58,16 @@ int main(int argc, char **argv) {
 
 	fbAltscreen = (char*)Malloc(BUFFER_SIZE); /* There needs to be enough space for the second screen to show up */
 
-	arrayPtr = &testSprite[0];
+
 
 	fbAltscreen = (char*) (((UINT32) fbAltscreen + 256)
 			               & (UINT32) 0x00FFFF00); /* The screens have to be 256 byte alligned */
 
 	pause();
 	clear(fbAltscreen); /* If there was anything on the second screen, there isn't any more */
+
+		
+
 
 	do {
 
@@ -132,13 +134,17 @@ int main(int argc, char **argv) {
 		case 'd': /* Plot multiple sprites a sprite to the screen */
 
 			/* Put a multitude of sprites on the alternate screen */
-			plotSprite(fbAltscreen, arrayPtr, 271, 200, 8);
 
-			plotSprite(fbAltscreen, arrayPtr, 272, 240, 8);
 
-			plotSprite(fbAltscreen, arrayPtr, 273, 220, 8);
+		/*	plotLargeSprite(fbAltscreen, arrayPtr, 100, 100, 32);
 
-			plotSprite(fbAltscreen, arrayPtr, 274, 260, 8);
+			plotLargeSprite(fbAltscreen, arrayPtr, 130, 120, 32);
+
+			plotLargeSprite(fbAltscreen, arrayPtr, 250, 150, 32);
+
+			plotLargeSprite(fbAltscreen, arrayPtr, 250, 400, 32);*/
+
+			plotLargeSprite(fbAltscreen, arrayPtr, 250, 0, 32);
 
 			Vsync();
 
@@ -159,14 +165,14 @@ int main(int argc, char **argv) {
 		case 'e': /* Animation demo */
 
 			
-			/*Put the sprite on the screen */
+	
 			plotSprite(fbAltscreen, arrayPtr, 271, 200, 8);
 
 			Setscreen(fbAltscreen, fbAltscreen, -1L);
 			clear(fbstart);
 
 			Vsync();
-			/* Make the sprite move */
+		
 			for (i = 0; i < 5; i++) {
 
 				clear(fbAltscreen);
@@ -202,7 +208,7 @@ int main(int argc, char **argv) {
 
 			Vsync();
 
-			Setscreen(fbAltscreen, fbAltscreen, -1L); /* Go to the alternate screen */
+			Setscreen(-1L, fbAltscreen, -1L); /* Go to the alternate screen */
 
 			waitForinput();
 
