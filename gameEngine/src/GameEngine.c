@@ -66,10 +66,11 @@ int main() {
 	char *backGamescreen;
 
 
+
 	Tank demoArray[6] = {};
 
-	demoArray[0] =Tank playerTank = { 20, 50, PLAYER_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL, NULL, 1, 0, TRUE };
-	demoArray[0].sprite = playerSprite;
+demoArray[0] =Tank playerTank = { 20, 50, PLAYER_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL, NULL, 1, 0, TRUE };
+demoArray[0].sprite = playerSprite;
 
 demoArray[1] =  	Tank enemyTank = { 600, 10, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE };
 demoArray[2] =     Tank enemyTank2 = { 250, 30, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE };
@@ -84,7 +85,7 @@ demoArray[5] = 	Tank enemyTank5 = { 200, 100, ENEMY_HITPOINTS, MAXSPEED, TRUE, F
 	demoArray[4].sprite = enemySprite;
 	demoArray[5].sprite = enemySprite;
 
-
+	Stationary_Object landobjects[6] = {};
 
 
 	/*=========Will Change in next system=========================*/
@@ -102,7 +103,7 @@ demoArray[5] = 	Tank enemyTank5 = { 200, 100, ENEMY_HITPOINTS, MAXSPEED, TRUE, F
 
 	/* TODO Initiate game system */
 
-
+	Cursconf(0, 0); /* removes cursor*/
 
 	/*Setscreen(gameScreen,GameScreen,-1L);*/
 
@@ -129,12 +130,15 @@ demoArray[5] = 	Tank enemyTank5 = { 200, 100, ENEMY_HITPOINTS, MAXSPEED, TRUE, F
 
 	if (keypress != 'q') {
 		/*=====================here is main game loop==================*/
-		Cursconf(0, 0); /* removes cursor*/
+
 
 		Vsync();
 		Setscreen(gameScreen, gameScreen, -1L);
 
 		do {
+
+			/* Reed player input then call Spencer's Behavior method first pass*/
+
 			if (!(playerTank.x_coordinate >= SCREEN_WIDTH)) {
 				playerTank.x_coordinate += 5;
 
