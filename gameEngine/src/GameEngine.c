@@ -24,7 +24,7 @@
 #include <stdlib.h>
 /*===================================================*/
 /*Header files authored by Others*/
-/*#include "font.h"*/
+#include "font.h"
 #include "types.h"
 /*===================================================*/
 /*Header files authored by Spencer Maslen or Drystan Mazur*/
@@ -54,12 +54,6 @@ int main() {
 	UINT8 playerSprite[8] = { 0xff, 0x18, 0x18, 0xff, 0x18, 0xff, 0x18, 0xff };
 	UINT8 enemySprite[8] = { 0xf1, 0xfd, 0xfd, 0x00, 0xff, 0x18, 0xfd, 0xff };
 
-	/* TODO Screen *screenAray[2] = {};*/
-
-	/*playerTank.x_coordinate = 200;*/
-
-	/*Tank enemyTank = { 300,300,ENEMY_HITPOINTS,MAXSPEED,TRUE,FALSE,enemySprite,NULL,-1,0,TRUE};*/
-	/*Missile *missiles[2] = { };*/
 
 	char keypress = 0;
 
@@ -71,13 +65,27 @@ int main() {
 	char *gameScreen;
 	char *backGamescreen;
 
-	Tank playerTank = { 20, 50, PLAYER_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,
-			NULL, 1, 0, TRUE };
-	Tank enemyTank = { 600, 10, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,
-			NULL, -1, 0, TRUE };
 
-	playerTank.sprite = playerSprite;
-	enemyTank.sprite = enemySprite;
+	Tank demoArray[6] = {};
+
+	demoArray[0] =Tank playerTank = { 20, 50, PLAYER_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL, NULL, 1, 0, TRUE };
+	demoArray[0].sprite = playerSprite;
+
+demoArray[1] =  	Tank enemyTank = { 600, 10, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE };
+demoArray[2] =     Tank enemyTank2 = { 250, 30, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE };
+demoArray[3] = 	Tank enemyTank3 = { 300, 50, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE };
+demoArray[4] = 	Tank enemyTank4 = { 400, 70, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE };
+demoArray[5] = 	Tank enemyTank5 = { 200, 100, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE };
+
+
+    demoArray[1].spritie = enemySprite;
+	demoArray[2].sprite = enemySprite;
+	demoArray[3].sprite = enemySprite;
+	demoArray[4].sprite = enemySprite;
+	demoArray[5].sprite = enemySprite;
+
+
+
 
 	/*=========Will Change in next system=========================*/
 	mainScreen = (Physbase());
@@ -94,10 +102,7 @@ int main() {
 
 	/* TODO Initiate game system */
 
-	plotSprite(gameScreen, playerTank.sprite, playerTank.x_coordinate,
-			playerTank.y_coordinate, 8);
-	plotSprite(gameScreen, enemyTank.sprite, enemyTank.x_coordinate,
-			enemyTank.y_coordinate, 8);
+
 
 	/*Setscreen(gameScreen,GameScreen,-1L);*/
 
