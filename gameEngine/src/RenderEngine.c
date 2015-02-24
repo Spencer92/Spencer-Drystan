@@ -3,6 +3,9 @@
 #define SCREEN_HEIGHT 400
 
 #include "RenderEngine.h"
+/*#include "mask.h"*/
+#include <stdlib.h>
+#include  <stdio.h>
 
 /*
  =============================================================================
@@ -68,7 +71,6 @@ void plotHorzLine(char *fbstart, int xstart, int ystart, int xfin) {
 	UINT16 i;
 
 	char *tmpPtr = fbstart;
-
 
 	if ((xstart >= 0 && xstart + length < SCREEN_WIDTH)
 			&& (ystart >= 0 && ystart < SCREEN_HEIGHT)) {
@@ -295,7 +297,7 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 			buffer2 <<= rightBuffershift;
 
 			*destPtr++ = buffer1;
-			*destPtr  = buffer2;
+			*destPtr = buffer2;
 			i++;
 
 			destPtr--;
@@ -307,81 +309,137 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 	return;
 }
 
-void plotLargeSprite(char *fbstart, UINT16 *spriteLocation,int xpostoPlot,int ypostoPlot ,int size)
-{
+void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
+		int ypostoPlot, int size) {
 
-	UINT16 writePtrLh   = (UINT16*)fbstart;
-	UINT16 writePtrRh;
-	UINT16 bufferleft;
-	UINT16 bufferright;
+	UINT32 *writePtrLH = fbstart;
+	UINT32 *writePtrRH = NULL;
+	UINT32 bufferleft;
+	UINT32 bufferright;
+
+	UINT16 *trackPtr = fbstart;
+
 	UINT8 offset = size >> 1;
-	UINT16 yposoffset = yostoPlot + offset;
+
+	UINT16 yposoffset = ypostoPlot + offset;
 	UINT16 xposoffset = xpostoPlot + offset;
-	UINT8 stopPoint = size -1;
+
+	int xnegBound = xpostoPlot - offset;
+	int startLine = ypostoPlot - offset;
+	int flag = 1;
+
 	UINT8 i = 0;
 
-	UINT32 mask = 0;
+	UINT8 shiftright;
+	UINT8 shiftleft;
 
-	int ynegoffset = yostoPlot - offset;
+	/*UINT32 mask = 0xFFFFFFFF;*/
 
+	shiftleft = ((xpostoPlot - offset) & 7);
+	shiftright = (8 - shiftleft);
 
-/*Clipping section====================================*/
-	if(yposoffset > SCREEN_HEIGHT)
-	{
-		stopPoint = 31 -((yposoffset - SCREEN_HEIGHT));
-	}
+	/* Y Clipping section====================================*/
 
-	else if((ynegoffset) < 0)
-	{
-		spriteLocation+=(31 +(31 + ynegoffset));
-	}
+	if (startLine < 0) {
+		i = (size - (size + startLine)) - 1;
 
+		size = (size + startLine);
 
-
-	if(xposoffset > SCREEN_WIDTH)
-	{
-		mask = rightmask[((xposoffset - SCREEN_WIDTH) -1)];
-	}
-
-	else if((xpostoPlot - offset) < 0)
-	{
-
-  mask = leftmask[(SCREEN_WIDTH -(SCREEN_WIDTH + xpostoPlot)) -1 ];
-	}
-
-/*Clipping section====================================*/
-
-	writePtrLH += (40*(ypostoPlot - offset));
-	writePtrLH += ((xpostoPlot - offset) >> 3)
-	writePtrRH = writePtrLH + 1;
-	shiftleft = (xpostoPlot & 15);
-	shiftright = 16 - shiftleft;
-
-	size =>>1;
-
-	while(size--)
-	{
-		bufferleft = spriteLocation[i]
-		bufferright = spriteLocation[i +1]
-
-		bufferleft   <<= shiftleft;
-		bufferright >>= shiftright;
-
-		*(writePtrLH) |= bufferleft;
-		*(writePtrLH) |= bufferright;
-
-		 writePtrLH +=40;
-		 writePtrRh = writePtrLh +1;
-
-		 i++;
+		startLine = 0;
 
 	}
 
+	else if ((yposoffset) > SCREEN_HEIGHT) {
 
+		size = size - (yposoffset - SCREEN_HEIGHT);
+
+	}
+
+	writePtrLH += (20 * (startLine));
+
+/* Y Clipping section done ====================================*/
+
+	/* TODO X Clipping section ====================================*/
+
+/*	if (xposoffset > SCREEN_WIDTH) {
+
+		mask = rightmask[((xposoffset - SCREEN_WIDTH) - 1)];
+		flag = 0;
+		writePtrLH +=19;
+
+
+
+	}
+
+	else if ((xnegBound) < 0) {
+
+		mask = leftmask[ SCREEN_WIDTH -( (SCREEN_WIDTH - 15)+ xpostoPlot)];
+		flag = -1;
+
+
+
+	}*/
+
+
+	/* X Clipping section done====================================*/
+
+	if (flag > 0) {
+
+		writePtrLH += ((xpostoPlot - offset) >> 5);
+		trackPtr = writePtrLH;
+		trackPtr++;
+		writePtrRH = trackPtr;
+
+		while (size--) {
+
+			bufferleft = spriteLocation[i];
+			bufferright = bufferleft;
+
+			bufferleft >>= shiftleft;
+			bufferright <<= shiftright;
+
+			*(writePtrLH) |= bufferleft;
+
+			(bufferright) &= 0x00FFFFFF;
+			*(writePtrRH) |= bufferright;
+
+			writePtrLH += 20;
+			writePtrRH += 20;
+
+			i++;
+
+		}
+
+	}
+
+	else {
+
+
+
+		while (size--) {
+
+			bufferleft = spriteLocation[i];
+			bufferleft &= mask;
+
+			if (flag < 0) {
+				bufferleft <<= shiftleft;
+			}
+
+			else {
+				bufferleft >>= shiftright;
+			}
+
+
+			*(writePtrLH) |= bufferleft;
+			writePtrLH += 20;
+		}
+
+	}
+
+	return;
 }
 
-
-void blankSprite(char *fbstart,UINT8 *spriteLocation, int xpostoPlot, int ypostoPlot, int size )
-{}
-
+void blankSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
+		int ypostoPlot, int size) {
+}
 

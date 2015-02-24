@@ -63,10 +63,10 @@ int main() {
 	fbAltscreen = (char*) (((UINT32) fbAltscreen + 256)
 			               & (UINT32) 0x00FFFF00); /* The screens have to be 256 byte alligned */
 
-	pause();
+
 	clear(fbAltscreen); /* If there was anything on the second screen, there isn't any more */
 
-		
+	Cursconf(0, 0);
 
 
 	do {
@@ -136,22 +136,25 @@ int main() {
 			/* Put a multitude of sprites on the alternate screen */
 
 
-		/*	plotLargeSprite(fbAltscreen, arrayPtr, 100, 100, 32);
+			plotLargeSprite(fbAltscreen, arrayPtr, 100, 100, 32);
 
 			plotLargeSprite(fbAltscreen, arrayPtr, 130, 120, 32);
 
 			plotLargeSprite(fbAltscreen, arrayPtr, 250, 150, 32);
 
-			plotLargeSprite(fbAltscreen, arrayPtr, 250, 400, 32);*/
+			plotLargeSprite(fbAltscreen, arrayPtr, 250, 400, 32);
 
 			plotLargeSprite(fbAltscreen, arrayPtr, 250, 0, 32);
+
+			plotLargeSprite(fbAltscreen, arrayPtr, 0, 200, 32);
+
 
 			Vsync();
 
 			/*Go to that screen */
 			Setscreen(fbAltscreen, fbAltscreen, -1L);
 
-			waitForinput();
+			pause();
 
 			Vsync();
 
@@ -254,14 +257,7 @@ int main() {
  =============================================================================*/
 
  
-void pause()
-{
-	int i;
-	for(i = 0; i < 10; i++)
-	{
-		Vsync();
-	}
-} 
+
  
 
 void printMenu() {
@@ -296,12 +292,13 @@ void printMenu() {
 
 void waitForinput() {
 
-	Cconws("Please press any key \r\n\0");
+	int i;
 
-	while (!Cconis()) {
+	for(i = 0;i < 35000;i++)
+	{
 
 	}
 
-	Cnecin();
+
 
 }
