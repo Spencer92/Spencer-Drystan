@@ -329,14 +329,10 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	int flag = 1;
 
 	UINT8 i = 0;
+	UINT8 j = 0;
 
 	UINT8 shiftright;
 	UINT8 shiftleft;
-
-	/*UINT32 mask = 0xFFFFFFFF;*/
-
-	shiftleft = ((xpostoPlot - offset) & 7);
-	shiftright = (8 - shiftleft);
 
 	/* Y Clipping section====================================*/
 
@@ -357,29 +353,47 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 	writePtrLH += (20 * (startLine));
 
-/* Y Clipping section done ====================================*/
+	/* Y Clipping section done ====================================*/
 
-	/* TODO X Clipping section ====================================*/
+	/* X Clipping section ====================================*/
 
-/*	if (xposoffset > SCREEN_WIDTH) {
+	if (xposoffset > SCREEN_WIDTH) {
 
-		mask = rightmask[((xposoffset - SCREEN_WIDTH) - 1)];
+
 		flag = 0;
-		writePtrLH +=19;
-
+		writePtrLH += 19;
 
 
 	}
 
 	else if ((xnegBound) < 0) {
-
-		mask = leftmask[ SCREEN_WIDTH -( (SCREEN_WIDTH - 15)+ xpostoPlot)];
 		flag = -1;
+		shiftleft = 15 - xpostoPlot;
+
+		if(!(shiftleft > 23) && (shiftleft > 14))
+		{
+			shiftleft = shiftleft -15;
+			bufferleft = (UINT16*) bufferleft;
+			j = 2;
+			trackPtr = spriteLocation;
+			i = 1;
 
 
 
-	}*/
+		}
 
+		else if(shiftleft > 23)
+		{
+		 shiftleft = 8 - (31 - shiftleft);
+		 bufferleft = (UINT8)bufferleft;
+		 trackPtr = spriteLocation;
+		 trackPtr = (UINT8*) trackPtr;
+		 i = 3;
+		 j = 4;
+
+		}
+
+	}
 
 	/* X Clipping section done====================================*/
 
@@ -389,6 +403,9 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 		trackPtr = writePtrLH;
 		trackPtr++;
 		writePtrRH = trackPtr;
+
+		shiftleft = ((xpostoPlot - offset) & 7);
+		shiftright = (8 - shiftleft);
 
 		while (size--) {
 
@@ -414,12 +431,10 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 	else {
 
-
-
 		while (size--) {
 
 			bufferleft = spriteLocation[i];
-			bufferleft &= mask;
+
 
 			if (flag < 0) {
 				bufferleft <<= shiftleft;
@@ -428,7 +443,6 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 			else {
 				bufferleft >>= shiftright;
 			}
-
 
 			*(writePtrLH) |= bufferleft;
 			writePtrLH += 20;
