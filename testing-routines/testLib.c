@@ -135,18 +135,17 @@ int main() {
 
 			/* Put a multitude of sprites on the alternate screen */
 
-/*
-			plotLargeSprite(fbAltscreen, arrayPtr, 100, 100, 32);
+		/*	plotLargeSprite(fbAltscreen, arrayPtr, 100, 100, 32);
 
 			plotLargeSprite(fbAltscreen, arrayPtr, 130, 120, 32);
-
+*/
 			plotLargeSprite(fbAltscreen, arrayPtr, 250, 150, 32);
 
-			plotLargeSprite(fbAltscreen, arrayPtr, 250, 400, 32);
+		/*	plotLargeSprite(fbAltscreen, arrayPtr, 250, 400, 32);
 
 			plotLargeSprite(fbAltscreen, arrayPtr, 250, 0, 32);*/
 
-			plotLargeSprite(fbAltscreen, arrayPtr, 0, 200, 32);
+			plotLargeSprite(fbAltscreen, arrayPtr, -15, 200, 32);
 
 
 			Vsync();
