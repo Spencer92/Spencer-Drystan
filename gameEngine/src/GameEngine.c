@@ -26,6 +26,7 @@
 /*Header files authored by Others*/
 #include "font.h"
 #include "types.h"
+#include "bitmaps.h"
 /*===================================================*/
 /*Header files authored by Spencer Maslen or Drystan Mazur*/
 
@@ -42,17 +43,16 @@
 #define  NUMBER_OFENEMYTANKS 5
 #define  NUMBER_TILES 1
 #define  MAXSPEED  5
-#define BUFFER_SIZE   0x8100L
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 400
+#define  BUFFER_SIZE   0x8100L
+#define  SCREEN_WIDTH 640
+#define  SCREEN_HEIGHT 400
 
 void gameReset();
 void pauseAndchill(int duration);
 
 int main() {
 
-	UINT8 playerSprite[8] = { 0xff, 0x18, 0x18, 0xff, 0x18, 0xff, 0x18, 0xff };
-	UINT8 enemySprite[8] = { 0xf1, 0xfd, 0xfd, 0x00, 0xff, 0x18, 0xfd, 0xff };
+	
 
 	char keypress = 0;
 
@@ -63,6 +63,10 @@ int main() {
 	char *logMainscreen;
 	char *gameScreen;
 	char *backGamescreen;
+	
+	
+	long readfile;
+	int  handle;
 
 	Tank demoArray[6] = { };
 
@@ -81,7 +85,7 @@ int main() {
 	demoArray[5] = Tank
 			enemyTank5 = {200, 100, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE};
 
-	demoArray[1].spritie = enemySprite;
+	demoArray[1].sprite = enemySprite;
 	demoArray[2].sprite = enemySprite;
 	demoArray[3].sprite = enemySprite;
 	demoArray[4].sprite = enemySprite;
@@ -92,13 +96,17 @@ int main() {
 	/*=========Will Change in next system=========================*/
 	mainScreen = (Physbase());
 	logMainscreen = (Logbase());
+	backdropScreen = (char*) Malloc(BUFFER_SIZE);
 	gameScreen = (char*) Malloc(BUFFER_SIZE);
 	gameScreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
 
 	backGamescreen = (char*) Malloc(BUFFER_SIZE);
 	backGamescreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
+	backdropScreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
+	
 	clear(gameScreen);
 	clear(backGamescreen);
+	
 
 	/*===========================================================*/
 
@@ -108,15 +116,39 @@ int main() {
 
 	/*Setscreen(gameScreen,GameScreen,-1L);*/
 
-	Cconws("\r\n\0");
-	Cconws("On first screen \r\n\0");
-	Cconws("Please press any key to start \r\n\0");
+	
+	readfile = Fopen("tankscreen.pi1",0);
+	
+	handle = (readfile &= 0x0000FFFF); /*handle is in lower word */
+	
+	 Fseek(34,handle,0); /*align to data offset in degas file */
+	 
+	 Fread(handle,FILE_SIZE,backdropScreen); /*load data to mem */
+	
+	
+	readfile = Fopen("grass.pi1",0);
+	
+	handle = (readfile &= 0x0000FFFF)
+	
+	 Fseek(34,handle,0); /*align to data offset in degas file */
+	 
+	 Fread(handle,FILE_SIZE,backGamescreen); /*load data to mem */
+	 Fread(handle,FILE_SIZE,gameScreen);
+	 
+	
+	 
+	 Vsync();
+	 
+	 Setscreen(-1L,backdropScreen,-1L);
+	
+	
+	
 
 	while (!Cconis()) {
 
 		if (i == 0) {
 			Cconws("\r\n\0");
-			Cconws("Display start screen  here\r\n\0");
+			
 			Cconws("Press space to start or q to quit \r\n\0");
 			Cconws("\r\n\0");
 		}
@@ -130,7 +162,7 @@ int main() {
 	keypress = Cnecin();
 
 	if (keypress != 'q') {
-		/*=====================here is main game loop==================*/
+/*=====================here is main game loop==================*/
 
 		Vsync();
 		Setscreen(gameScreen, gameScreen, -1L);
@@ -139,42 +171,12 @@ int main() {
 
 			/* Reed player input then call Spencer's Behavior method first pass*/
 
-			if (!(playerTank.x_coordinate >= SCREEN_WIDTH)) {
-				playerTank.x_coordinate += 5;
-
-				enemyTank.x_coordinate -= 5;
-
-			} else {
-				playerTank.x_coordinate = 20;
-
-				enemyTank.x_coordinate = 600;
-			}
-
-			plotSprite(backGamescreen, playerTank.sprite,
-					playerTank.x_coordinate, playerTank.y_coordinate, 8);
-			plotSprite(backGamescreen, enemyTank.sprite, enemyTank.x_coordinate,
-					enemyTank.y_coordinate, 8);
-
 			Vsync();
 			Setscreen(backGamescreen, backGamescreen, -1L);
 
-			clear(gameScreen);
+			
 
-			if (!(playerTank.x_coordinate >= SCREEN_WIDTH)) {
-				playerTank.x_coordinate += 5;
-
-				enemyTank.x_coordinate -= 5;
-
-			} else {
-				playerTank.x_coordinate = 20;
-
-				enemyTank.x_coordinate = 600;
-			}
-
-			plotSprite(gameScreen, playerTank.sprite, playerTank.x_coordinate,
-					playerTank.y_coordinate, 8);
-			plotSprite(gameScreen, enemyTank.sprite, enemyTank.x_coordinate,
-					enemyTank.y_coordinate, 8);
+		
 
 			Vsync();
 			Setscreen(gameScreen, gameScreen, -1L);
@@ -185,6 +187,7 @@ int main() {
 				clear(mainScreen);
 				Vsync();
 				Setscreen(logMainscreen, mainScreen, -1L);
+				
 				Cconws("In pause game loop \r\n\0");
 				Cconws("Please press any key to start \r\n\0");
 
@@ -212,14 +215,15 @@ int main() {
 
 void pauseAndchill(int duration) {
 
-	duration *= 35;
-
-	while (duration--) {
-		Vsync();
+	
 	}
 
 }
 
-void gameReset() {
-	/*TODO Here we need to reset all variables and game states*/
+void gameReset(){
+	
+	
+	
 }
+	
+

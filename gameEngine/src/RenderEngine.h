@@ -19,7 +19,7 @@ void plotArbLine(char *fbstart, int xstart, int ystart, int xfin, int yfin);
 void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size);
 
-void blankSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
+void copyBackground(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size);
 
 void printvertical(unsigned char* base, unsigned int x_loc, unsigned int y_loc,

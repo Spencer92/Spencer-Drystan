@@ -3,7 +3,7 @@
 #include "types.h"
 
 
-UINT32 data_Weird_Tank_East_bmp[] = {
+UINT32 playerTankEast[] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -38,7 +38,7 @@ UINT32 data_Weird_Tank_East_bmp[] = {
 	0xFFFFFFFFL
 };
 
-UINT32 data_Weird_Tank_North_bmp[] = {
+UINT32 playerTankNorth[] = {
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
@@ -73,7 +73,7 @@ UINT32 data_Weird_Tank_North_bmp[] = {
 	0xFF0000FFL
 };
 
-UINT32 data_Weird_Tank_South_bmp[] = {
+UINT32 playerTankSouth[] = {
 	0xFF0000FFL, 
 	0xFF0000FFL, 
 	0xFF0000FFL, 
@@ -108,7 +108,7 @@ UINT32 data_Weird_Tank_South_bmp[] = {
 	0xFF03C0FFL
 };
 
-UINT32 data_Weird_Tank_West_bmp[] = {
+UINT32 playerTankWest[] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -143,7 +143,7 @@ UINT32 data_Weird_Tank_West_bmp[] = {
 	0xFFFFFFFFL,
 };
 
-UINT32 data_Weird_Tank_Player_Two_East_png[] = {
+UINT32 playerTankTwoEast[] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -178,7 +178,7 @@ UINT32 data_Weird_Tank_Player_Two_East_png[] = {
 	0xFFFFFFFFL
 };
 
-UINT32 data_Weird_Tank_Player_Two_North_png[] = {
+UINT32 playerTankTwoNorth[] = {
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
@@ -213,7 +213,7 @@ UINT32 data_Weird_Tank_Player_Two_North_png[] = {
 	0xFF0000FFL
 };
 
-UINT32 data_Weird_Tank_Player_Two_South_png[] = {
+UINT32 playerTankTwoSouth[] = {
 	0xFF0000FFL, 
 	0xFF0000FFL, 
 	0xFF0000FFL, 
@@ -248,7 +248,7 @@ UINT32 data_Weird_Tank_Player_Two_South_png[] = {
 	0xFF03C0FFL
 };
 
-UINT32 data_Weird_Tank_Player_Two_West_png[] = {
+UINT32 playerTankTwoWest[] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -283,7 +283,7 @@ UINT32 data_Weird_Tank_Player_Two_West_png[] = {
 	0xFFFFFFFFL
 };
 
-UINT32 data_Rock401_bmp[] = {
+UINT32 Rock401[] = {
 	0x00049000L, 
 	0x000FF800L, 
 	0x00049000L, 
@@ -318,7 +318,7 @@ UINT32 data_Rock401_bmp[] = {
 	0x0000105DL
 };
 
-UINT32 data_Explosion_bmp[] = {
+UINT32 explosion[] = {
 	0x01249000L, 
 	0x0BFFFA00L, 
 	0x01249000L, 
@@ -353,7 +353,7 @@ UINT32 data_Explosion_bmp[] = {
 	0x0001D000L
 };
 
-UINT32 data_Lake_png[] = {
+UINT32 lake[] = {
 	0x09241248L, 
 	0x5FFEBFFDL, 
 	0x09241248L, 
@@ -388,7 +388,7 @@ UINT32 data_Lake_png[] = {
 	0xFFFFFFFFL
 };
 
-UINT32 data_Tree2_bmp[] = {
+UINT32 tree2[] = {
 	0x09249200L, 
 	0x5FFFFF40L, 
 	0x09249200L, 

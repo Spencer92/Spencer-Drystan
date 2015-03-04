@@ -452,7 +452,7 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	return;
 }
 
-void blankSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
+void copyBackground(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size) {
 }
 

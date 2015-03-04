@@ -1,4 +1,4 @@
-#include "osbind.h"
+#include <osbind.h>
 #include "model.h"
 
 typedef enum PLAYER_BEHAVIOUR
