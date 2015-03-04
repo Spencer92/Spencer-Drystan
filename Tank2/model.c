@@ -18,6 +18,7 @@ void enemy_first_pass(Tank *player, Tank *enemy, Missile *missile, int *directio
 void enemy_second_pass(Tank *player, Tank *enemy, Missile *missile, int direction, Stationary_Object object);
 void missile_first_pass(Tank *tank, Missile *missile, int offset);
 void missile_second_pass(Tank *tank, Missile *missile, int offset);
+void missile_explode_pass(Tank *tank, Missile *missile);
 
 
 
@@ -62,6 +63,7 @@ int main()
 		enemy_first_pass(&players, &enemy, &missile_one, &direction);
 		enemy_second_pass(&players, &enemy, &missile_one, direction, tree);
 		missile_first_pass(&enemy, &missile_one, offset);
+		missile_explode_pass(&players, &missile_one);
 		missile_second_pass(&enemy, &missile_one, offset);
 		Cconws("done pass\r\n\0");
 	}while(missile_one.behaviour != EXPLODE);
@@ -148,13 +150,18 @@ void missile_first_pass(Tank *tank, Missile *missile, int offset)
 		missile->behaviour = move_down_check(missile, tank);
 		missile->behaviour = move_right_check(missile, tank);
 		missile->behaviour = move_left_check(missile, tank);
-		missile->behaviour = explode_check(missile,tank);
 		offscreen(missile);
 	}
 	else
 	{
 		Cconws("Missile: I do not exist");
 	}
+}
+
+
+void missile_explode_pass(Tank *tank, Missile *missile)
+{
+	missile->behaviour = explode_check(missile,tank);
 }
 
 void missile_second_pass(Tank *tank, Missile *missile, int offset)
@@ -189,6 +196,104 @@ void missile_second_pass(Tank *tank, Missile *missile, int offset)
 	}
 
 }
+
+
+
+/*	
+	while(enemy.x_coordinate != players.x_coordinate && enemy.y_coordinate != players.y_coordinate)
+	{
+		printf("Moving from [%i][%i] to [%i][%i]\n", enemy.y_coordinate, enemy.x_coordinate, players.y_coordinate, players.x_coordinate);
+		move_to_player(&players, &enemy, tree);
+	}
+
+	Cconout("HEY\r\n\0");
+	return 0;
+}
+
+
+void move_to_player(Tank *player, Tank *enemy, Stationary_Object object)
+{
+
+	if((enemy->x_coordinate != player->x_coordinate) && (enemy->y_coordinate != player->y_coordinate))
+	{
+		if((player->x_coordinate - enemy->x_coordinate) <= (player->y_coordinate - enemy->y_coordinate))
+		{
+			if(player->x_coordinate > enemy->x_coordinate)
+			{
+				right_move(enemy, object);
+			}
+			else
+			{
+				left_move(enemy, object);
+			}
+		}
+		else
+		{
+			if(player->y_coordinate > enemy->y_coordinate)
+			{
+				down_move(enemy, object);
+			}	
+			else
+			{
+				up_move(enemy, object);
+			}
+		}
+	}
+	else
+	{
+		fire(enemy);
+	}
+}
+
+BOOL flip()
+{
+	return 0;
+}
+
+void right_move(Tank *enemy, Stationary_Object object)
+{
+	if((enemy->x_coordinate)+1 != object.x_coordinate)
+	{
+		enemy->x_coordinate++;
+		enemy->h_facing = RIGHT;
+	}
+	else
+	{
+		if(flip())
+		{
+			enemy->y_coordinate++;
+		}
+		else
+		{
+			enemy->x_coordinate++;
+		}
+	}
+}
+
+void left_move(Tank *enemy, Stationary_Object object)
+{
+	enemy->x_coordinate--;
+	enemy->h_facing = LEFT;
+}
+
+void up_move(Tank *enemy, Stationary_Object object)
+{
+	enemy->y_coordinate--;
+	enemy->v_facing = UP;
+}
+
+void down_move(Tank *enemy, Stationary_Object object)
+{
+	enemy->y_coordinate++;
+	enemy->v_facing = DOWN;
+}
+
+void fire(Tank *tank)
+{
+	tank->is_firing = 1;
+}
+
+*/
 
 
 

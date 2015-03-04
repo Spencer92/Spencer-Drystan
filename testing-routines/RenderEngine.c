@@ -317,9 +317,9 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	UINT32 bufferleft;
 	UINT32 bufferright;
 
-	UINT16 *trackPtr = fbstart;
-	UINT16 * 16Trackptr = fbstart;
-	UINT8 * 8Trackptr = fbstart;
+	UINT16 	*trackPtr;
+	UINT16	*trackPtrL;
+	UINT8 	*trackptrS;
 
 	UINT8 offset = size >> 1;
 
@@ -367,27 +367,30 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	}
 
 	else if ((xnegBound) < 0) {
-		flag = -1;
+
 		shiftleft = 15 - xpostoPlot;
 
 		if (!(shiftleft > 23) && (shiftleft > 14)) {
+			flag = -1;
 			shiftleft = shiftleft - 15;
-			bufferleft = (UINT16*) bufferleft;
+			bufferleft = (UINT16) bufferleft;
 			trackPtr = spriteLocation;
 			j = 2;
 			i = 1;
-			16Trackptr = (UINT16*) writePtrLH;
+			trackPtrL = (UINT16*) writePtrLH;
 			offset = 40;
 		}
 
-		else if (shiftleft > 23) {
-			shiftleft = 8 - (31 - shiftleft);
+		else if (shiftleft >= 23) {
+			flag = 0;
+			/*shiftleft = (8 - (30 - shiftleft));*/
+			shiftleft = 0;
 			bufferleft = (UINT8) bufferleft;
-			trackPtr = spriteLocation;
+			trackptrS =  spriteLocation;
 			i = 3;
 			j = 4;
-			16Trackptr = (UINT8*) writePtrLH;
-			offset = 80;
+			trackPtrL = (UINT8*) writePtrLH;
+			offset = 40;
 
 		}
 
@@ -431,20 +434,22 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 		while (size--) {
 
-			bufferleft = spriteLocation[i];
+
 
 			if (flag < 0) {
+				bufferleft = trackPtr[i];
 				bufferleft <<= shiftleft;
-				*(16Trackptr) |= bufferleft;
+				*(trackPtrL) |= bufferleft;
 
 			}
 
 			else {
-				bufferleft >>= shiftright;
-				*(16Trackptr) |= bufferleft;
+				bufferleft = trackptrS[i];
+				bufferleft <<= shiftleft;
+				*(trackPtrL) |= bufferleft;
 			}
 			i += j;
-			16Trackptr += offset;
+			trackPtrL += offset;
 		}
 
 	}
