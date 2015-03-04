@@ -147,8 +147,7 @@ int main() {
 	while (!Cconis()) {
 
 		if (i == 0) {
-			Cconws("\r\n\0");
-			
+			Cconws("\r\n\0");			
 			Cconws("Press space to start or q to quit \r\n\0");
 			Cconws("\r\n\0");
 		}
@@ -169,7 +168,7 @@ int main() {
 
 		do {
 
-			/* Reed player input then call Spencer's Behavior method first pass*/
+			
 
 			Vsync();
 			Setscreen(backGamescreen, backGamescreen, -1L);

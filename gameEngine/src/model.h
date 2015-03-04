@@ -1,6 +1,8 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+/*All the models in the game*/
+
 #include "types.h"
 
 #define BOOL UINT8
@@ -29,7 +31,7 @@ typedef struct Tank
 	UINT16 x_coordinate;
 	UINT16 y_coordinate;
 	UINT32 hitpoints;
-	UINT8  max_speed;
+	UINT8  current_speed;
 	BOOL is_moving;
 	BOOL is_firing;
 	UINT32 *sprite;
@@ -58,6 +60,10 @@ typedef struct Stationary_Object
 	UINT32 *sprite;
 
 }Stationary_Object;
+
+
+
+
 
 #endif
 
