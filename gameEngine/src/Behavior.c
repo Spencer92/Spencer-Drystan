@@ -4,10 +4,36 @@
 BOOL event();
 BOOL flip(int position);
 
+
+/***************************************************************************
+   Function Name:   respawn
+  
+   Purpose:         To respawn the tank after it dies
+  
+   Input Arguments: Tank - The tank that will be respawned
+  
+***************************************************************************/
+
+
+
+
+
 void respawn(Tank *tank)
 {
 	tank->is_visible = 1;
 }
+
+/***************************************************************************
+   Function Name:   die
+  
+   Purpose:         To kill off the tank
+  
+   Input Arguments: Tank - The tank that will be killed
+   
+   Method notes: by setting is_visible, is_firing, and is_moving to false,
+				it will be ignored by any missile, tank, or other object.
+  
+***************************************************************************/
 
 
 void die(Tank *tank)
@@ -17,6 +43,24 @@ void die(Tank *tank)
 	tank->is_moving = 0;
 }
 
+
+/***************************************************************************
+   Function Name:   shoot
+  
+   Purpose:         To fire a missile to another tank
+  
+   Input Arguments: Tank - the tank that will be firing the missile
+					Missile - The missile to be fired
+  
+   Method Notes:    The tank checks the amount of missiles it has, and
+					if it has a missile to fire, the missile will become visible
+					and the amount of missiles the tank has will be decreased
+					the tank will also set its "firing" attribute to "true" (also known as "1")
+					
+					If the tank does not have a missile to fire, it will
+					set its firing attribute to "false" (also known as "0")
+					
+***************************************************************************/
 
 void shoot(Tank *tank, Missile *missile)
 {
@@ -33,20 +77,30 @@ void shoot(Tank *tank, Missile *missile)
 	}
 }
 
+
+/***************************************************************************
+   Function Name:   turn
+  
+   Purpose:         To turn left
+  
+   Input Arguments: Tank - The tank that is going to turn left
+***************************************************************************/
+
+
 void turn(Tank *tank)
 {
 	/*TODO change sprite for tank */
 	switch(tank->h_facing)
 	{
 		case VERTICAL:
-			tank->h_facing = LEFT;
+			tank->h_facing = LEFT;/* Is the tank facing up*/
 			tank->v_facing = HORIZONTAL;
 			break;
 		case LEFT:
-			tank->h_facing = VERTICAL;
+			tank->h_facing = VERTICAL;/*Is the tank facing left*/
 			tank->v_facing = UP;
 		case RIGHT:
-			tank->h_facing = VERTICAL;
+			tank->h_facing = VERTICAL;/*is the tank facing right*/
 			tank->v_facing = DOWN;
 		default:
 			break;
@@ -55,21 +109,47 @@ void turn(Tank *tank)
 }
 
 
-void dodge_x(Tank *tank, Stationary_Object object, int direction)
+/***************************************************************************
+   Function Name:   dodge_x
+  
+   Purpose:         To dodge something 
+  
+   Input Arguments: Tank: The tank that is dodging
+					Object: An object that can be dodged
+					Direction: 
+  
+   Method Notes:    The tank takes a random number, and uses that random number
+					to determine if the tank is going to dodge left or right
+***************************************************************************/
+
+
+void dodge_x(Tank *tank, Stationary_Object object, int offset)
 {
 
 	if(flip(tank->x_coordinate))
 	{
-		move_x(tank, object, direction);
+		move_x(tank, object, offset);
 	}
 	else
 	{
-		move_x(tank, object, direction *-1);
+		move_x(tank, object, offset *-1);
 	}
 
 
 }
 
+/***************************************************************************
+   Function Name:   dodge_y
+  
+   Purpose:         To dodge something 
+  
+   Input Arguments: Tank: The tank that is dodging
+					Object: An object that can be dodged
+					Direction: 
+  
+   Method Notes:    The tank takes a random number, and uses that random number
+					to determine if the tank is going to dodge up or down
+***************************************************************************/
 
 void dodge_y(Tank *tank, Stationary_Object object, int direction)
 {
@@ -83,6 +163,25 @@ void dodge_y(Tank *tank, Stationary_Object object, int direction)
 	}
 	
 }
+
+
+
+/***************************************************************************
+   Function Name:   missile_fired
+  
+   Purpose:         To tell a tank to dodge an incoming missile
+  
+   Input Arguments: Tank - The tank that will be dodging
+					Missile - The missile that the tank will dodge
+  
+   Return Value:    The Behaviour that the tank should take
+  
+   Method Notes:    If the tank is either vertically or horizontally alligned
+					with the missile being fired, a command to dodge will
+					be sent to the tank.
+					
+					If not then the current behaviour will just be used
+***************************************************************************/
 
 
 BEHAVIOUR missile_fired(Tank *tank, Missile *missile)
@@ -102,6 +201,30 @@ BEHAVIOUR missile_fired(Tank *tank, Missile *missile)
 	
 
 }
+
+
+
+
+/***************************************************************************
+   Function Name:   move_check_x
+  
+   Purpose:         To tell the tank to move depending on whether the player is closer in the x direction
+					than in the y direction
+  
+   Input Arguments: Tank - The tank that will be going toward the player
+					Player - The player
+					Direction - the direction that the tank will be moving (either left or right)
+  
+   Return Value:    The Behaviour that the tank should take
+  
+   Method Notes:    If the play is closer in the x direction than it
+					is in the y direction, the tank will check to
+					see if it should move left or right, and act accordingly
+					
+					If not then the current behaviour will just be used
+***************************************************************************/
+
+
 
 BEHAVIOUR move_check_x(Tank *enemy, Tank *player, int *direction)
 {
@@ -137,6 +260,25 @@ BEHAVIOUR move_check_x(Tank *enemy, Tank *player, int *direction)
 } 
 
 
+/***************************************************************************
+   Function Name:   move_check_y
+  
+   Purpose:         To tell the tank to move depending on whether the player is closer in
+					the y position than is in the x position
+  
+   Input Arguments: Tank - The tank that will be dodging
+					Player - the player
+					Direction - The direction the tank needs to move (up or down)
+  
+   Return Value:    The Behaviour that the tank should take
+  
+   Method Notes:    If the tank is closer in the y direction than in the x direction
+					the tank will move in the y direction either up or down
+					depending on where the player is located
+					
+					If not then the current behaviour will just be used
+***************************************************************************/
+
 BEHAVIOUR move_check_y(Tank *enemy, Tank *player, int *direction)
 {
 	register int x_coordinate_enemy = enemy->x_coordinate;
@@ -171,6 +313,23 @@ BEHAVIOUR move_check_y(Tank *enemy, Tank *player, int *direction)
 } 
 
 
+/***************************************************************************
+   Function Name:   die_check
+  
+   Purpose:         To check if the tank should die because a missile hit it
+  
+   Input Arguments: Tank - The tank that will be dying
+					Missile - What will do the killing
+  
+   Return Value:    The Behaviour that the tank should take
+  
+   Method Notes:    If the tank is in the same place as the missile, 
+					then it will be told to die
+					
+					If not then the current behaviour will just be used
+***************************************************************************/
+
+
 BEHAVIOUR die_check(Tank *enemy, Missile *missile)
 {
 	if((enemy->x_coordinate >= missile->x_coordinate-16
@@ -186,6 +345,23 @@ BEHAVIOUR die_check(Tank *enemy, Missile *missile)
 		return enemy->current_behaviour;
 	}
 }
+
+/***************************************************************************
+   Function Name:   shoot_check
+  
+   Purpose:         To check to see if a tank can fire a missile
+  
+   Input Arguments: enemy - the tank that will be firing
+					player - the tank that is being fired on
+					missile - the missile to be fired
+  
+   Return Value:    The Behaviour that the tank should take
+  
+   Method Notes:    If the tank is either on the same x or y of the player
+					then the tank will be told to fire the missile at the player
+					
+					If not then the current behaviour will just be used
+***************************************************************************/
 
 
 BEHAVIOUR shoot_check(Tank *enemy, Tank *player, Missile *missile)
@@ -204,6 +380,23 @@ BEHAVIOUR shoot_check(Tank *enemy, Tank *player, Missile *missile)
 	}
 }
 
+/***************************************************************************
+   Function Name:   shoot_check
+  
+   Purpose:         To check to see if a tank can fire a missile
+  
+   Input Arguments: enemy - the tank that will be firing
+					player - the tank that is being fired on
+					missile - the missile to be fired
+  
+   Return Value:    The Behaviour that the tank should take
+  
+   Method Notes:    If the tank is either on the same x or y of the player
+					then the tank will be told to fire the missile at the player
+					
+					If not then the current behaviour will just be used
+***************************************************************************/
+
 BEHAVIOUR turn_check(Tank *enemy, Tank *player)
 {
 	if(((enemy->x_coordinate >= player->x_coordinate-16
@@ -220,6 +413,23 @@ BEHAVIOUR turn_check(Tank *enemy, Tank *player)
 	}
 }
 
+/***************************************************************************
+   Function Name:  	respawn check
+  
+   Purpose:         To check to see if the tank is allowed to respawn
+  
+   Input Arguments: Enemy: the tank that will respawn
+  
+   Return Value:    The Behaviour that the tank should take
+  
+   Method Notes:    If the tank is either on the same x or y of the player
+					then the tank will be told to fire the missile at the player
+					
+					If not then the current behaviour will just be used
+***************************************************************************/
+
+
+
 BEHAVIOUR respawn_check(Tank *enemy)
 {
 	if(event())
@@ -231,6 +441,24 @@ BEHAVIOUR respawn_check(Tank *enemy)
 		return enemy->current_behaviour;
 	}
 }
+
+
+
+
+/***************************************************************************
+   Function Name:  	dodge_y_check
+  
+   Purpose:         To check if a missile is about to hit a tank
+  
+   Input Arguments: Enemy: the tank that will be dodging
+					Missile: the missile that might hit the tank
+					
+  
+   Return Value:    The Behaviour that the tank should take
+  
+   Method Notes:    If the tank is either at the same x or
+					y of the tanks location, then the tank should dodge
+***************************************************************************/
 
 BEHAVIOUR dodge_y_check(Tank *enemy, Missile *missile)
 {
@@ -246,6 +474,23 @@ BEHAVIOUR dodge_y_check(Tank *enemy, Missile *missile)
 	}
 
 }
+
+/***************************************************************************
+   Function Name:  	dodge_x_check
+  
+   Purpose:         To check if a missile is about to hit a tank
+  
+   Input Arguments: Enemy: the tank that will be dodging
+					Missile: the missile that might hit the tank
+					
+  
+   Return Value:    The Behaviour that the tank should take
+  
+   Method Notes:    If the tank is either at the same x or
+					y of the tanks location, then the tank should dodge
+***************************************************************************/
+
+
 
 BEHAVIOUR dodge_x_check(Tank *enemy, Missile *missile)
 {
@@ -274,6 +519,24 @@ BOOL flip(int position)
 }
 
 
+/***************************************************************************
+   Function Name:  	move_y
+  
+   Purpose:         To move a tank a number of pixels
+					in an vertical direction
+  
+   Input Arguments: tank: The tank that will be moving
+					object: an object that might get in the way
+					offset: how much the tank is going to move
+					
+   Method Notes:    If the tank isn't near a stationary object
+					then it will move vertically toward the player
+					otherwise it will move horizontally
+***************************************************************************/
+
+
+
+
 void move_y(Tank *tank, Stationary_Object object, int offset)
 {
 	if((tank->y_coordinate+offset >= object.y_coordinate-16
@@ -295,6 +558,23 @@ void move_y(Tank *tank, Stationary_Object object, int offset)
 		}
 	}
 }
+
+
+/***************************************************************************
+   Function Name:  	move_x
+  
+   Purpose:         To move a tank a number of pixels
+					in a horizontal direction
+  
+   Input Arguments: tank: The tank that will be moving
+					object: an object that might get in the way
+					offset: how much the tank is going to move
+					
+   Method Notes:    If the tank isn't near a stationary object
+					then it will move horizontally toward the player
+					otherwise it will move vertically
+***************************************************************************/
+
 
 void move_x(Tank *tank, Stationary_Object object, int offset)
 {
