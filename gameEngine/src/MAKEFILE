@@ -1,0 +1,14 @@
+model: behaviour.o gameEngine.o missile.o
+	cc68x -g -v -c behaviour.o gameEngine.o missile.o
+
+behaviour.o: behaviour.c behaviour.h
+	cc68x -g -c -v behaviour.c
+
+gameEngine.c: gameEngine.c model.h
+	cc68x -g -c -v gameEngine.c
+
+
+all: clean both
+
+clean: 
+	rm tst_rast.o raster.o rast_asm.o tst_rast
