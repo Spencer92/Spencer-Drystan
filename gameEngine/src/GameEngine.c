@@ -18,7 +18,6 @@
 
  ============================================================================ */
 #include <tos.h>
-/*#include <osbind.h>*/
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -49,6 +48,7 @@
 
 void gameReset();
 void pauseAndchill(int duration);
+void makeScreen(void* screenChunk1);
 
 int main() {
 
@@ -94,15 +94,18 @@ int main() {
 	Stationary_Object landobjects[6] = { };
 
 	/*=========Will Change in next system=========================*/
-	mainScreen = (Physbase());
-	logMainscreen = (Logbase());
-	backdropScreen = (char*) Malloc(BUFFER_SIZE);
+	mainScreen 		= (Physbase());
+	logMainscreen 	= (Logbase());
+	
+	backdropScreen 	= (char*) Malloc(BUFFER_SIZE);
+	backdropScreen 	= (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
+	
 	gameScreen = (char*) Malloc(BUFFER_SIZE);
 	gameScreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
-
+	
 	backGamescreen = (char*) Malloc(BUFFER_SIZE);
 	backGamescreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
-	backdropScreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
+
 	
 	clear(gameScreen);
 	clear(backGamescreen);
@@ -112,11 +115,6 @@ int main() {
 
 	/* TODO Initiate game system */
 
-	Cursconf(0, 0); /* removes cursor*/
-
-	/*Setscreen(gameScreen,GameScreen,-1L);*/
-
-	
 	readfile = Fopen("tankscreen.pi1",0);
 	
 	handle = (readfile &= 0x0000FFFF); /*handle is in lower word */
@@ -126,14 +124,11 @@ int main() {
 	 Fread(handle,FILE_SIZE,backdropScreen); /*load data to mem */
 	
 	
-	readfile = Fopen("grass.pi1",0);
+	Cursconf(0, 0); /* removes cursor*/
+
 	
-	handle = (readfile &= 0x0000FFFF)
-	
-	 Fseek(34,handle,0); /*align to data offset in degas file */
-	 
-	 Fread(handle,FILE_SIZE,backGamescreen); /*load data to mem */
-	 Fread(handle,FILE_SIZE,gameScreen);
+
+	makeGamescreens(gameScreen,backGamescreen);	
 	 
 	
 	 
@@ -226,3 +221,32 @@ void gameReset(){
 }
 	
 
+void makeGameScreens(void* screenChunk1 ,void* screenChunk2)
+{
+	long readfile;
+	long *fastCopyptSrc = screenChunk1;
+	long *fastCopyptDst = screenChunk2;
+	int  handle;
+	
+	readfile = Fopen("grass.pi1",0);
+	
+	handle = (readfile &= 0x0000FFFF); /*handle is in lower word */
+	
+	Fseek(34,handle,0); /*align to data offset in degas file */
+	 
+	Fread(handle,FILE_SIZE,screenChunk1); /*load data to mem */
+	
+	for(int i = 0 ;i < SCREEN_SIZE;i++)
+	{
+	
+		*(screenChunk2) = *(screenChunk1);
+		
+		screenChunk1++;
+		screeenChunk2++;
+		
+		
+	}
+	
+
+	
+}
