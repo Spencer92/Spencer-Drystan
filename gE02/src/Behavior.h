@@ -67,7 +67,7 @@ typedef struct Missile
 	UINT8 max_speed;
 	UINT8 *sprite;
 	BOOL is_visible;
-	MISSILE_BEHAVIOUR behaviour;
+	MISSILE_BEHAVIOUR current_behaviour;
 	H_DIRECTION horizontal_movement;
 	V_DIRECTION vertical_movement;
 }Missile;

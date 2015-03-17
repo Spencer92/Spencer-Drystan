@@ -10,7 +10,7 @@ MISSILE_BEHAVIOUR move_up_check(Missile *missile)
 	}
 	else
 	{
-		return missile->behaviour;
+		return missile->current_behaviour;
 	}
 }
 
@@ -24,7 +24,7 @@ MISSILE_BEHAVIOUR move_down_check(Missile *missile)
 	}
 	else
 	{
-		return missile->behaviour;
+		return missile->current_behaviour;
 	}
 }
 
@@ -37,7 +37,7 @@ MISSILE_BEHAVIOUR move_right_check(Missile *missile)
 	}
 	else
 	{
-		return missile->behaviour;
+		return missile->current_behaviour;
 	}
 
 }
@@ -50,7 +50,7 @@ MISSILE_BEHAVIOUR move_left_check(Missile *missile)
 	}
 	else
 	{
-		return missile->behaviour;
+		return missile->current_behaviour;
 	}
 	
 }
@@ -65,7 +65,7 @@ MISSILE_BEHAVIOUR explode_check(Missile *missile, Tank *tank)
 	}
 	else
 	{
-		return missile->behaviour;
+		return missile->current_behaviour;
 	}
 }
 
