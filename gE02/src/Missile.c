@@ -1,4 +1,5 @@
-
+#include "model.h"
+#include "behavior.h"
 
 
 MISSILE_BEHAVIOUR move_up_check(Missile *missile)
@@ -64,7 +65,7 @@ MISSILE_BEHAVIOUR explode_check(Missile *missile, Tank *tank)
 	}
 	else
 	{
-		return missile->behaviour
+		return missile->behaviour;
 	}
 }
 

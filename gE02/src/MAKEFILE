@@ -1,3 +1,5 @@
+all: clean model.tos
+
 model.tos: model.o behavior.o missile.o
 	cc68x -g -v -c model.o behavior.o missile.o model.tos
 
@@ -7,6 +9,10 @@ model.o: model.c model.h
 behavior.o: behavior.c behavior.h
 	cc68x -g -c -v behavior.c behavior.h model.h
 
-missile.o: missile.c missile.h
+missile.o: missile.c missile.h model.h
 	cc68x -g -c -v missile.c missile.h
+	
+	
+clean: 
+	$(RM) *.o
 	

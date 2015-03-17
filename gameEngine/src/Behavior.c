@@ -347,7 +347,6 @@ BEHAVIOUR move_check_y(Tank *enemy, Tank *player, int *direction)
 					If not then the current behaviour will just be used
 ***************************************************************************/
 
-
 BEHAVIOUR die_check(Tank *enemy, Missile *missile)
 {
 	if((enemy->x_coordinate >= missile->x_coordinate-16

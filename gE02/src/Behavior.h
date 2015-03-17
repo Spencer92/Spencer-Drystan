@@ -55,7 +55,7 @@ typedef struct Tank
 	UINT8  *Missile;
 	H_DIRECTION h_facing;
 	V_DIRECTION v_facing;
-	BOOL is_visable;
+	BOOL is_visible;
 	BEHAVIOUR current_behaviour;
 	UINT8 missile_available;
 }Tank;
@@ -66,8 +66,10 @@ typedef struct Missile
 	UINT16 y_coordinate;
 	UINT8 max_speed;
 	UINT8 *sprite;
-	BOOL is_visable;
-	MISSILE_BEHAVIOUR current_behaviour;
+	BOOL is_visible;
+	MISSILE_BEHAVIOUR behaviour;
+	H_DIRECTION horizontal_movement;
+	V_DIRECTION vertical_movement;
 }Missile;
 
 typedef struct Stationary_Object
@@ -81,19 +83,21 @@ typedef struct Stationary_Object
 
 
 void turn(Tank *tank);
-void dodge_x(Tank *tank, Stationary_Object object, int direction);
-void dodge_y(Tank *tank, Stationary_Object object, int direction);
-void move_y(Tank *tank, Stationary_Object object, int offset);
-void move_x(Tank *tank, Stationary_Object object, int offset);
+void dodge_y(Tank *tank, Stationary_Object *object, int *direction, int num_objects);
+void dodge_x(Tank *tank, Stationary_Object *object, int *direction, int num_objects);
+void move_y(Tank *tank, Stationary_Object *object, int offset, int num_objects);
+void move_x(Tank *tank, Stationary_Object *object, int offset, int num_objects);
 void shoot(Tank *tank, Missile *missile);
 void die(Tank *tank);
 void respawn(Tank *tank);
 BOOL flip(int position);
+BOOL die_check(Tank *enemy, Missile *missile, int num_missiles);
 
-BEHAVIOUR missile_fired(Tank *tank, Missile *missile, int num_missiles);
+
+BEHAVIOUR foo(Tank * enemy, Missile * missile, int num_missles);
+BEHAVIOUR missile_fired(Tank *tank, Missile *missile, int* num_missiles);
 BEHAVIOUR move_check_x(Tank *enemy, Tank *player, int *direction);
 BEHAVIOUR move_check_y(Tank *enemy, Tank *player, int *direction);
-BEHAVIOUR die_check(Tank *enemy, Missile *missile, int num_missiles);
 BEHAVIOUR shoot_check(Tank *enemy, Tank *player, Missile *missile);
 BEHAVIOUR turn_check(Tank *enemy, Tank *player);
 BEHAVIOUR respawn_check(Tank *enemy);
@@ -104,10 +108,10 @@ BEHAVIOUR move_check_player(Tank *enemy, Tank *player, char input);
 
 
 
-MISSILE_BEHAVIOUR move_up_check(Missile *missile, Tank* tank);
-MISSILE_BEHAVIOUR move_down_check(Missile *missile, Tank* tank);
-MISSILE_BEHAVIOUR move_right_check(Missile *missile, Tank* tank);
-MISSILE_BEHAVIOUR move_left_check(Missile *missile, Tank* tank);
+MISSILE_BEHAVIOUR move_up_check(Missile *missile);
+MISSILE_BEHAVIOUR move_down_check(Missile *missile);
+MISSILE_BEHAVIOUR move_right_check(Missile *missile);
+MISSILE_BEHAVIOUR move_left_check(Missile *missile);
 MISSILE_BEHAVIOUR explode_check(Missile *missile, Tank *tank);
 BOOL missile_exist_check(Tank *tank, Missile *missile, int offset);
 void move_up(Missile *missile, int offset);
@@ -122,4 +126,4 @@ void explode(Missile *missile, Tank *tank);
 
 
 
-#endif /* BEHAVIOUR_H*/
+#endif

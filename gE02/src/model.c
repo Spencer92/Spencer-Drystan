@@ -3,8 +3,12 @@
 #include "missile.h"
 #include "stdlib.h"
 #include "osbind.h"
-BOOL missiles_alive_y(Missile* missile, Tank *enemy, int num_missiles);
-BOOL missiles_alive_x(Missile* missile, Tank *enemy, int num_missiles);
+#define BOOL UINT8
+BOOL missiles_alive_y(Tank *enemy, Missile* missile, int *num_missiles);
+BOOL missiles_alive_x(Tank *enemy, Missile* missile, int *num_missiles);
+void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles);
+void missile_check(Tank *tank, Missile *missile, UINT8 num_missiles, int num_tanks);
+BOOL adjacent_tanks(Tank *tanks, int current_tank, int num_tanks);
 
 
 
@@ -29,7 +33,7 @@ int main()
 	player.y_posMask = 0;
 	player.h_facing = VERTICAL;
 	player.v_facing = DOWN;
-	player.is_visable = 1;
+	player.is_visible = 1;
 	player.current_behaviour = DO_NOTHING;
 	player.is_firing = 0;
 	player.missile_available = 2;
@@ -47,7 +51,7 @@ int main()
 		enemy[index].y_posMask = 0;
 		enemy[index].h_facing = VERTICAL;
 		enemy[index].v_facing = DOWN;
-		enemy[index].is_visable = 1;
+		enemy[index].is_visible = 1;
 		enemy[index].current_behaviour = DO_NOTHING;
 		enemy[index].is_firing = 0;
 		initial_offset += 32;
@@ -59,7 +63,7 @@ int main()
 
 
 
-void missile_check(Tank *tank, Missile *missile, int num_missiles, int num_tanks)
+void missile_check(Tank *tank, Missile *missile, UINT8 num_missiles, int num_tanks)
 {
 	int index_missile;
 	int index_tanks;
@@ -69,34 +73,34 @@ void missile_check(Tank *tank, Missile *missile, int num_missiles, int num_tanks
 		finished_firing = 0;
 		for(index_missile = 0; index_missile < num_missiles && !finished_firing; index_missile++)
 		{
-			if(tank[index_tanks].is_firing && !missile[index_missile].is_visable)
+			if(tank[index_tanks].is_firing && !missile[index_missile].is_visible)
 			{
 				if(tank[index_tanks].v_facing == UP)
 				{
 					missile[index_missile].y_coordinate = tank[index_tanks].y_coordinate-16;
 					missile[index_missile].x_coordinate = tank[index_tanks].x_coordinate;
-					missile[index_missile].current_behaviour = MOVE_UP;
+					missile[index_missile].behaviour = MOVE_UP;
 					finished_firing = 1;
 				}
 				else if(tank[index_tanks].h_facing == LEFT)
 				{
 					missile[index_missile].x_coordinate = tank[index_tanks].x_coordinate-16;
 					missile[index_missile].y_coordinate = tank[index_tanks].y_coordinate;
-					missile[index_missile].current_behaviour = MOVE_LEFT;
+					missile[index_missile].behaviour = MOVE_LEFT;
 					finished_firing = 1;
 				}
 				else if(tank[index_tanks].v_facing = DOWN)
 				{
 					missile[index_missile].x_coordinate = tank[index_tanks].x_coordinate;
 					missile[index_missile].y_coordinate = tank[index_tanks].y_coordinate+16;
-					missile[index_missile].current_behaviour = MOVE_DOWN;
+					missile[index_missile].behaviour = MOVE_DOWN;
 					finished_firing = 1;
 				}
 				else if(tank[index_tanks].h_facing = RIGHT)
 				{
 					missile[index_missile].x_coordinate = tank[index_tanks].x_coordinate+16;
 					missile[index_missile].y_coordinate = tank[index_tanks].y_coordinate;
-					missile[index_missile].current_behaviour = MOVE_RIGHT;
+					missile[index_missile].behaviour = MOVE_RIGHT;
 					finished_firing = 1;
 
 				}
@@ -111,30 +115,99 @@ void missile_check(Tank *tank, Missile *missile, int num_missiles, int num_tanks
 }
 
 
+void respond_to_situation(Tank *tanks, 
+						Stationary_Object* objects, 
+						Missile *missiles, 
+						int num_tanks, 
+						int num_objects)
+{
+	int index;
+	int direction;
+	for(index = 0; index < num_tanks; index++)
+	{
+		if(tanks[index].current_behaviour == SHOOT)
+		{
+			if(tanks[index].missile_available > 0)
+			{
+				missile_check(&tanks[index], missiles, tanks[index].missile_available, 1);
+				tanks[index].missile_available--;
+			}
+		}
+		else if(tanks[index].current_behaviour == DODGE_X && !adjacent_tanks(tanks, index, num_tanks))
+		{
+			dodge_x(&tanks[index], objects, &tanks[index].h_facing, num_objects);
+		}
+		else if(tanks[index].current_behaviour == DODGE_Y && !adjacent_tanks(tanks, index, num_tanks))
+		{
+			dodge_y(&tanks[index], objects, &tanks[index].v_facing, num_objects);
+		}
+		else if(tanks[index].current_behaviour == MOVE_X)
+		{
+			move_x(&tanks[index], objects, tanks[index].h_facing, num_objects);
+		}
+		else if(tanks[index].current_behaviour == MOVE_Y)
+		{
+			move_y(&tanks[index], 
+			objects, 
+			tanks[index].h_facing, 
+			num_objects);
+		}
+		else if(tanks[index].current_behaviour == DIE)
+		{
+			tanks[index].is_visible = 0;
+		}
+		else if(tanks[index].current_behaviour == RESPAWN)
+		{
+			tanks[index].is_visible = 1;
+		}
+		else if(tanks[index].current_behaviour == TURN)
+		{
+			turn(&tanks[index]);
+		}
 
+	}
+}
+
+
+BOOL adjacent_tanks(Tank *tank, int current_tank, int num_tanks)
+{
+	int index;
+	for(index = 0; index < num_tanks; index++)
+	{
+		if(index != current_tank-1 && ((tank[current_tank].h_facing)*16 < tank[index].x_coordinate - 16
+										&& (tank[current_tank].h_facing)*16 < tank[index].x_coordinate + 16
+										&& (tank[current_tank].v_facing)*16 < tank[index].y_coordinate + 16
+										&& (tank[current_tank].v_facing)*16 < tank[index].y_coordinate - 16))
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
 
 
 void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles)
 {
 	int index;
-	BOOL missile_alive_x;
-	BOOL missile_alive_y;
-	BEHAVIOUR missile_fired;
+
 	for(index = 0; index < num_enemies; index++)
 	{
 		if(player->is_firing)
 		{
-			enemy[index].current_behaviour = missile_fired(enemy[index], missile, num_missiles);
+		
+			enemy[index].current_behaviour = missile_fired(&enemy[index], 
+			missile, 
+			&num_missiles);
 		}
-		else if(missiles_alive_x(enemy[index],
+		else if(missiles_alive_x(&enemy[index], 
 									missile, 
-									num_missiles))
+									&num_missiles))
 		{
 			enemy[index].current_behaviour = DODGE_X;
 		}
-		else if(missiles_alive_y(enemy[index], 
+		else if(missiles_alive_y(&enemy[index], 
 									missile, 
-									num_missiles))
+									&num_missiles))
 		{
 			enemy[index].current_behaviour = DODGE_Y;
 		}
@@ -170,7 +243,7 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 		{
 			enemy[index].current_behaviour = MOVE_X;
 		}
-		else if(die_check(enemy[index], missile, num_missiles))
+		else if(foo(&enemy[index], missile, num_missiles))
 		{
 			enemy[index].current_behaviour = DIE;
 		}
@@ -178,13 +251,14 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 }
 
 
-
-BOOL missiles_alive_x(Missile* missile, Tank *enemy, int num_missiles)
+BOOL missiles_alive_x(Tank *enemy, 
+						Missile* missile,  
+						int* num_missiles)
 {
 	int index;
-	for(index = 0; index < num_missiles && enemy->current_behaviour != DODGE_X; index++)
+	for(index = 0; index < *num_missiles && enemy->current_behaviour != DODGE_X; index++)
 	{
-		enemy->current_behaviour = dodge_x_check(enemy, missile[index]);
+		enemy->current_behaviour = dodge_x_check(enemy, &missile[index]);
 	}
 	if(enemy->current_behaviour == DODGE_X)
 	{
@@ -196,12 +270,13 @@ BOOL missiles_alive_x(Missile* missile, Tank *enemy, int num_missiles)
 	}
 }
 
-BOOL missiles_alive_y(Missile* missile, Tank *enemy, int num_missiles)
+BOOL missiles_alive_y( Tank *enemy, Missile* missile, int* num_missiles)
 {
 	int index;
-	for(index = 0; index < num_missiles && enemy->current_behaviour != DODGE_Y; index++)
+	for(index = 0; index < *num_missiles && enemy->current_behaviour 
+	!= DODGE_Y; index++)
 	{
-		enemy->current_behaviour = dodge_y_check(enemy, missile[index]);
+		enemy->current_behaviour = dodge_y_check(enemy, &missile[index]);
 	}
 	if(enemy->current_behaviour == DODGE_Y)
 	{
