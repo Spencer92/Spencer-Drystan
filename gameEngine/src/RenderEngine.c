@@ -1,11 +1,10 @@
 /*Define screen dimensions  */
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 400
-
 #include "RenderEngine.h"
-/*#include "mask.h"*/
 #include <stdlib.h>
 #include  <stdio.h>
+
 
 /*
  =============================================================================
@@ -259,11 +258,7 @@ void plotArbLine(char *fbstart, int x_loc_start, int y_loc_start, int x_loc_end,
  *
  * Return Value     :A modified screen buffer
  *
- * Limitations      :The sprite must be in 8bit format ie if size is 32x32
- * 					then the array will look like {[part1] [part2] [part3] [part4]},
- * 					for the first line of the sprite. Limited to 8x8 sprites
- * 					and no clipping as of yet.
- *
+ * Limitations      :No X or Y clipping in the function.
  *
  =============================================================================*/
 
@@ -314,6 +309,33 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 	return;
 }
 
+
+/*=============================================================================
+ *
+ * Function Name    : plotLargeSprite
+ *
+ * Purpose          : To plot a bitmapped sprite to the screen
+ *
+ *
+ * Method           :The screen pointer is shifted to the top of the sprite
+ *					 The sprite is aligned by splitting the sprite and shifting,
+ *					 left and right as required. Then the two half's are plotted
+ *					 on the screen.
+ *
+ *
+ * Input Parameters :(x,y) start position, a pointer to the
+ * 					 screen buffer memory, sprite size and a
+ * 					 a pointer to the sprite array.
+ *
+ *
+ * Return Value     :A modified screen buffer
+ *
+ * Limitations      :Clipping in the horiztial direction is an aproxmation
+ *					 I have rounded it down to the nearest 8bit shift
+ *
+ =============================================================================*/
+
+
 void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 					int ypostoPlot, int size) 
 		
@@ -323,8 +345,6 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	UINT32 *writePtrRH = NULL;
 	UINT32  bufferleft;
 	UINT32  bufferright;
-	UINT8 smallBufferLH;
-	UINT8 smallBufferRH;
 	UINT8 *arrayRd1;
 	UINT8 *arrayRd2;
 	
@@ -342,7 +362,9 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	int startLine = ypostoPlot - offset;
 
 	UINT8 i = 0;
-	UINT8 j = 0;
+	
+	UINT8 j = 4;
+	UINT8 k = 0;
 
 	UINT8 shiftright;
 	UINT8 shiftleft;
@@ -376,30 +398,39 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 	/* X Clipping section ====================================*/
 
-		if(xnegBound < 0 ||xposoffset > SCREEN_WIDTH )
+		if(xnegBound < 0 || xposoffset > SCREEN_WIDTH )
 			{
 				
 				shiftleft = SCREEN_WIDTH -(SCREEN_WIDTH + xnegBound);
 				
 				shiftright = (SCREEN_WIDTH + xposoffset) - SCREEN_WIDTH;
 				
-				if(shiftright > shiftleft)
+				track8Ptr = writePtrLH; 			
+			
+				arrayRd1 = spriteLocation;
+			
+			    offset = 0;
+			
+			if(shiftright > shiftleft)
 					{
+
 					
-						track8Ptr = writePtrLH; 
-					 
-					 if(shiftright <= 16)
+				offset = 1;
+								
+				
+				if(shiftright <= 16 && shiftright > 8)
 						 {
 						
-						j= 2;
-						
+						 j = 2;
+						 track8Ptr += 78;
+						offset = 2;
+					
 						}
 						
-						else if(shiftright <=24)
-							{
-							
+					else {
 							j = 1;
-							
+						    track8Ptr +=79;		
+							offset =3;
 							}
 					
 					}
@@ -407,68 +438,55 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 				else
 					{
 						
-						j = 3;
-						
-						if(shiftleft <=16){
-							i = 1;
-							
-							}
-						else if(shiftleft <=24)
-							{
-								
-								i= 2;
-							}
-						
-						else
-						{
-							i = 3;
-						}
-					}
-				
-				
-				arrayRd1 = spriteLocation[0];
-				arrayRd1 += i;
-				arrayRd2 = arrayRd1 + 4;
-				
-				
-				
-				while(size--)
-				{
-					for(i; i< j ; i++)
+					if( shiftleft <= 16 && shiftleft > 8)
 					{
 					
-						*(track8Ptr) |= *(arrayRd1);
-						
-						track8Ptr ++;
-						arrayRd1++;
-						
+						k = 1;
+
 						
 					}
+					else
+					{
+					k = 2;				
 					
+					}
+					
+					}
 				
+				
+			
+			arrayRd1 += k;
+			
+			
+			while(size--)
+				{
+					for(i = k; i < j; i++){
+					
+				*(track8Ptr) |= *(arrayRd1);
+						
+						track8Ptr++;
+						arrayRd1++;
+					}
+					
+				arrayRd1 += ((j - i) + k + offset);					
+				track8Ptr -= j - k;
+				track8Ptr +=80;
 				
 				}
 				
 				
 			}
-			
-	
-
-	
-	
 	/* X Clipping section done====================================*/
-
 	
-	
-	else{
+	else{ /*No x clipping is taking place*/
 
 		writePtrLH += ((xpostoPlot - offset) >> 5);
 		trackPtr = writePtrLH;
 		trackPtr++;
 		writePtrRH = trackPtr;
 
-		shiftleft = ((xpostoPlot - offset) & 7);
-		shiftright = (8 - shiftleft);
+		shiftleft = ((xpostoPlot - offset) & 15);
+		shiftright = (16 - shiftleft);
 
 		while (size--) {
 
