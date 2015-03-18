@@ -32,7 +32,6 @@
 #include  "model.h"
 #include  "RenderEngine.h"
 #include  "AssemblerRoutines.h"
-#include  "tankimage.h"
 #include  "bitmap.h"
 
 /*===================================================*/

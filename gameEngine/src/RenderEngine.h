@@ -29,8 +29,8 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
 		unsigned int y_loc_start, unsigned int x_loc_end,
 		unsigned int y_loc_end);
 
-void plotLargeSprite(char *fbstart, UINT16 *spriteLocationint, int xpostoPlot,
-		int ypostoPlot);
+void plotLargeSprite(char *fbstart, UINT32 *spriteLocationint, int xpostoPlot,
+		int ypostoPlot,int size);
 
 typedef struct Screen {
 
@@ -40,5 +40,8 @@ typedef struct Screen {
 
 } Screen;
 
+
+void copyBackground(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
+		int ypostoPlot, int size);
 #endif /* RENDERENGINE_H*/
 
