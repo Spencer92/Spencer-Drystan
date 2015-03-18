@@ -18,7 +18,7 @@ void DSconout(char output);
 long getTime();
 int thing();
 void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles);
-
+void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks, Stationary_Object *object, int num_objects);
 
 
 int main()
@@ -27,6 +27,7 @@ int main()
 	Tank enemy[3];
 	Missile missile[10];
 	Stationary_Object object[10];
+	int num_objects = 10;
 	int initial_offset = 100;
 	int index;
 	int number_of_enemies = 3;
@@ -106,6 +107,7 @@ int main()
 			time_now = getTime();
 			DSconws("No input\r\n\0");
 			assess_situation(enemy, &player, object, missile, 0, 10);
+			tank_respond(enemy, missile, 10, number_of_enemies, object, num_objects);
 		}
 	}
 	
@@ -126,9 +128,9 @@ int thing()
 
 long getTime()
 {
-	register long *timer = (long *)0x462;
-	register long oldssp = 0x01dL;
-	register long new_time = 0x2e7L;
+	long *timer = (long *)0x462;
+	long oldssp;
+	long new_time;
 	oldssp = Super(0);
 	new_time = *timer;
 	Super(oldssp);
@@ -171,6 +173,7 @@ void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input,
 	else if(input == ' ')
 	{
 		player->current_behaviour = SHOOT;
+		player->is_firing = 1;
 	}
 	else if(die_check(player, missile, num_missiles))
 	{
@@ -203,6 +206,7 @@ void player_action(Tank* player, Missile* missile, char input)
 	else if(player->current_behaviour == SHOOT)
 	{
 		missile_check(player, missile, player->missile_available, 1);
+		player->is_firing = 0;
 	}
 }
 
@@ -221,6 +225,58 @@ BOOL tanks_at(Tank* player, Tank* enemy, int num_tanks)
 			}
 	}
 	return something_there;
+}
+
+
+
+void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks, Stationary_Object *object, int num_objects)
+{
+	int index;
+	for(index = 0; index < num_tanks; index++)
+	{
+		if(enemy[index].is_visible && !enemy[index].current_behaviour == DO_NOTHING)
+		{
+			if(enemy[index].current_behaviour == SHOOT)
+			{
+				missile_check(&enemy[index], missile, enemy[index].missile_available, 1);
+				enemy[index].is_firing = 0;
+				DSconws("shooting\r\n\0");
+			}
+			else if(enemy[index].current_behaviour == DODGE_X)
+			{
+				dodge_x(&enemy[index], object, &(enemy[index].h_facing), num_objects);
+				DSconws("Dodging x\r\n\0");
+			}
+			else if(enemy[index].current_behaviour == DODGE_Y)
+			{
+				dodge_y(&enemy[index], object, 
+										&(enemy[index].v_facing), num_objects);
+				DSconws("Dodging y\r\n\0");
+			}
+			else if(enemy[index].current_behaviour == MOVE_X)
+			{
+				move_x(&enemy[index], object, 
+										&enemy[index].h_facing, num_objects);
+				DSconws("Moving x\r\n\0");
+			}
+			else if(enemy[index].current_behaviour == MOVE_Y)
+			{
+				move_y(&enemy[index], object, &enemy[index].v_facing, num_objects);
+				DSconws("Moving y\r\n\0");
+			}
+			else if(enemy[index].current_behaviour == DIE)
+			{
+				enemy[index].is_visible == 0;
+				DSconws("Dying\r\n\0");
+			}
+			else if(enemy[index].current_behaviour == TURN)
+			{
+				turn(&enemy[index]);
+				DSconws("Turning\r\n\0");
+			}
+		}
+
+	}
 }
 
 
