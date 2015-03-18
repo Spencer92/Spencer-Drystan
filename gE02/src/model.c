@@ -14,7 +14,10 @@ BOOL DSconis();
 char DSnecin();
 void DSconws(String output);
 void missile_check(Tank *tank, Missile *missile, int num_missiles, int num_tanks);
-
+void DSconout(char output);
+long getTime();
+int thing();
+void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles);
 
 
 
@@ -23,10 +26,15 @@ int main()
 	Tank player;
 	Tank enemy[3];
 	Missile missile[10];
+	Stationary_Object object[10];
 	int initial_offset = 100;
 	int index;
 	int number_of_enemies = 3;
-	char input;
+	char input = '\0';
+	BOOL done = 0;
+	long time_now;
+	
+	time_now = getTime();
 	
 	player.x_coordinate = 250;
 	player.y_coordinate = 250;
@@ -43,7 +51,7 @@ int main()
 	player.current_behaviour = DO_NOTHING;
 	player.is_firing = 0;
 	player.missile_available = 2;
-	
+/*	
 	for(index = 0; index < number_of_enemies; index++)
 	{
 		enemy[index].x_coordinate = initial_offset;
@@ -62,18 +70,77 @@ int main()
 		enemy[index].is_firing = 0;
 		initial_offset += 32;
 	}
-	
-	while(!DSconis())
+*/	
+	thing();
+	while(!done && input != 'q')
 	{
-		input = DSnecin();
-		DSconws("ayy lmao\r\n\0");
+		if(DSconis() && getTime() >= time_now+10)
+		{
+			time_now = getTime();
+			DSconws("Got in \r\n\0");
+			input = DSnecin();
+			if(input == 'd')
+			{
+				DSconws("Player pressed \"d\"\r\n\n\0");
+			}
+			else if(input == 's')
+			{
+				DSconws("Player pressed \"s\"\r\n\n\0");
+			}
+			else if(input == 'a')
+			{
+				DSconws("Player pressed \"a\"\r\n\n\0");
+			}
+			else if(input == 'w')
+			{
+				DSconws("Player pressed \"d\"\r\n\n\0");
+			}
+			else if(input == 'q')
+			{
+				DSconws("Player pressed \"q\"\r\n\n\0");
+				done = 1;
+			}
+		}
+		else if(!DSconis() && getTime() >= time_now+10)
+		{
+			time_now = getTime();
+			DSconws("No input\r\n\0");
+			assess_situation(enemy, &player, object, missile, 0, 10);
+		}
 	}
-
+	
+	DSconout(input);
+	DSconws("\r\n\0");
 	
 	
 	
 	return 0;
 }
+
+
+int thing()
+{
+	register int whatever = 3;
+	return whatever;
+}
+
+long getTime()
+{
+	register long *timer = (long *)0x462;
+	register long oldssp = 0x01dL;
+	register long new_time = 0x2e7L;
+	oldssp = Super(0);
+	new_time = *timer;
+	Super(oldssp);
+	return new_time;
+}
+
+
+void DSconout(char output)
+{
+	Cconout(output);
+}
+
 
 char DSnecin()
 {

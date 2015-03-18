@@ -1,7 +1,7 @@
 all: clean model.tos
 
 model.tos: model.o behavior.o missile.o
-	cc68x -g -c -v model.o behavior.o missile.o model.tos
+	cc68x -g -v model.o behavior.o missile.o -o model.tos
 
 model.o: model.c model.h
 	cc68x -g -c -v model.c model.h
