@@ -416,7 +416,7 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 					
 				offset = 1;
-								
+					track8ptr + =77;
 				
 				if(shiftright <= 16 && shiftright > 8)
 						 {
