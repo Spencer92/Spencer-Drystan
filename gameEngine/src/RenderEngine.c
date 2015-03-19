@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include  <stdio.h>
 
-
 /*
  =============================================================================
  *
@@ -72,16 +71,13 @@ void plotHorzLine(char *fbstart, int xstart, int ystart, int xfin) {
 	char *tmpPtr = fbstart;
 
 	if ((xstart >= 0 && xstart + length < SCREEN_WIDTH)
-			&& (ystart >= 0 && ystart < SCREEN_HEIGHT)) 
-				{
-				
+			&& (ystart >= 0 && ystart < SCREEN_HEIGHT)) {
 
 		tmpPtr += (ystart * 80); /*line start offset */
 
 		*(tmpPtr += ((startingByte) * 8)) |= ((2 << (intialShift)) - 1);
 
-		if (length > 8) 
-			{
+		if (length > 8) {
 
 			tmpPtr += ((xstart & 7) + 1);
 
@@ -136,14 +132,12 @@ void plotVertLine(char *fbstart, int xstart, int ystart, int yfin) {
 	char* tmpPtr = fbstart;
 
 	if ((xstart >= 0 && xstart <= SCREEN_WIDTH)
-			&& (ystart >= 0 && ystart + length < SCREEN_HEIGHT)) 
-				{
+			&& (ystart >= 0 && ystart + length < SCREEN_HEIGHT)) {
 
 		tmpPtr += (ystart * 80);
 		tmpPtr += startByte;
 
-		if (length & 1) 
-			{
+		if (length & 1) {
 			*(tmpPtr) |= maskBit;
 			tmpPtr += 80;
 		}
@@ -242,7 +236,7 @@ void plotArbLine(char *fbstart, int x_loc_start, int y_loc_start, int x_loc_end,
  *
  * Function Name    : plotSprite
  *
- * Purpose          : To plot a bitmapped sprite (small image) to the screen
+ * Purpose          : To plot a bit-mapped sprite (small image) to the screen
  *
  *
  * Method           :The screen pointer is shifted to the top of the sprite
@@ -309,12 +303,11 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 	return;
 }
 
-
 /*=============================================================================
  *
  * Function Name    : plotLargeSprite
  *
- * Purpose          : To plot a bitmapped sprite to the screen
+ * Purpose          : To plot a bit-mapped sprite to the screen
  *
  *
  * Method           :The screen pointer is shifted to the top of the sprite
@@ -330,28 +323,26 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
  *
  * Return Value     :A modified screen buffer
  *
- * Limitations      :Clipping in the horiztial direction is an aproxmation
- *					 I have rounded it down to the nearest 8bit shift
+ * Limitations      :Clipping in the horiztinal direction is an approximation
+ *					                  I have rounded it down to the nearest 8bit shift
  *
  =============================================================================*/
 
-
 void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
-					int ypostoPlot, int size) 
-		
-		{
+		int ypostoPlot, int size)
+
+{
+
+    register UINT32 bufferleft;
+	register UINT32 bufferright;
 
 	UINT32 *writePtrLH = fbstart;
 	UINT32 *writePtrRH = NULL;
-	UINT32  bufferleft;
-	UINT32  bufferright;
 	UINT8 *arrayRd1;
 	UINT8 *arrayRd2;
-	
 
 	UINT16 *trackPtr = fbstart;
 	UINT8 *track8Ptr = fbstart;
-	
 
 	UINT8 offset = size >> 1;
 
@@ -362,168 +353,157 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	int startLine = ypostoPlot - offset;
 
 	UINT8 i = 0;
-	
-	UINT8 j = 4;
-	UINT8 k = 0;
+
+	UINT8  j = 4;
+	UINT8  k = 0;
 
 	UINT8 shiftright;
 	UINT8 shiftleft;
 
-	
-	if((xpostoPlot > -16 && (xpostoPlot < SCREEN_WIDTH + 15)) 
-	&& (ypostoPlot > -16 && (ypostoPlot < SCREEN_HEIGHT + 15) ) )/*It's within bounds lets plot it*/
-	{
-	
-	
-	/* Y Clipping section====================================*/
-
-	if (startLine < 0) {
-		i = (size - (size + startLine)) - 1;
-
-		size = (size + startLine);
-
-		startLine = 0;
-
-	}
-
-	else if ((yposoffset) > SCREEN_HEIGHT) {
-
-		size = size - (yposoffset - SCREEN_HEIGHT);
-
-	}
-
-	writePtrLH += (20 * (startLine));
-
-	/* Y Clipping section done ====================================*/
-
-	/* X Clipping section ====================================*/
-
-		if(xnegBound < 0 || xposoffset > SCREEN_WIDTH )
+	if ((xpostoPlot > -16 && (xpostoPlot < SCREEN_WIDTH + 15))
+			&& (ypostoPlot > -16 && (ypostoPlot < SCREEN_HEIGHT + 15)))/*It's within bounds lets plot it*/
 			{
-				
-				shiftleft = SCREEN_WIDTH -(SCREEN_WIDTH + xnegBound);
-				
-				shiftright = (SCREEN_WIDTH + xposoffset) - SCREEN_WIDTH;
-				
-				track8Ptr = writePtrLH; 			
-			
-				arrayRd1 = spriteLocation;
-			
-			    offset = 0;
-			
-			if(shiftright > shiftleft)
-					{
 
-					
+		/* Y Clipping section====================================*/
+
+		if (startLine < 0) {
+			i = (size - (size + startLine)) - 1;
+
+			size = (size + startLine);
+
+			startLine = 0;
+
+		}
+
+		else if ((yposoffset) > SCREEN_HEIGHT) {
+
+			size = size - (yposoffset - SCREEN_HEIGHT);
+
+		}
+
+		writePtrLH += (20 * (startLine));
+
+		/* Y Clipping section done ====================================*/
+
+		/* X Clipping section ====================================*/
+
+		if (xnegBound < 0 || xposoffset > SCREEN_WIDTH) {
+
+			shiftleft = SCREEN_WIDTH - (SCREEN_WIDTH + xnegBound);
+
+			shiftright = (SCREEN_WIDTH + xposoffset) - SCREEN_WIDTH;
+
+			track8Ptr = writePtrLH; /*Going to plot in chunks of 8 bits easier than trying differing size pointers/blocks makes for cleaner code*/
+
+			arrayRd1 = spriteLocation;
+
+			offset = 0;
+
+			if (shiftright > shiftleft) {
+
 				offset = 1;
-					track8ptr + =77;
-				
-				if(shiftright <= 16 && shiftright > 8)
-						 {
-						
-						 j = 2;
-						 track8Ptr += 78;
-						offset = 2;
-					
-						}
-						
-					else {
-							j = 1;
-						    track8Ptr +=79;		
-							offset =3;
-							}
-					
-					}
-				
-				else
-					{
-						
-					if( shiftleft <= 16 && shiftleft > 8)
-					{
-					
-						k = 1;
+				track8ptr + =77;
 
-						
-					}
-					else
-					{
-					k = 2;				
-					
-					}
-					
-					}
-				
-				
-			
-			arrayRd1 += k;
-			
-			
-			while(size--)
-				{
-					for(i = k; i < j; i++){
-					
-				*(track8Ptr) |= *(arrayRd1);
-						
-						track8Ptr++;
-						arrayRd1++;
-					}
-					
-				arrayRd1 += ((j - i) + k + offset);					
-				track8Ptr -= j - k;
-				track8Ptr +=80;
-				
+				if (shiftright <= 16 && shiftright > 8) {
+
+					j = 2;
+					track8Ptr += 78;
+					offset = 2;
+
 				}
-				
-				
+
+				else {
+					j = 1;
+					track8Ptr += 79;
+					offset = 3;
+				}
+
 			}
-	/* X Clipping section done====================================*/
-	
-	else{ /*No x clipping is taking place*/
 
-		writePtrLH += ((xpostoPlot - offset) >> 5);
-		trackPtr = writePtrLH;
-		trackPtr++;
-		writePtrRH = trackPtr;
+			else {
 
-		shiftleft = ((xpostoPlot - offset) & 15);
-		shiftright = (16 - shiftleft);
+				if (shiftleft <= 16 && shiftleft > 8) {
 
-		while (size--) {
+					k = 1;
 
-			bufferleft = spriteLocation[i];
-			bufferright = bufferleft;
+				} else {
+					k = 2;
 
-			bufferleft >>= shiftleft;
-			bufferright <<= shiftright;
+				}
 
-			*(writePtrLH) |= bufferleft;
+			}
 
-			(bufferright) &= 0x00FFFFFF;
-			*(writePtrRH) |= bufferright;
+			arrayRd1 += k;
 
-			writePtrLH += 20;
-			writePtrRH += 20;
+			while (size--) { /*TODO some loop unrolling here  do a reduction to a power of two.. Then do two operations per loop*/
+				for (i = k; i < j; i++) {
 
-			i++;
+					*(track8Ptr) |= *(arrayRd1);
+
+					track8Ptr++;
+					arrayRd1++;
+				}
+
+				arrayRd1 += ((j - i) + k + offset);
+				track8Ptr -= j - k;
+				track8Ptr += 80;
+
+			}
+
+		}
+		/* X Clipping section done====================================*/
+
+		else { /*No x clipping is taking place*/
+
+			writePtrLH += ((xpostoPlot - offset) >> 5);
+			trackPtr = writePtrLH;
+			trackPtr++;
+			writePtrRH = trackPtr;
+
+			shiftleft = ((xpostoPlot - offset) & 15);
+			shiftright = (16 - shiftleft);
+
+			while (size--) {
+
+				bufferleft = spriteLocation[i];
+				bufferright = bufferleft;
+
+				bufferleft >>= shiftleft;
+				bufferright <<= shiftright;
+
+				*(writePtrLH) |= bufferleft;
+
+				(bufferright) &= 0x00FFFFFF;
+				*(writePtrRH) |= bufferright;
+
+				writePtrLH += 20;
+				writePtrRH += 20;
+
+				i++;
+
+			}
 
 		}
 
 	}
 
-	
-	}
-	
-	
-	
 	return;
 }
 
+void plotString(char *fbstart, char[] theString, int size, int xpos,int ypos)
+{
+/*TODO for the length of the string convert into a integer value array then use this value to offset
+ * into the font array. The   xpos and ypos are assumed to be left hand side of the string.
+ *(X,Y )->[String] all fonts limited to 16x16 max.
+ *Maybe a boolean to confirm it is within limits ?
+ * */
 
 
 
-
-
+}
 void copyBackground(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size) {
+	/*TODO copy the background and return  the 32x32 bit array back to the caller. will need to calculate the amount to copy as clipped*/
+
 }
 

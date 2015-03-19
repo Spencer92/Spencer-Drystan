@@ -40,6 +40,9 @@ typedef struct Screen {
 
 } Screen;
 
+void plotString(char *fbstart, char[] theString, int size, int xpos,int ypos);
+
+
 
 void copyBackground(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size);
