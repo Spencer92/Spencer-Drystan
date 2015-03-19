@@ -3,7 +3,6 @@
 #include "missile.h"
 #include "stdlib.h"
 #include "osbind.h"
-typedef char* String;
 
 BOOL missiles_alive_y(Tank *enemy, Missile* missile, int num_missiles);
 BOOL missiles_alive_x(Tank *enemy, Missile* missile, int num_missiles);
@@ -52,7 +51,10 @@ int main()
 	player.current_behaviour = DO_NOTHING;
 	player.is_firing = 0;
 	player.missile_available = 2;
-/*	
+	player.x_find = "X_find\r\n\0";
+	player.y_find = "Y_find\r\n\0";
+	player.end_coords = "end_coords\r\n\0";
+	
 	for(index = 0; index < number_of_enemies; index++)
 	{
 		enemy[index].x_coordinate = initial_offset;
@@ -69,9 +71,12 @@ int main()
 		enemy[index].is_visible = 1;
 		enemy[index].current_behaviour = DO_NOTHING;
 		enemy[index].is_firing = 0;
+		enemy[index].x_find = "X_find\r\n\0";
+		enemy[index].y_find = "Y_find\r\n\0";
+		enemy[index].end_coords = "end_coords\r\n\0";
 		initial_offset += 32;
 	}
-*/	
+	
 	thing();
 	while(!done && input != 'q')
 	{
@@ -106,7 +111,7 @@ int main()
 		{
 			time_now = getTime();
 			DSconws("No input\r\n\0");
-			assess_situation(enemy, &player, object, missile, 0, 10);
+			assess_situation(enemy, &player, object, missile, 10, 0);
 			tank_respond(enemy, missile, 10, number_of_enemies, object, num_objects);
 		}
 	}
@@ -118,6 +123,54 @@ int main()
 	
 	return 0;
 }
+
+
+
+/***************************************************************************
+   Function Name:   model
+  
+   Purpose:         To run the backend of the game.
+  
+   Input Arguments: Tank - The tank that will be dying
+					Missile - What will do the killing
+  
+   Return Value:    The Behaviour that the tank should take
+  
+   Method Notes:    If the tank is in the same place as the missile, 
+					then it will be told to die
+					
+				If not then the current behaviour will just be used
+***************************************************************************/
+
+
+
+
+
+void model(Player* player, Tank* enemy, Missile missile, Stationary_Object *object, int num_enemies, int num_missiles, int num_objects)
+{
+	static int time_now;
+	static char input;
+	time_now = getTime();
+	if(DSconis())
+	{
+		input = DSnecin();
+		player_action_check(player, enemy, num_enemies, input, missile, num_missiles);
+		if(getTime() >= time_now+10)
+		{
+			player_action(player,missile,input);
+		}
+	}
+	assess_situation(enemy, player, object, missile, num_enemies, num_missiles);
+	if(getTime() >= time_now+10)
+	{
+		tank_respond(enemy, missile, num_missiles, num_enemies, object, num_objects);
+	}
+	
+}
+
+
+
+
 
 
 int thing()
@@ -343,6 +396,7 @@ void missile_check(Tank *tank, Missile *missile, int num_missiles, int num_tanks
 void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles)
 {
 	int index;
+	DSconws("Im in assess_situation \r\n\0");
 	for(index = 0; index < num_enemies; index++)
 	{
 		if(player->is_firing)
@@ -351,18 +405,21 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 			missile_fired(&enemy[index], 
 			missile, 
 			&num_missiles);
+			DSconws("Player is fireing\r\n\0");
 		}
 		else if(missiles_alive_x(&enemy[index],
 									missile, 
 									num_missiles))
 		{
 			enemy[index].current_behaviour = DODGE_X;
+			DSconws("Dodge x\r\n\0");
 		}
 		else if(missiles_alive_y(&enemy[index], 
 									missile, 
 									num_missiles))
 		{
 			enemy[index].current_behaviour = DODGE_Y;
+			DSconws("Dodge y\r\n\0");
 		}
 		else if((enemy[index].x_coordinate >= player->x_coordinate-8
 		&&enemy[index].x_coordinate <= player->x_coordinate+8)
@@ -371,6 +428,7 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 		&& enemy[index].y_coordinate <= player->y_coordinate+8))
 		{
 			enemy[index].current_behaviour = SHOOT;
+			DSconws("Shoot \r\n\0");
 		}
 		else if(((enemy[index].x_coordinate >= player->x_coordinate-16
 		&& enemy[index].x_coordinate <= player->x_coordinate+16) 
@@ -379,6 +437,7 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 		&&enemy[index].y_coordinate <= player->y_coordinate+16) && enemy[index].h_facing == VERTICAL))
 		{
 			enemy[index].current_behaviour = TURN;
+			DSconws("Turn \r\n\0");
 		}
 		else if(((enemy[index].y_coordinate - player->y_coordinate) < ((enemy[index].x_coordinate - player->x_coordinate) + 16)
 		&& (enemy[index].y_coordinate - player->y_coordinate > 16))
@@ -387,6 +446,7 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 		&& (enemy[index].y_coordinate - player->y_coordinate < -16)))
 		{
 			enemy[index].current_behaviour = MOVE_Y;
+			DSconws("Move y\r\n\0");
 		}
 		else if(((enemy[index].x_coordinate - player->x_coordinate) < ((enemy[index].y_coordinate - player->y_coordinate)-16) /*Check to see if the player should move in the x direction because it's y offset is greater than it's x offset */
 		&& (enemy[index].x_coordinate - player->x_coordinate > 16))
@@ -395,14 +455,17 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 		&& (enemy[index].x_coordinate - player->x_coordinate < -16)))
 		{
 			enemy[index].current_behaviour = MOVE_X;
+			DSconws("move x\r\n\0");
 		}
 		else if(die_check(&enemy[index], missile, num_missiles))
 		{
 			enemy[index].current_behaviour = DIE;
+			DSconws("Die \r\n\0");
 		}
 		else
 		{
 			enemy[index].current_behaviour = DO_NOTHING;
+			DSconws("Nuttun\r\n\0");
 		}
 	}
 }
