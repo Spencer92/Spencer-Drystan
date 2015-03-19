@@ -353,7 +353,6 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	int startLine = ypostoPlot - offset;
 
 	UINT8 i = 0;
-
 	UINT8  j = 4;
 	UINT8  k = 0;
 
