@@ -1,6 +1,9 @@
 #ifndef FONTS_H
 #define FONTS_H
 
+#define NUMBERS_START  483 /*Zero bitmap offset in bytes*/
+#define NUMBERS_END   736  /*Nine bitmap offset in bytes*/
+#define NUMBERS_END   736  /*Nine bitmap offset in bytes*/
 
 
 /*
