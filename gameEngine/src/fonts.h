@@ -12,7 +12,7 @@
 */
 
 /* Character bitmaps for Tw Cen MT Condensed Extra Bold 18pt */
-const uint_8 twCenMTCondensedExtraBold_18ptBitmaps[] =
+const uint_8 gameFonts[] =
 {
 	/* @0 '!' (3 pixels wide) */
 	0x00, //
@@ -2367,7 +2367,7 @@ const uint_8 twCenMTCondensedExtraBold_18ptBitmaps[] =
 
 /* Character descriptors for Tw Cen MT Condensed Extra Bold 18pt */
 /* { [Char width in bits], [Char height in bits], [Offset into twCenMTCondensedExtraBold_18ptCharBitmaps in bytes] } */
-const FONT_CHAR_INFO twCenMTCondensedExtraBold_18ptDescriptors[] =
+const FONT_CHAR_INFO gameFontsDescriptors[] =
 {
 	{3, 23, 0}, 		/* ! */
 	{10, 23, 23}, 		/* " */
@@ -2401,20 +2401,20 @@ const FONT_CHAR_INFO twCenMTCondensedExtraBold_18ptDescriptors[] =
 	{14, 23, 897}, 		/* > */
 	{7, 23, 943}, 		/* ? */
 	{15, 23, 966}, 		/* @ */
-	{11, 23, 1012}, 		/* A */
+	{11, 23, 1012}, 	/* A */
 	{9, 23, 1058}, 		/* B */
 	{8, 23, 1104}, 		/* C */
 	{9, 23, 1127}, 		/* D */
 	{7, 23, 1173}, 		/* E */
 	{7, 23, 1196}, 		/* F */
-	{10, 23, 1219}, 		/* G */
-	{10, 23, 1265}, 		/* H */
+	{10, 23, 1219}, 	/* G */
+	{10, 23, 1265}, 	/* H */
 	{3, 23, 1311}, 		/* I */
 	{6, 23, 1334}, 		/* J */
 	{9, 23, 1357}, 		/* K */
 	{6, 23, 1403}, 		/* L */
-	{14, 23, 1426}, 		/* M */
-	{11, 23, 1472}, 		/* N */
+	{14, 23, 1426}, 	/* M */
+	{11, 23, 1472}, 	/* N */
 	{9, 23, 1518}, 		/* O */
 	{8, 23, 1564}, 		/* P */
 	{9, 23, 1587}, 		/* Q */
@@ -2422,16 +2422,16 @@ const FONT_CHAR_INFO twCenMTCondensedExtraBold_18ptDescriptors[] =
 	{8, 23, 1656}, 		/* S */
 	{7, 23, 1679}, 		/* T */
 	{9, 23, 1702}, 		/* U */
-	{11, 23, 1748}, 		/* V */
-	{16, 23, 1794}, 		/* W */
-	{10, 23, 1840}, 		/* X */
+	{11, 23, 1748}, 	/* V */
+	{16, 23, 1794}, 	/* W */
+	{10, 23, 1840}, 	/* X */
 	{9, 23, 1886}, 		/* Y */
-	{10, 23, 1932}, 		/* Z */
+	{10, 23, 1932}, 	/* Z */
 	{4, 23, 1978}, 		/* [ */
 	{7, 23, 2001}, 		/* \ */
 	{4, 23, 2024}, 		/* ] */
-	{11, 23, 2047}, 		/* ^ */
-	{12, 23, 2093}, 		/* _ */
+	{11, 23, 2047}, 	/* ^ */
+	{12, 23, 2093}, 	/* _ */
 	{3, 23, 2139}, 		/* ` */
 	{8, 23, 2162}, 		/* a */
 	{8, 23, 2185}, 		/* b */
@@ -2445,7 +2445,7 @@ const FONT_CHAR_INFO twCenMTCondensedExtraBold_18ptDescriptors[] =
 	{3, 23, 2369}, 		/* j */
 	{9, 23, 2392}, 		/* k */
 	{3, 23, 2438}, 		/* l */
-	{13, 23, 2461}, 		/* m */
+	{13, 23, 2461}, 	/* m */
 	{8, 23, 2507}, 		/* n */
 	{8, 23, 2530}, 		/* o */
 	{8, 23, 2553}, 		/* p */
@@ -2455,14 +2455,14 @@ const FONT_CHAR_INFO twCenMTCondensedExtraBold_18ptDescriptors[] =
 	{5, 23, 2645}, 		/* t */
 	{8, 23, 2668}, 		/* u */
 	{7, 23, 2691}, 		/* v */
-	{12, 23, 2714}, 		/* w */
+	{12, 23, 2714}, 	/* w */
 	{8, 23, 2760}, 		/* x */
 	{7, 23, 2783}, 		/* y */
 	{9, 23, 2806}, 		/* z */
 	{8, 23, 2852}, 		/* { */
 	{3, 23, 2875}, 		/* | */
 	{8, 23, 2898}, 		/* } */
-	{14, 23, 2921}, 		/* ~ */
+	{14, 23, 2921}, 	/* ~ */
 };
 
 /* Font information for Tw Cen MT Condensed Extra Bold 18pt */
