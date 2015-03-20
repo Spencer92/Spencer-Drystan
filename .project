@@ -8,4 +8,10 @@
 	</buildSpec>
 	<natures>
 	</natures>
+	<variableList>
+		<variable>
+			<name>inculde</name>
+			<value>file:/opt/vbcc/targets/m68k-atari/include</value>
+		</variable>
+	</variableList>
 </projectDescription>
