@@ -510,10 +510,10 @@ void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,
 
 {
 
-    UINT16 *leftHandPtr;
-    UINT16 *rightHandPtr;
-    UINT8 offset = size >>1;
-	UINT8 copy[size * 4];
+    UINT16 *leftHandPtr =     fbstart;
+    UINT16 *rightHandPtr = fbstart;
+    UINT8  offset = size >>1;
+	UINT8  copy[size * 4];
 	int xnegBound = xpostoPlot - offset;;
 	int xposBound = xpostoPlot + offset;
 	int yposBound;
@@ -524,25 +524,27 @@ void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,
 	((ypostoPlot + offset) <= POSTIVE_Y_LIMIT) && (ypostoPlot - offset) >= NEGTIVE_Y_LIMIT)
     {
 
-	if(yposBound > SCREEN_HEIGHT)
+	if(yposBound > SCREEN_HEIGHT || ynegBound  < 0 )/*Y clipping in effect*/
+	{
+		size =
+
+
+	}
+
+
+	 if(xnegBound < 0 || xposBound > SCREEN_WIDTH) /*X clipping in effect*/
 	{
 
-	}
-
-
-	else if(xnegBound < 0 || xposBound > SCREEN_WIDTH)
-	{
-
-	}
-
-
-
-
-
-
 
 
 	}
+
+
+
+
+
+
+}
 
 
 
