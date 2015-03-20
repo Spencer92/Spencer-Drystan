@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Spencer-Drystan</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+	<variableList>
+		<variable>
+			<name>inculde</name>
+			<value>file:/opt/vbcc/targets/m68k-atari/include</value>
+		</variable>
+	</variableList>
+</projectDescription>
