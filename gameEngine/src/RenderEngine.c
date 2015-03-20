@@ -8,10 +8,7 @@
 #include "RenderEngine.h"
 #include <stdlib.h>
 #include  <stdio.h>
-#include <H5DOpublic.h>
-#include <rdf_parser.h>
-#include <rdf_query.h>
-#include <tclDecls.h>
+
 
 /*
  =============================================================================
