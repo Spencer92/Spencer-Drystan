@@ -526,7 +526,7 @@ void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,
 
 	if(yposBound > SCREEN_HEIGHT || ynegBound  < 0 )/*Y clipping in effect*/
 	{
-		size =
+
 
 
 	}
@@ -546,7 +546,10 @@ void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,
 
 }
 
+    else{
 
+    	/*TODO the selection of the background is incorrect*/
+    }
 
 
 	return;
