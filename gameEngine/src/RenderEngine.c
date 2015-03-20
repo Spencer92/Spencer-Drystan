@@ -1,9 +1,17 @@
 /*Define screen dimensions  */
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 400
+#define POSTIVE_X_LIMIT 664
+#define NEGTIVE_X_LIMIT -24
+#define POSTIVE_Y_LIMIT 504
+#define NEGTIVE_Y_LIMIT -24
 #include "RenderEngine.h"
 #include <stdlib.h>
 #include  <stdio.h>
+#include <H5DOpublic.h>
+#include <rdf_parser.h>
+#include <rdf_query.h>
+#include <tclDecls.h>
 
 /*
  =============================================================================
@@ -489,7 +497,7 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	return;
 }
 
-void plotString(char *fbstart, char[] theString, int size, int xpos,int ypos)
+void plotString(char *fbstart, char *theString, int size, int xpos,int ypos)
 {
 /*TODO for the length of the string convert into a integer value array then use this value to offset
  * into the font array. The   xpos and ypos are assumed to be left hand side of the string.
@@ -500,9 +508,120 @@ void plotString(char *fbstart, char[] theString, int size, int xpos,int ypos)
 
 
 }
-void copyBackground(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
-		int ypostoPlot, int size) {
-	/*TODO copy the background and return  the 32x32 bit array back to the caller. will need to calculate the amount to copy as clipped*/
+void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,
+					int ypostoPlot, int size)
 
-}
+{
+
+    UINT16 *leftHandPtr;
+    UINT16 *rightHandPtr;
+    UINT8 offset = size >>1;
+	UINT8 copy[size * 4];
+	int xnegBound = xpostoPlot - offset;;
+	int xposBound = xpostoPlot + offset;
+	int yposBound;
+	int ynegBound;
+
+
+    if((((xpostoPlot + offset) <= POSTIVE_X_LIMIT ) && ((xpostoPlot - offset) >= NEGTIVE_X_LIMIT)) &&
+	((ypostoPlot + offset) <= POSTIVE_Y_LIMIT) && (ypostoPlot - offset) >= NEGTIVE_Y_LIMIT)
+    {
+
+	if(yposBound > SCREEN_HEIGHT)
+	{
+
+	}
+
+
+	else if(xnegBound < 0 || xposBound > SCREEN_WIDTH)
+	{
+
+	}
+
+
+
+
+
+
+
+
+	}
+
+
+
+
+	return;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

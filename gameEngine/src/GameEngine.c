@@ -23,7 +23,7 @@
 #include <stdlib.h>
 /*===================================================*/
 /*Header files authored by Others*/
-#include "font.h"
+#include "fonts.h"
 #include "types.h"
 #include "bitmaps.h"
 /*===================================================*/
@@ -32,7 +32,7 @@
 #include  "model.h"
 #include  "RenderEngine.h"
 #include  "AssemblerRoutines.h"
-#include  "bitmap.h"
+#include  "bitmaps.h"
 
 /*===================================================*/
 #define  NUMBER_OFLIVES 3

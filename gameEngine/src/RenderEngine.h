@@ -40,7 +40,7 @@ typedef struct Screen {
 
 } Screen;
 
-void plotString(char *fbstart, char[] theString, int size, int xpos,int ypos);
+void plotString(char *fbstart, char *theString, int size, int xpos,int ypos);
 
 
 
