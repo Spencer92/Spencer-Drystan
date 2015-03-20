@@ -136,14 +136,14 @@ int main()
 
 
 
-void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *object, int num_enemies, int num_missiles, int num_objects)
+void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *object, 
+			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid)
 {
 	static int time_now;
-	static char input;
 	time_now = getTime();
-	if(DSconis())
+	if(input_valid)
 	{
-		input = DSnecin();
+/*		input = DSnecin();*/
 		player_action_check(player, 
 		enemy, 
 		num_enemies, 
@@ -153,12 +153,14 @@ void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *objec
 		if(getTime() >= time_now+10)
 		{
 			player_action(player,missile,input);
+			time_now = getTime();
 		}
 	}
 	assess_situation(enemy, player, object, missile, num_enemies, num_missiles);
 	if(getTime() >= time_now+10)
 	{
 		tank_respond(enemy, missile, num_missiles, num_enemies, object, num_objects);
+		time_now = getTime();
 	}
 	
 }
@@ -175,46 +177,6 @@ int thing()
 }
 
 
-/***************************************************************************
-   Function Name:   getTime
-  
-   Purpose:         To get the current time on the clock
-  
-   Return Value: 	The current time;
-***************************************************************************/
-
-long getTime()
-{
-	long *timer = (long *)0x462;
-	long oldssp;
-	long new_time;
-	oldssp = Super(0);
-	new_time = *timer;
-	Super(oldssp);
-	return new_time;
-}
-
-
-void DSconout(char output)
-{
-	Cconout(output);
-}
-
-
-char DSnecin()
-{
-	return Cnecin();
-}
-
-BOOL DSconis()
-{
-	return Cconis();
-}
-
-void DSconws(String output)
-{
-	Cconws(output);
-}
 
 
 /***************************************************************************

@@ -17,10 +17,11 @@
  Method       :
 
  ============================================================================ */
-#include <tos.h>
+/*#include <tos.h>*/
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include "osbind.h"
 /*===================================================*/
 /*Header files authored by Others*/
 #include "fonts.h"
@@ -44,6 +45,7 @@
 #define  BUFFER_SIZE   0x8100L
 #define  SCREEN_WIDTH 640
 #define  SCREEN_HEIGHT 400
+#define  MAX_MISSILES 10
 
 void gameReset();
 void pauseAndchill(int duration);
@@ -51,8 +53,7 @@ void makeScreen(void* screenChunk1);
 
 int main() {
 
-	
-
+	BOOL playerInput = 0;
 	char keypress = 0;
 
 	UINT16 playerScore = 0;
@@ -66,9 +67,21 @@ int main() {
 	
 	long readfile;
 	int  handle;
-
+	Missile missile[MAX_MISSILES];
+	
+	
+	
 	Tank demoArray[6] = { };
 
+	for(i = 0; i < MAX_MISSILES; i++)
+	{
+		missile[i].is_visible = 0;
+		missile[i].x_coordinate = -1;
+		missile[i].y_coordinate = -1;
+		missile[i].sprite = NULL;
+	}
+	
+	
 	demoArray[0] = Tank
 			playerTank = {20, 50, PLAYER_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL, NULL, 1, 0, TRUE};
 	demoArray[0].sprite = playerSprite;
@@ -89,6 +102,7 @@ int main() {
 	demoArray[3].sprite = enemySprite;
 	demoArray[4].sprite = enemySprite;
 	demoArray[5].sprite = enemySprite;
+	
 
 	Stationary_Object landobjects[6] = { };
 
@@ -155,27 +169,32 @@ int main() {
 	keypress = Cnecin();
 
 	if (keypress != 'q') {
+
 /*=====================here is main game loop==================*/
+		for(i = 0; i < 6; i++)
+		{
+			plotLargeSprite(gameScreen, demoArray[i].sprite, demoArray[i].x_coordinate
+			demoArray[i].y_coordinate, 32);
+		}
+	
 
 		Vsync();
 		Setscreen(gameScreen, gameScreen, -1L);
 
+		
+		
 		do {
 
 			
 
-			Vsync();
-			Setscreen(backGamescreen, backGamescreen, -1L);
-
 			
-
-		
-
-			Vsync();
-			Setscreen(gameScreen, gameScreen, -1L);
-			clear(backGamescreen);
-
-	if (keypress == 'p') {
+			
+			
+			
+			if(DSconis())
+			{
+				playerInput = 1;
+				if (keypress == 'p') {
 				/*=====================here is pause game loop==================*/
 				clear(mainScreen);
 				Vsync();
@@ -187,12 +206,27 @@ int main() {
 				while (!Cconis()) {
 				}
 				keypress = Cnecin();
+				}
 			}
-
-			if (Cconis()) {
-				keypress = Cnecin();
+			else
+			{
+				playerInput = 0;
 			}
+			model(&demoArray[0],demoArray,missile, object, 
+			num_enemies,num_missiles, num_objects,keypress,playerInput);
+		
+			for(i = 0; i < 6; i++)
+			{
+				plotLargeSprite(gameScreen, demoArray[i].sprite, demoArray[i].x_coordinate
+				demoArray[i].y_coordinate, 32);
+			}
+			Vsync();
+			Setscreen(gameScreen, gameScreen, -1L);
+			clear(backGamescreen);
 
+
+			Vsync();
+			Setscreen(backGamescreen, backGamescreen, -1L);
 		} while (keypress != 'q');
 
 	}
