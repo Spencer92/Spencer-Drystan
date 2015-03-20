@@ -3,21 +3,37 @@
 
 /*All the models in the game*/
 
-#include "types.h"
+/*#include "types.h"*/
 
+typedef unsigned int UINT16;
+typedef unsigned char UINT8;
+typedef unsigned long UINT32;
 #define BOOL UINT8
 #define TRUE  1
 #define FALSE 0
+/*
+typedef enum BEHAVIOUR
+{
+	SHOOT,
+	DODGE_X,
+	DODGE_Y,
+	MOVE_X,
+	MOVE_Y,
+	DIE,
+	RESPAWN,
+	TURN,
+	DO_NOTHING
 
+}BEHAVIOUR;
 
-enum
+typedef enum H_DIRECTION
 {
 	RIGHT = 1,
 	LEFT  = -1
 	
 }H_DIRECTION;
 
-enum
+typedef enum V_DIRECTION
 {
 	UP = -1,
 	HORIZTIAL = 0,
@@ -42,6 +58,8 @@ typedef struct Tank
 	enum H_DIRECTION h_facing;
 	enum V_DIRECTION v_facing;
 	BOOL is_visable;
+	BEHAVIOUR current_behaviour;
+	BOOL 
 }Tank;
 
 typedef struct Missile
@@ -60,7 +78,7 @@ typedef struct Stationary_Object
 	UINT32 *sprite;
 
 }Stationary_Object;
-
+*/
 
 
 

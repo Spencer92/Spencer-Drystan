@@ -1,8 +1,50 @@
 #include "Behavior.h"
-
+#include "model.h"
+#include "osbind.h"
 
 BOOL event();
 BOOL flip(int position);
+
+
+
+
+/***************************************************************************
+   Function Name:   die_check
+  
+   Purpose:         To check if the tank should die because a missile hit it
+  
+   Input Arguments: Tank - The tank that will be dying
+					Missile - What will do the killing
+  
+   Return Value:    The Behaviour that the tank should take
+  
+   Method Notes:    If the tank is in the same place as the missile, 
+					then it will be told to die
+					
+				If not then the current behaviour will just be used
+***************************************************************************/
+
+BOOL die_check(Tank *enemy, Missile *missile, int num_missiles)
+{
+	int index;
+	for(index = 0; index < num_missiles; index++)
+	{
+		if((enemy->x_coordinate >= missile[index].x_coordinate-16
+		&& enemy->x_coordinate <= missile[index].x_coordinate+16) 
+		&& 
+		(enemy->y_coordinate >= missile[index].y_coordinate-16
+		&& enemy->y_coordinate <= missile[index].y_coordinate+16))
+		{
+			missile[index].is_visible = 0;
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+}
+
 
 
 /***************************************************************************
@@ -14,14 +56,11 @@ BOOL flip(int position);
   
 ***************************************************************************/
 
-
-
-
-
 void respawn(Tank *tank)
 {
 	tank->is_visible = 1;
 }
+
 
 /***************************************************************************
    Function Name:   die
@@ -43,7 +82,6 @@ void die(Tank *tank)
 	tank->is_moving = 0;
 }
 
-
 /***************************************************************************
    Function Name:   shoot
   
@@ -61,6 +99,7 @@ void die(Tank *tank)
 					set its firing attribute to "false" (also known as "0")
 					
 ***************************************************************************/
+
 
 void shoot(Tank *tank, Missile *missile)
 {
@@ -93,21 +132,20 @@ void turn(Tank *tank)
 	switch(tank->h_facing)
 	{
 		case VERTICAL:
-			tank->h_facing = LEFT;/* Is the tank facing up*/
+			tank->h_facing = LEFT;
 			tank->v_facing = HORIZONTAL;
 			break;
 		case LEFT:
-			tank->h_facing = VERTICAL;/*Is the tank facing left*/
+			tank->h_facing = VERTICAL;
 			tank->v_facing = UP;
 		case RIGHT:
-			tank->h_facing = VERTICAL;/*is the tank facing right*/
+			tank->h_facing = VERTICAL;
 			tank->v_facing = DOWN;
 		default:
 			break;
 	}
 
 }
-
 
 /***************************************************************************
    Function Name:   dodge_x
@@ -122,17 +160,16 @@ void turn(Tank *tank)
 					to determine if the tank is going to dodge left or right
 ***************************************************************************/
 
-
-void dodge_x(Tank *tank, Stationary_Object object, int offset)
+void dodge_x(Tank *tank, Stationary_Object *object, int *direction, int num_objects)
 {
 
 	if(flip(tank->x_coordinate))
 	{
-		move_x(tank, object, offset);
+		move_x(tank, object, *direction, num_objects);
 	}
 	else
 	{
-		move_x(tank, object, offset *-1);
+		move_x(tank, object, (*direction) *-1, num_objects);
 	}
 
 
@@ -151,20 +188,18 @@ void dodge_x(Tank *tank, Stationary_Object object, int offset)
 					to determine if the tank is going to dodge up or down
 ***************************************************************************/
 
-void dodge_y(Tank *tank, Stationary_Object object, int direction)
+void dodge_y(Tank *tank, Stationary_Object *object, int *direction, int num_objects)
 {
 	if(flip(tank->y_coordinate))
 	{
-		move_y(tank, object, direction);
+		move_y(tank, object, *direction, num_objects);
 	}
 	else
 	{
-		move_y(tank, object, direction * -1);
+		move_y(tank, object, (*direction) * -1, num_objects);
 	}
 	
 }
-
-
 
 /***************************************************************************
    Function Name:   missile_fired
@@ -183,26 +218,27 @@ void dodge_y(Tank *tank, Stationary_Object object, int direction)
 					If not then the current behaviour will just be used
 ***************************************************************************/
 
-
-BEHAVIOUR missile_fired(Tank *tank, Missile *missile)
+BEHAVIOUR missile_fired(Tank *tank, Missile *missile, int* num_missiles)
 {
-	if(tank->x_coordinate == missile->x_coordinate) /*TODO figure out way to check if the missile is coming towards them without killing time*/
+	int index;
+	for(index = 0; index < *num_missiles; index++)
 	{
-		return DODGE_X;
+		if(tank->x_coordinate >= missile[index].x_coordinate + 8
+			&& tank->x_coordinate <= missile[index].x_coordinate - 8) /*TODO figure out way to check if the missile is coming towards them without killing time*/
+		{
+			return DODGE_X;
+		}
+		else if(tank->y_coordinate >= missile[index].y_coordinate + 8
+				&& tank->y_coordinate <= missile[index].y_coordinate - 8)
+		{
+			return DODGE_Y;
+		}
 	}
-	else if(tank->y_coordinate == missile->y_coordinate)
-	{
-		return DODGE_Y;
-	}
-	else
-	{
-		return tank->current_behaviour;
-	}
+
+	return tank->current_behaviour;
 	
 
 }
-
-
 
 
 /***************************************************************************
@@ -223,8 +259,6 @@ BEHAVIOUR missile_fired(Tank *tank, Missile *missile)
 					
 					If not then the current behaviour will just be used
 ***************************************************************************/
-
-
 
 BEHAVIOUR move_check_x(Tank *enemy, Tank *player, int *direction)
 {
@@ -260,24 +294,6 @@ BEHAVIOUR move_check_x(Tank *enemy, Tank *player, int *direction)
 } 
 
 
-BEHAVIOUR move_check_x(Tank* player, char keyPress, int* direction)
-{
-	if(keyPress == 'a')
-	{
-		player->h_direction = LEFT;
-		player->v_direction = HORIZONTAL;
-		
-	}
-	else if(keyPress == 'd'
-	{
-		player->h_direction = RIGHT;
-		player->v_direction = HORIZONTAL;
-	}
-	
-}
-
-
-
 /***************************************************************************
    Function Name:   move_check_y
   
@@ -296,6 +312,7 @@ BEHAVIOUR move_check_x(Tank* player, char keyPress, int* direction)
 					
 					If not then the current behaviour will just be used
 ***************************************************************************/
+
 
 BEHAVIOUR move_check_y(Tank *enemy, Tank *player, int *direction)
 {
@@ -328,9 +345,39 @@ BEHAVIOUR move_check_y(Tank *enemy, Tank *player, int *direction)
 	{
 		return enemy->current_behaviour;
 	}
-} 
+}
 
-
+BEHAVIOUR move_check_player(Tank *enemy, Tank *player, char input)
+{
+	if(input == 'a' && player->x_coordinate > enemy->x_coordinate + 16)
+	{
+		player->h_facing = LEFT;
+		player->v_facing = HORIZONTAL;
+		return MOVE_X;
+	}
+	else if(input == 'd' && player->x_coordinate < enemy->x_coordinate - 16)
+	{
+		player->h_facing = RIGHT;
+		player->v_facing = HORIZONTAL;
+		return MOVE_X;
+	}
+	else if(input == 'w' && player->y_coordinate < enemy->y_coordinate - 16)
+	{
+		player->h_facing = VERTICAL;
+		player->v_facing = UP;
+		return MOVE_Y;
+	}
+	else if(input == 's' && player->y_coordinate > enemy->y_coordinate + 16)
+	{
+		player->h_facing = VERTICAL;
+		player->v_facing = DOWN;
+		return MOVE_Y;
+	}	
+	else
+	{
+		return player->current_behaviour;
+	}
+}
 /***************************************************************************
    Function Name:   die_check
   
@@ -344,24 +391,30 @@ BEHAVIOUR move_check_y(Tank *enemy, Tank *player, int *direction)
    Method Notes:    If the tank is in the same place as the missile, 
 					then it will be told to die
 					
-					If not then the current behaviour will just be used
+				If not then the current behaviour will just be used
 ***************************************************************************/
-
-BEHAVIOUR die_check(Tank *enemy, Missile *missile)
+/*
+BOOL die_check02(Tank *enemy, Missile *missile, int num_missiles)
 {
-	if((enemy->x_coordinate >= missile->x_coordinate-16
-		&& enemy->x_coordinate <= missile->x_coordinate+16) 
-		&& 
-		(enemy->y_coordinate >= missile->y_coordinate-16
-		&& enemy->y_coordinate <= missile->y_coordinate+16))
+	int index;
+	if(index = 0; index < num_missiles; index++)
 	{
-		return DIE;
-	}
-	else
-	{
-		return enemy->current_behaviour;
+		if((enemy->x_coordinate >= missile[index]->x_coordinate-16
+			&& enemy->x_coordinate <= missile[index]->x_coordinate+16) 
+			&& 
+			(enemy->y_coordinate >= missile[index]->y_coordinate-16
+			&& enemy->y_coordinate <= missile[index]->y_coordinate+16))
+		{
+			missile->is_visible = 0;
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 }
+*/
 
 /***************************************************************************
    Function Name:   shoot_check
@@ -414,6 +467,7 @@ BEHAVIOUR shoot_check(Tank *enemy, Tank *player, Missile *missile)
 					If not then the current behaviour will just be used
 ***************************************************************************/
 
+
 BEHAVIOUR turn_check(Tank *enemy, Tank *player)
 {
 	if(((enemy->x_coordinate >= player->x_coordinate-16
@@ -447,6 +501,7 @@ BEHAVIOUR turn_check(Tank *enemy, Tank *player)
 
 
 
+
 BEHAVIOUR respawn_check(Tank *enemy)
 {
 	if(event())
@@ -458,8 +513,6 @@ BEHAVIOUR respawn_check(Tank *enemy)
 		return enemy->current_behaviour;
 	}
 }
-
-
 
 
 /***************************************************************************
@@ -476,6 +529,7 @@ BEHAVIOUR respawn_check(Tank *enemy)
    Method Notes:    If the tank is either at the same x or
 					y of the tanks location, then the tank should dodge
 ***************************************************************************/
+
 
 BEHAVIOUR dodge_y_check(Tank *enemy, Missile *missile)
 {
@@ -506,7 +560,6 @@ BEHAVIOUR dodge_y_check(Tank *enemy, Missile *missile)
    Method Notes:    If the tank is either at the same x or
 					y of the tanks location, then the tank should dodge
 ***************************************************************************/
-
 
 
 BEHAVIOUR dodge_x_check(Tank *enemy, Missile *missile)
@@ -552,28 +605,36 @@ BOOL flip(int position)
 ***************************************************************************/
 
 
-
-
-void move_y(Tank *tank, Stationary_Object object, int offset)
+void move_y(Tank *tank, Stationary_Object *object, int offset, int num_objects)
 {
-	if((tank->y_coordinate+offset >= object.y_coordinate-16
-		&& tank->y_coordinate+offset <= object.y_coordinate+16)
-		&& tank->x_coordinate <= object.x_coordinate+16
-		&& tank->x_coordinate >= object.x_coordinate-16)
+	int index;
+	BOOL all_clear = 1;
+	for(index = 0; index < num_objects && all_clear; index++)
+	{
+		if(!((tank->y_coordinate+offset >= object[index].y_coordinate-16
+			&& tank->y_coordinate+offset <= object[index].y_coordinate+16)
+			&& tank->x_coordinate <= object[index].x_coordinate+16
+			&& tank->x_coordinate >= object[index].x_coordinate-16))
+		{
+			all_clear = 0;
+		} 
+	}
+	if(all_clear)
 	{
 		tank->y_coordinate += offset;
-	} 
+	}
 	else
 	{
 		if(flip(tank->y_coordinate))
 		{
-			move_x(tank, object, 1);
+			move_x(tank, object, 1, num_objects);
 		}
 		else
 		{
-			move_x(tank, object, -1);
+			move_x(tank, object, -1, num_objects);
 		}
 	}
+	
 }
 
 
@@ -593,12 +654,23 @@ void move_y(Tank *tank, Stationary_Object object, int offset)
 ***************************************************************************/
 
 
-void move_x(Tank *tank, Stationary_Object object, int offset)
+
+void move_x(Tank *tank, Stationary_Object *object, int offset, int num_objects)
 {
-	if((tank->x_coordinate+offset >= object.x_coordinate-16
-		&& tank->x_coordinate+offset <= object.x_coordinate+16)
-		&& tank->y_coordinate <= object.y_coordinate+16
-		&& tank->y_coordinate >= object.y_coordinate+16)
+	int index;
+	BOOL all_clear = 1;
+	for(index = 0; index < num_objects && all_clear; index++)
+	{
+		if(!((tank->x_coordinate+offset >= object[index].x_coordinate-16
+			&& tank->x_coordinate+offset <= object[index].x_coordinate+16)
+			&& tank->y_coordinate <= object[index].y_coordinate+16
+			&& tank->y_coordinate >= object[index].y_coordinate+16))
+		{
+			all_clear = 0;
+		}
+		
+	}
+	if(all_clear)
 	{
 		tank->x_coordinate += offset;
 	}
@@ -606,11 +678,11 @@ void move_x(Tank *tank, Stationary_Object object, int offset)
 	{
 		if(flip(tank->x_coordinate))
 		{
-			move_y(tank, object, 1);
+			move_y(tank, object, 1, num_objects);
 		}
 		else
 		{
-			move_y(tank, object, -1);
+			move_y(tank, object, -1, num_objects);
 		}
 	}
 }
