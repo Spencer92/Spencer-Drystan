@@ -8,6 +8,8 @@
 #include "RenderEngine.h"
 #include <stdlib.h>
 #include  <stdio.h>
+#include "types.h"
+#include "testing-routines/types.h"
 
 
 /*
@@ -406,7 +408,7 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 			if (shiftright > shiftleft) {
 
 				offset = 1;
-				track8ptr + =77;
+				track8Ptr +=77;
 
 				if (shiftright <= 16 && shiftright > 8) {
 
@@ -510,44 +512,55 @@ void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,
 
 {
 
-    UINT16 *leftHandPtr;
-    UINT16 *rightHandPtr;
-    UINT8 offset = size >>1;
-	UINT8 copy[size * 4];
+	UINT32 *cpyPtr =  fbstart;
+	UINT8  offset = size >>1;
+	UINT8  copy[size * 4];
 	int xnegBound = xpostoPlot - offset;;
 	int xposBound = xpostoPlot + offset;
-	int yposBound;
-	int ynegBound;
+	int yposBound = ypostoPlot + offset;
+	int ynegBound = ypostoPlot - offset;
 
 
-    if((((xpostoPlot + offset) <= POSTIVE_X_LIMIT ) && ((xpostoPlot - offset) >= NEGTIVE_X_LIMIT)) &&
-	((ypostoPlot + offset) <= POSTIVE_Y_LIMIT) && (ypostoPlot - offset) >= NEGTIVE_Y_LIMIT)
-    {
+	if((((xpostoPlot + offset) <= POSTIVE_X_LIMIT ) && ((xpostoPlot - offset) >= NEGTIVE_X_LIMIT)) &&
+			((ypostoPlot + offset) <= POSTIVE_Y_LIMIT) && (ypostoPlot - offset) >= NEGTIVE_Y_LIMIT) {
 
-	if(yposBound > SCREEN_HEIGHT)
-	{
-
-	}
+		cpyPtr += (ynegBound * 20);
 
 
-	else if(xnegBound < 0 || xposBound > SCREEN_WIDTH)
-	{
+		if (yposBound > SCREEN_HEIGHT  )/*Y clipping in effect*/
+		{
 
-	}
+			size = size -  (yposBound -SCREEN_HEIGHT);
 
 
 
+		}
+
+		else if(ynegBound < 0)
+		{
+			size = size  + ynegBound;
+			cpyPtr = fbstart;
+		}
+
+		if (xposBound > SCREEN_WIDTH ) /*X clipping in effect*/
+		{
+			cpyPtr += (xnegBound >> 3);
+
+		}
+
+
+		while(size--)
+		{
+			*(backgroundLocation) = *(cpyPtr);
+			backgroundLocation++;
+			cpyPtr +=20;
+
+		}
 
 
 
 
-
-	}
-
-
-
-
-	return;
+		return;
   }
 
 
