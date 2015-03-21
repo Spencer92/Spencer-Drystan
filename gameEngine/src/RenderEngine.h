@@ -44,7 +44,8 @@ void plotString(char *fbstart, char *theString, int size, int xpos,int ypos);
 
 
 
-void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,
-					int ypostoPlot, int size);
+void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,int ypostoPlot, int size);
+
+void plotBackground(char *fbstart,int xpos, int ypos ,UINT32 *background,int size);
 #endif /* RENDERENGINE_H*/
 

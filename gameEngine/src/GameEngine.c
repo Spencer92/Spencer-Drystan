@@ -47,6 +47,7 @@
 #define  SCREEN_WIDTH 640
 #define  SCREEN_HEIGHT 400
 #define  MAX_MISSILES 10
+#define  FILE_SIZE 0x8000L
 
 void gameReset();
 void pauseAndchill(int duration);
@@ -64,6 +65,8 @@ int main() {
 	char *logMainscreen;
 	char *gameScreen;
 	char *backGamescreen;
+	
+	UINT32 background[64];
 	
 	
 	long readfile;
