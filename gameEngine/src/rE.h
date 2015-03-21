@@ -18,10 +18,10 @@ void plotArbLine(char *fbstart, int xstart, int ystart, int xfin, int yfin);
 
 void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size);
-
+/*
 void copyBackground(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size);
-
+*/
 void printvertical(unsigned char* base, unsigned int x_loc, unsigned int y_loc,
 		unsigned int length);
 
@@ -29,8 +29,8 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
 		unsigned int y_loc_start, unsigned int x_loc_end,
 		unsigned int y_loc_end);
 
-void plotLargeSprite(char *fbstart, UINT32 *spriteLocationint, int xpostoPlot,
-		int ypostoPlot,int size);
+void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
+		int ypostoPlot, int size);
 
 typedef struct Screen {
 

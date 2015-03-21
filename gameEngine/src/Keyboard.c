@@ -1,4 +1,7 @@
+#include "osbind.h"
+#include "keyboard.h"
 /*Routines to read the keyboard directly*/
+
 
 void DSconout(char output)
 {

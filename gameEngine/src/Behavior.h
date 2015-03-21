@@ -7,7 +7,6 @@
 
 
 #define BOOL UINT8
-typedef char* String;
 
 typedef enum H_DIRECTION
 {
@@ -50,7 +49,7 @@ typedef struct Tank
 	UINT8  current_speed;
 	BOOL is_moving;
 	BOOL is_firing;
-	UINT32 *sprite;
+	UINT32 sprite[32];
 	UINT32 backMask[32];
 	UINT16 x_posMask;
 	UINT16 y_posMask;
@@ -141,7 +140,8 @@ int thing();
 void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles);
 void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks, Stationary_Object *object, int num_objects);
 
-
+void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *object, 
+			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid);
 
 
 

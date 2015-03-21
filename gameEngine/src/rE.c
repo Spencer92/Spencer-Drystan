@@ -5,7 +5,7 @@
 #define NEGTIVE_X_LIMIT -24
 #define POSTIVE_Y_LIMIT 504
 #define NEGTIVE_Y_LIMIT -24
-#include "RenderEngine.h"
+#include "rE.h"
 #include <stdlib.h>
 #include  <stdio.h>
 
@@ -333,21 +333,25 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
  *
  =============================================================================*/
 
-void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
-		int ypostoPlot, int size)
+void plotLargeSprite(
+			char *fbstart, 
+			UINT32 *spriteLocation, 
+			int xpostoPlot,
+			int ypostoPlot, 
+			int size)
 
 {
 
     register UINT32 bufferleft;
 	register UINT32 bufferright;
 
-	UINT32 *writePtrLH = fbstart;
+	UINT32 *writePtrLH = (UINT32*) fbstart;
 	UINT32 *writePtrRH = NULL;
 	UINT8 *arrayRd1;
 	UINT8 *arrayRd2;
 
-	UINT16 *trackPtr = fbstart;
-	UINT8 *track8Ptr = fbstart;
+	UINT16 *trackPtr = (UINT16*) fbstart;
+	UINT8 *track8ptr = (UINT8*) fbstart;
 
 	UINT8 offset = size >> 1;
 
@@ -397,28 +401,28 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 			shiftright = (SCREEN_WIDTH + xposoffset) - SCREEN_WIDTH;
 
-			track8Ptr = writePtrLH; /*Going to plot in chunks of 8 bits easier than trying differing size pointers/blocks makes for cleaner code*/
+			track8ptr = (UINT8*) writePtrLH; /*Going to plot in chunks of 8 bits easier than trying differing size pointers/blocks makes for cleaner code*/
 
-			arrayRd1 = spriteLocation;
+			arrayRd1 = (UINT8*) spriteLocation;
 
 			offset = 0;
 
 			if (shiftright > shiftleft) {
 
 				offset = 1;
-				track8ptr + =77;
+				track8ptr += 77;
 
 				if (shiftright <= 16 && shiftright > 8) {
 
 					j = 2;
-					track8Ptr += 78;
+					track8ptr += 78;
 					offset = 2;
 
 				}
 
 				else {
 					j = 1;
-					track8Ptr += 79;
+					track8ptr += 79;
 					offset = 3;
 				}
 
@@ -442,15 +446,15 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 			while (size--) { /*TODO some loop unrolling here  do a reduction to a power of two.. Then do two operations per loop*/
 				for (i = k; i < j; i++) {
 
-					*(track8Ptr) |= *(arrayRd1);
+					*(track8ptr) |= *(arrayRd1);
 
-					track8Ptr++;
+					track8ptr++;
 					arrayRd1++;
 				}
 
 				arrayRd1 += ((j - i) + k + offset);
-				track8Ptr -= j - k;
-				track8Ptr += 80;
+				track8ptr -= j - k;
+				track8ptr += 80;
 
 			}
 
@@ -460,9 +464,9 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 		else { /*No x clipping is taking place*/
 
 			writePtrLH += ((xpostoPlot - offset) >> 5);
-			trackPtr = writePtrLH;
+			trackPtr = (UINT16*) writePtrLH;
 			trackPtr++;
-			writePtrRH = trackPtr;
+			writePtrRH = (UINT32*)trackPtr;
 
 			shiftleft = ((xpostoPlot - offset) & 15);
 			shiftright = (16 - shiftleft);
@@ -505,9 +509,9 @@ void plotString(char *fbstart, char *theString, int size, int xpos,int ypos)
 
 
 }
-void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,
-					int ypostoPlot, int size)
-
+/*
+void copyBackground(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,int ypostoPlot, 
+					int size)
 {
 
     UINT16 *leftHandPtr;
@@ -549,7 +553,7 @@ void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,
 
 	return;
   }
-
+*/
 
 
 

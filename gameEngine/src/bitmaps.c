@@ -141,7 +141,7 @@ const UINT32 playerTankWest[] = {
 	0xFFFFFFFFL,
 };
 
-const UINT32 playerTankTwoEast[] = {
+const UINT32 enemyTankEast[] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -176,7 +176,7 @@ const UINT32 playerTankTwoEast[] = {
 	0xFFFFFFFFL
 };
 
-const UINT32 playerTankTwoNorth[] = {
+const UINT32 enemyTankNorth[] = {
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
@@ -211,7 +211,7 @@ const UINT32 playerTankTwoNorth[] = {
 	0xFF0000FFL
 };
 
-const UINT32 playerTankTwoSouth[] = {
+const UINT32 enemyTankSouth[] = {
 	0xFF0000FFL, 
 	0xFF0000FFL, 
 	0xFF0000FFL, 
@@ -246,7 +246,7 @@ const UINT32 playerTankTwoSouth[] = {
 	0xFF03C0FFL
 };
 
-const UINT32 playerTankTwoWest[] = {
+const UINT32 enemyTankWest[] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -444,3 +444,26 @@ const UINT8 enemy_missile[] =
 	0x81,
 	0x81
 };
+
+
+
+void getBitmap32(const UINT32* bitmap, UINT32* new_bitmap)
+{
+	int index;
+	for(index = 0; index < 32; index++)
+	{
+		new_bitmap[index] = bitmap[index];
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
