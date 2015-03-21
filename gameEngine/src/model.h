@@ -5,9 +5,7 @@
 
 /*#include "types.h"*/
 
-typedef unsigned int UINT16;
-typedef unsigned char UINT8;
-typedef unsigned long UINT32;
+
 #define BOOL UINT8
 #define TRUE  1
 #define FALSE 0
