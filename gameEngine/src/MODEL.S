@@ -108,7 +108,7 @@ _player_action_check:
 	movem.l	d3/d4/a3,-(a7)
 	move.l	8(a6),a3
 	move.b	19(a6),d3
-	move.l	#170,d4
+	move.l	#158,d4
 	;line	213
 	cmp.b	#100,d3
 	beq	L7
@@ -149,7 +149,7 @@ L9:
 	;line	223
 	clr.w	0(a3,d4.l)
 	;line	224
-	move.b	#1,22(a3)
+	move.b	#1,10(a3)
 	bra	L13
 L12:
 	;line	226
@@ -181,14 +181,14 @@ _player_action:
 	movem.l	d3/d4/a3,-(a7)
 	move.l	8(a6),a3
 	move.b	17(a6),d3
-	move.l	#170,d4
+	move.l	#158,d4
 	;line	263
 	cmp.w	#3,0(a3,d4.l)
 	bne	L16
 	cmp.b	#100,d3
 	bne	L16
 	;line	265
-	addq.w	#1,4(a3)
+	addq.w	#1,(a3)
 	bra	L17
 L16:
 	;line	267
@@ -197,7 +197,7 @@ L16:
 	cmp.b	#97,d3
 	bne	L18
 	;line	269
-	subq.w	#1,4(a3)
+	subq.w	#1,(a3)
 	bra	L19
 L18:
 	;line	271
@@ -206,7 +206,7 @@ L18:
 	cmp.b	#119,d3
 	bne	L20
 	;line	273
-	subq.w	#1,10(a3)
+	subq.w	#1,2(a3)
 	bra	L21
 L20:
 	;line	275
@@ -215,7 +215,7 @@ L20:
 	cmp.b	#100,d3
 	bne	L22
 	;line	277
-	addq.w	#1,10(a3)
+	addq.w	#1,2(a3)
 	bra	L23
 L22:
 	;line	279
@@ -224,13 +224,13 @@ L22:
 	;line	281
 	move.w	#1,-(a7)
 	clr.w	d0
-	move.b	172(a3),d0
+	move.b	160(a3),d0
 	move.w	d0,-(a7)
 	move.l	12(a6),-(a7)
 	move.l	a3,-(a7)
 	jsr	_missile_check
 	;line	282
-	clr.b	22(a3)
+	clr.b	10(a3)
 L24:
 L23:
 L21:
@@ -245,7 +245,7 @@ _tanks_at:
 	moveq	#16,d4
 	move.l	12(a6),a3
 	move.l	8(a6),a4
-	move.l	#174,d6
+	move.l	#162,d6
 	;line	307
 	moveq	#0,d5
 	;line	307
@@ -257,11 +257,9 @@ L25:
 	move.l	d3,-(a7)
 	move.l	d6,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d0
+	move.w	0(a3,d0.l),d0
 	sub.w	d4,d0
-	move.w	4(a4),d1
+	move.w	(a4),d1
 	add.w	d4,d1
 	cmp.w	d0,d1
 	bcs	L31
@@ -269,11 +267,9 @@ L25:
 	move.l	d3,-(a7)
 	move.l	d6,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d0
+	move.w	0(a3,d0.l),d0
 	add.w	d4,d0
-	move.w	4(a4),d1
+	move.w	(a4),d1
 	sub.w	d4,d1
 	cmp.w	d0,d1
 	bls	L30
@@ -284,9 +280,9 @@ L31:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d0
+	move.w	2(a0),d0
 	add.w	d4,d0
-	move.w	10(a4),d1
+	move.w	2(a4),d1
 	sub.w	d4,d1
 	cmp.w	d0,d1
 	bcs	L29
@@ -296,9 +292,9 @@ L31:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d0
+	move.w	2(a0),d0
 	sub.w	d4,d0
-	move.w	10(a4),d1
+	move.w	2(a4),d1
 	add.w	d4,d1
 	cmp.w	d0,d1
 	bhi	L29
@@ -342,8 +338,8 @@ _tank_respond:
 	link	a6,#-2
 	movem.l	d3/d4/d5/d6/d7/a3/a4,-(a7)
 	move.l	8(a6),a3
-	move.l	#174,d4
-	move.l	#170,d5
+	move.l	#162,d4
+	move.l	#158,d5
 	move.l	20(a6),d6
 	move.w	24(a6),d7
 	lea	_DSconws,a4
@@ -358,7 +354,7 @@ L41:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	tst.b	168(a0)
+	tst.b	156(a0)
 	beq	L45
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -389,7 +385,7 @@ L41:
 	move.l	d0,a0
 	add.l	a3,a0
 	clr.w	d0
-	move.b	172(a0),d0
+	move.b	160(a0),d0
 	move.w	d0,-(a7)
 	move.l	12(a6),-(a7)
 	ext.l	d3
@@ -407,7 +403,7 @@ L41:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	clr.b	22(a0)
+	clr.b	10(a0)
 	;line	365
 	pea	L34
 	jsr	(a4)
@@ -425,7 +421,7 @@ L46:
 	bne	L48
 	;line	369
 	move.w	d7,-(a7)
-	lea	164,a0
+	lea	152,a0
 	move.l	a0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -461,7 +457,7 @@ L48:
 	bne	L50
 	;line	374
 	move.w	d7,-(a7)
-	lea	166,a0
+	lea	154,a0
 	move.l	a0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -497,7 +493,7 @@ L50:
 	bne	L52
 	;line	380
 	move.w	d7,-(a7)
-	lea	164,a0
+	lea	152,a0
 	move.l	a0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -534,7 +530,7 @@ L52:
 	bne	L54
 	;line	386
 	move.w	d7,-(a7)
-	lea	166,a0
+	lea	154,a0
 	move.l	a0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -576,7 +572,7 @@ L54:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	tst.b	168(a0)
+	tst.b	156(a0)
 	seq	d0
 	and.w	#1,d0
 	;line	392
@@ -630,7 +626,7 @@ _missile_check:
 	move.l	12(a6),a3
 	move.l	8(a6),a4
 	moveq	#18,d5
-	move.l	#174,d7
+	move.l	#162,d7
 	;line	439
 	moveq	#0,d6
 	;line	439
@@ -650,7 +646,7 @@ L63:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a4,a0
-	tst.b	22(a0)
+	tst.b	10(a0)
 	beq	L67
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -667,7 +663,7 @@ L63:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a4,a0
-	cmp.w	#-1,166(a0)
+	cmp.w	#-1,154(a0)
 	bne	L68
 	;line	448
 	ext.l	d4
@@ -676,7 +672,7 @@ L63:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a4,a0
-	move.w	10(a0),d0
+	move.w	2(a0),d0
 	sub.w	#16,d0
 	move.l	d0,-(a7)
 	ext.l	d3
@@ -692,15 +688,14 @@ L63:
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a4,a0
-	move.l	a0,-(a7)
+	move.l	d0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
 	jsr	.Xlmul
-	move.l	(a7)+,a0
-	move.w	4(a0),0(a3,d0.l)
+	move.l	d0,d1
+	move.l	(a7)+,d0
+	move.w	0(a4,d0.l),0(a3,d1.l)
 	;line	450
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -728,16 +723,14 @@ L68:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a4,a0
-	cmp.w	#-1,164(a0)
+	cmp.w	#-1,152(a0)
 	bne	L70
 	;line	456
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a4,a0
-	move.w	4(a0),d0
+	move.w	0(a4,d0.l),d0
 	sub.w	#16,d0
 	move.l	d0,-(a7)
 	ext.l	d3
@@ -762,7 +755,7 @@ L68:
 	move.l	d0,a1
 	add.l	a3,a1
 	move.l	(a7)+,a0
-	move.w	10(a0),2(a1)
+	move.w	2(a0),2(a1)
 	;line	458
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -790,7 +783,7 @@ L70:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a4,a0
-	move.w	#1,166(a0)
+	move.w	#1,154(a0)
 	moveq	#1,d0
 	beq	L72
 	;line	464
@@ -798,15 +791,14 @@ L70:
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a4,a0
-	move.l	a0,-(a7)
+	move.l	d0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
 	jsr	.Xlmul
-	move.l	(a7)+,a0
-	move.w	4(a0),0(a3,d0.l)
+	move.l	d0,d1
+	move.l	(a7)+,d0
+	move.w	0(a4,d0.l),0(a3,d1.l)
 	;line	465
 	ext.l	d4
 	move.l	d4,-(a7)
@@ -814,7 +806,7 @@ L70:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a4,a0
-	move.w	10(a0),d0
+	move.w	2(a0),d0
 	add.w	#16,d0
 	move.l	d0,-(a7)
 	ext.l	d3
@@ -852,18 +844,19 @@ L72:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a4,a0
-	move.w	#1,164(a0)
+	move.w	#1,152(a0)
 	moveq	#1,d0
 	beq	L74
 	;line	472
+	moveq	#16,d0
+	move.l	d0,-(a7)
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a4,a0
-	move.w	4(a0),d0
-	add.w	#16,d0
+	move.l	d0,d1
+	move.l	(a7)+,d0
+	add.w	0(a4,d1.l),d0
 	move.l	d0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -887,7 +880,7 @@ L72:
 	move.l	d0,a1
 	add.l	a3,a1
 	move.l	(a7)+,a0
-	move.w	10(a0),2(a1)
+	move.w	2(a0),2(a1)
 	;line	474
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -919,7 +912,7 @@ L67:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a4,a0
-	tst.b	22(a0)
+	tst.b	10(a0)
 	bne	L76
 	;line	482
 	moveq	#1,d6
@@ -972,10 +965,10 @@ _assess_situation:
 	movem.l	d3/d4/d5/d6/d7/a3/a4/a5,-(a7)
 	move.l	8(a6),a3
 	move.l	12(a6),a4
-	move.l	#174,d4
+	move.l	#162,d4
 	moveq	#16,d5
 	lea	_DSconws,a5
-	move.l	#170,d6
+	move.l	#158,d6
 	move.l	20(a6),d7
 	;line	536
 	pea	L78
@@ -986,7 +979,7 @@ _assess_situation:
 	bra	L89
 L88:
 	;line	539
-	tst.b	22(a4)
+	tst.b	10(a4)
 	beq	L92
 	;line	541
 	pea	26(a6)
@@ -1069,34 +1062,32 @@ L94:
 	bra	L97
 L96:
 	;line	561
-	move.w	4(a4),d0
+	move.w	(a4),d0
 	subq.w	#8,d0
 	move.l	d0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d1
+	move.l	d0,d1
+	move.w	0(a3,d1.l),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bcs	L100
-	move.w	4(a4),d0
-	addq.w	#8,d0
+	moveq	#8,d0
+	add.w	(a4),d0
 	move.l	d0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d1
+	move.l	d0,d1
+	move.w	0(a3,d1.l),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bls	L99
 L100:
-	move.w	10(a4),d0
+	move.w	2(a4),d0
 	subq.w	#8,d0
 	move.l	d0,-(a7)
 	ext.l	d3
@@ -1105,11 +1096,11 @@ L100:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d1
+	move.w	2(a0),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bcs	L98
-	move.w	10(a4),d0
+	move.w	2(a4),d0
 	addq.w	#8,d0
 	move.l	d0,-(a7)
 	ext.l	d3
@@ -1118,7 +1109,7 @@ L100:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d1
+	move.w	2(a0),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bhi	L98
@@ -1138,29 +1129,27 @@ L99:
 	bra	L101
 L98:
 	;line	570
-	move.w	4(a4),d0
+	move.w	(a4),d0
 	sub.w	d5,d0
 	move.l	d0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d1
+	move.l	d0,d1
+	move.w	0(a3,d1.l),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bcs	L104
-	move.w	4(a4),d0
+	move.w	(a4),d0
 	add.w	d5,d0
 	move.l	d0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d1
+	move.l	d0,d1
+	move.w	0(a3,d1.l),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bhi	L104
@@ -1170,10 +1159,10 @@ L98:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	tst.w	166(a0)
+	tst.w	154(a0)
 	beq	L103
 L104:
-	move.w	10(a4),d0
+	move.w	2(a4),d0
 	sub.w	d5,d0
 	move.l	d0,-(a7)
 	ext.l	d3
@@ -1182,11 +1171,11 @@ L104:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d1
+	move.w	2(a0),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bcs	L102
-	move.w	10(a4),d0
+	move.w	2(a4),d0
 	add.w	d5,d0
 	move.l	d0,-(a7)
 	ext.l	d3
@@ -1195,7 +1184,7 @@ L104:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d1
+	move.w	2(a0),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bhi	L102
@@ -1205,7 +1194,7 @@ L104:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	tst.w	164(a0)
+	tst.w	152(a0)
 	bne	L102
 L103:
 	;line	576
@@ -1227,10 +1216,8 @@ L102:
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d0
-	sub.w	4(a4),d0
+	move.w	0(a3,d0.l),d0
+	sub.w	(a4),d0
 	add.w	d5,d0
 	move.l	d0,-(a7)
 	ext.l	d3
@@ -1239,8 +1226,8 @@ L102:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d1
-	sub.w	10(a4),d1
+	move.w	2(a0),d1
+	sub.w	2(a4),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bcc	L108
@@ -1250,8 +1237,8 @@ L102:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d0
-	sub.w	10(a4),d0
+	move.w	2(a0),d0
+	sub.w	2(a4),d0
 	cmp.w	d0,d5
 	bcs	L107
 L108:
@@ -1259,10 +1246,8 @@ L108:
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d0
-	sub.w	4(a4),d0
+	move.w	0(a3,d0.l),d0
+	sub.w	(a4),d0
 	add.w	d5,d0
 	move.l	d0,-(a7)
 	ext.l	d3
@@ -1271,8 +1256,8 @@ L108:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d1
-	sub.w	10(a4),d1
+	move.w	2(a0),d1
+	sub.w	2(a4),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bls	L106
@@ -1282,8 +1267,8 @@ L108:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d0
-	sub.w	10(a4),d0
+	move.w	2(a0),d0
+	sub.w	2(a4),d0
 	cmp.w	#65520,d0
 	bcc	L106
 L107:
@@ -1308,18 +1293,17 @@ L106:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d0
-	sub.w	10(a4),d0
+	move.w	2(a0),d0
+	sub.w	2(a4),d0
 	sub.w	d5,d0
 	move.l	d0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d1
-	sub.w	4(a4),d1
+	move.l	d0,d1
+	move.w	0(a3,d1.l),d1
+	sub.w	(a4),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bcc	L112
@@ -1327,10 +1311,8 @@ L106:
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d0
-	sub.w	4(a4),d0
+	move.w	0(a3,d0.l),d0
+	sub.w	(a4),d0
 	cmp.w	d0,d5
 	bcs	L111
 L112:
@@ -1340,18 +1322,17 @@ L112:
 	jsr	.Xlmul
 	move.l	d0,a0
 	add.l	a3,a0
-	move.w	10(a0),d0
-	sub.w	10(a4),d0
+	move.w	2(a0),d0
+	sub.w	2(a4),d0
 	add.w	d5,d0
 	move.l	d0,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d1
-	sub.w	4(a4),d1
+	move.l	d0,d1
+	move.w	0(a3,d1.l),d1
+	sub.w	(a4),d1
 	move.l	(a7)+,d0
 	cmp.w	d0,d1
 	bls	L110
@@ -1359,10 +1340,8 @@ L112:
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
-	move.w	4(a0),d0
-	sub.w	4(a4),d0
+	move.w	0(a3,d0.l),d0
+	sub.w	(a4),d0
 	cmp.w	#65520,d0
 	bcc	L110
 L111:
@@ -1452,18 +1431,18 @@ L116:
 	move.l	a3,-(a7)
 	jsr	_dodge_x_check
 	addq.l	#8,a7
-	move.w	d0,170(a3)
+	move.w	d0,158(a3)
 L119:
 	addq.w	#1,d3
 L117:
 	cmp.w	16(a6),d3
 	bge	L120
-	cmp.w	#1,170(a3)
+	cmp.w	#1,158(a3)
 	bne	L116
 L120:
 L118:
 	;line	640
-	cmp.w	#1,170(a3)
+	cmp.w	#1,158(a3)
 	bne	L121
 	;line	642
 	moveq	#1,d0
@@ -1493,18 +1472,18 @@ L124:
 	move.l	a3,-(a7)
 	jsr	_dodge_y_check
 	addq.l	#8,a7
-	move.w	d0,170(a3)
+	move.w	d0,158(a3)
 L127:
 	addq.w	#1,d3
 L125:
 	cmp.w	16(a6),d3
 	bge	L128
-	cmp.w	#2,170(a3)
+	cmp.w	#2,158(a3)
 	bne	L124
 L128:
 L126:
 	;line	678
-	cmp.w	#2,170(a3)
+	cmp.w	#2,158(a3)
 	bne	L129
 	;line	680
 	moveq	#1,d0

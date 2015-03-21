@@ -5,6 +5,7 @@
 #include "model.h"
 
 
+
 #define BOOL UINT8
 typedef char* String;
 
@@ -43,11 +44,8 @@ typedef enum BEHAVIOUR
 
 typedef struct Tank
 {
-	String x_find;
 	UINT16 x_coordinate;
-	String y_find;
 	UINT16 y_coordinate;
-	String end_coords;
 	UINT32 hitpoints;
 	UINT8  current_speed;
 	BOOL is_moving;

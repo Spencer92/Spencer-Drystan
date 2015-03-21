@@ -24,15 +24,15 @@
 #include "osbind.h"
 /*===================================================*/
 /*Header files authored by Others*/
-#include "fonts.h"
+/*#include "fonts.h"*/
 #include "types.h"
 #include "bitmaps.h"
 /*===================================================*/
 /*Header files authored by Spencer Maslen or Drystan Mazur*/
 
 #include  "model.h"
-#include  "RenderEngine.h"
-#include  "AssemblerRoutines.h"
+#include  "rE.h"
+#include  "AsRou.h"
 #include  "bitmaps.h"
 
 /*===================================================*/
@@ -71,7 +71,7 @@ int main() {
 	
 	
 	
-	Tank demoArray[6] = { };
+	Tank demoArray[6];
 
 	for(i = 0; i < MAX_MISSILES; i++)
 	{
@@ -83,19 +83,19 @@ int main() {
 	
 	
 	demoArray[0] = Tank
-			playerTank = {20, 50, PLAYER_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL, NULL, 1, 0, TRUE};
+			playerTank = {20, 50, PLAYER_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL, NULL, 1, 0, TRUE, DO_NOTHING,2};
 	demoArray[0].sprite = playerSprite;
 
 	demoArray[1] = Tank
-			enemyTank = {600, 10, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE};
+			enemyTank = {600, 10, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE, D0_NOTHING,2};
 	demoArray[2] = Tank
-			enemyTank2 = {250, 30, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE};
+			enemyTank2 = {250, 30, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE, DO_NOTHING,2};
 	demoArray[3] = Tank
-			enemyTank3 = {300, 50, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE};
+			enemyTank3 = {300, 50, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE, DO_NOTHING, 2};
 	demoArray[4] = Tank
-			enemyTank4 = {400, 70, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE};
+			enemyTank4 = {400, 70, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE, DO_NOTHING, 2};
 	demoArray[5] = Tank
-			enemyTank5 = {200, 100, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE};
+			enemyTank5 = {200, 100, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE, DO_NOTHING, 2};
 
 	demoArray[1].sprite = enemySprite;
 	demoArray[2].sprite = enemySprite;
