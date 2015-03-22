@@ -1,7 +1,7 @@
 #ifndef BEHAVIOUR_H
 #define BEHAVIOUR_H
 #include "types.h"
-#include "missile.h"
+#include "Missile.h"
 #include "model.h"
 
 
@@ -43,11 +43,9 @@ typedef enum BEHAVIOUR
 
 typedef struct Tank
 {
-	String x_find;
-	UINT16 x_coordinate;
-	String y_find;
+
+	UINT16 x_coordinate;	
 	UINT16 y_coordinate;
-	String end_coords;
 	UINT32 hitpoints;
 	UINT8  current_speed;
 	BOOL is_moving;
@@ -133,14 +131,16 @@ BOOL missiles_alive_x(Tank *enemy, Missile* missile, int num_missiles);
 void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input, Missile* missile, int num_missiles);
 void player_action(Tank* player, Missile* missile, char input);
 BOOL tanks_at(Tank* player, Tank* enemy, int num_tanks);
-
+BOOL DSconis();
+char DSnecin();
+void DSconws(String output);
 void missile_check(Tank *tank, Missile *missile, int num_missiles, int num_tanks);
-
+void DSconout(char output);
+long getTime();
 int thing();
 void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles);
 void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks, Stationary_Object *object, int num_objects);
-void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *object, 
-			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid);
+
 
 
 

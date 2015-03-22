@@ -3,6 +3,8 @@
 #include "missile.h"
 #include "stdlib.h"
 #include "osbind.h"
+#include "system.h"
+#include "keyboard.h"
 
 
 

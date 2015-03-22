@@ -20,7 +20,7 @@ const uint_8 gameFonts[] =
 	/* @0 '!' (3 pixels wide) */
 	0x00, //
 	0x00, //
-	0xE0, // ###
+	0xE0, /* ### */
 	0xE0, // ###
 	0xE0, // ###
 	0xE0, // ###

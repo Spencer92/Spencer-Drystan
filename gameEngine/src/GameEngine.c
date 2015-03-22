@@ -21,10 +21,10 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "osbind.h"
+#include <osbind.h>
 /*===================================================*/
 /*Header files authored by Others*/
-#include "fonts.h"
+/*#include "fonts.h"*/
 #include "types.h"
 #include "bitmaps.h"
 /*===================================================*/
@@ -34,6 +34,7 @@
 #include  "RenderEngine.h"
 #include  "AssemblerRoutines.h"
 #include  "bitmaps.h"
+#include "Behavior.h"
 
 /*===================================================*/
 #define  NUMBER_OFLIVES 3
@@ -46,6 +47,7 @@
 #define  SCREEN_WIDTH 640
 #define  SCREEN_HEIGHT 400
 #define  MAX_MISSILES 10
+#define  FILE_SIZE 0x8000L
 
 void gameReset();
 void pauseAndchill(int duration);
@@ -64,6 +66,8 @@ int main() {
 	char *gameScreen;
 	char *backGamescreen;
 	
+	UINT32 background[64];
+	
 	
 	long readfile;
 	int  handle;
@@ -71,7 +75,7 @@ int main() {
 	
 	
 	
-	Tank demoArray[6] = { };
+	Tank demoArray[6];
 
 	for(i = 0; i < MAX_MISSILES; i++)
 	{
@@ -82,8 +86,8 @@ int main() {
 	}
 	
 	
-	demoArray[0] = Tank
-			playerTank = {20, 50, PLAYER_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL, NULL, 1, 0, TRUE};
+	demoArray[0] = {20,50,PLAYER_HITPOINTS,MAXSPEED,TRUE,FALSE,NULL,NULL,1,0,TRUE};
+	
 	demoArray[0].sprite = playerSprite;
 
 	demoArray[1] = Tank
