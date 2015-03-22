@@ -5,11 +5,12 @@
 #define NEGTIVE_X_LIMIT -24
 #define POSTIVE_Y_LIMIT 504
 #define NEGTIVE_Y_LIMIT -24
+#define COPY_MASK 0x00000000
 #include "RenderEngine.h"
 #include <stdlib.h>
 #include  <stdio.h>
 #include "types.h"
-#include "testing-routines/types.h"
+
 
 
 /*
@@ -367,7 +368,7 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	UINT8 shiftleft;
 
 	if ((xpostoPlot > -16 && (xpostoPlot < SCREEN_WIDTH + 15))
-			&& (ypostoPlot > -16 && (ypostoPlot < SCREEN_HEIGHT + 15)))/*It's within bounds lets plot it*/
+	&& (ypostoPlot > -16 && (ypostoPlot < SCREEN_HEIGHT + 15)))/*It's within bounds lets plot it*/
 			{
 
 		/* Y Clipping section====================================*/
@@ -399,7 +400,7 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 			shiftright = (SCREEN_WIDTH + xposoffset) - SCREEN_WIDTH;
 
-			track8Ptr = writePtrLH; /*Going to plot in chunks of 8 bits easier than trying differing size pointers/blocks makes for cleaner code*/
+			track8Ptr = writePtrLH; 
 
 			arrayRd1 = spriteLocation;
 
@@ -408,19 +409,19 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 			if (shiftright > shiftleft) {
 
 				offset = 1;
-				track8Ptr +=77;
+				track8Ptr +=78;
 
 				if (shiftright <= 16 && shiftright > 8) {
 
 					j = 2;
-					track8Ptr += 78;
+					track8Ptr += 79;
 					offset = 2;
 
 				}
 
 				else {
 					j = 1;
-					track8Ptr += 79;
+					track8Ptr += 80;
 					offset = 3;
 				}
 
@@ -479,7 +480,7 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 				*(writePtrLH) |= bufferleft;
 
-				(bufferright) &= 0x00FFFFFF;
+				(bufferright) &= 0x0000FFFF;
 				*(writePtrRH) |= bufferright;
 
 				writePtrLH += 20;
@@ -511,59 +512,166 @@ void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,
 					int ypostoPlot, int size)
 
 {
-
-	UINT32 *cpyPtr =  fbstart;
+	register UINT32 mask = COPY_MASK;
+	register UINT32 *cpyPtrLH =  fbstart;
+	register UINT32 *cpyPtrRH =  fbstart;
 	UINT8  offset = size >>1;
-	UINT8  copy[size * 4];
-	int xnegBound = xpostoPlot - offset;;
+	int xnegBound = xpostoPlot - offset;
 	int xposBound = xpostoPlot + offset;
 	int yposBound = ypostoPlot + offset;
 	int ynegBound = ypostoPlot - offset;
 
 
 	if((((xpostoPlot + offset) <= POSTIVE_X_LIMIT ) && ((xpostoPlot - offset) >= NEGTIVE_X_LIMIT)) &&
-			((ypostoPlot + offset) <= POSTIVE_Y_LIMIT) && (ypostoPlot - offset) >= NEGTIVE_Y_LIMIT) {
+			((ypostoPlot + offset) <= POSTIVE_Y_LIMIT) && (ypostoPlot - offset) >= NEGTIVE_Y_LIMIT) 
+	{
 
-		cpyPtr += (ynegBound * 20);
-
-
+	
 		if (yposBound > SCREEN_HEIGHT  )/*Y clipping in effect*/
 		{
 
-			size = size -  (yposBound -SCREEN_HEIGHT);
-
-
+			size = size -  (yposBound - SCREEN_HEIGHT);
+			
 
 		}
 
 		else if(ynegBound < 0)
 		{
 			size = size  + ynegBound;
-			cpyPtr = fbstart;
+			ynegBound = 0;
 		}
 
-		if (xposBound > SCREEN_WIDTH ) /*X clipping in effect*/
+	/*X clipping section*/	
+		cpyPtrLH += (ynegBound *20);
+		
+		if(xnegBound < 0 || xposBound > SCREEN_WIDTH )
 		{
-			cpyPtr += (xnegBound >> 3);
-
-		}
-
-
-		while(size--)
+		
+			size = size << 1;
+			
+			if(xnegBound < 0)
+			{
+			for(offset = 1; offset < size; offset +2)
+			{
+			
+			backgroundLocation[offset - 1] = mask;
+			backgroundLocation[offset] = *(cpyPtrLH);	
+			
+			}
+			
+			
+			
+			}
+			else
+			{
+			for(offset = 0; offset < size; offset +2)
+			{
+			
+			backgroundLocation[offset + 1] = mask;
+			backgroundLocation[offset] = *(cpyPtrLH);	
+			
+			}
+			
+			
+			}
+			
+			
+		}	
+		
+			
+		else
 		{
-			*(backgroundLocation) = *(cpyPtr);
-			backgroundLocation++;
-			cpyPtr +=20;
+			
+			
+			cpyPtrLH += (xnegBound >> 5);
+			cpyPtrRH = cpyPtrLH;
+			cpyPtrRH++;
+			
+	
+			while(size--)
+		{
+			*(backgroundLocation++) = *(cpyPtrLH);
+			*(backgroundLocation++) = *(cpyPtrRH);		
+			  cpyPtrLH += 20;
+			  cpyPtrRH += 20;
 
 		}
-
-
-
-
+			
+		
+			
+		}
+		
+	
+	}	
 		return;
-  }
+  
+}
 
 
+void plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int size)
+	{
+	
+	UINT32 *cpyPtrLH =  fbstart;
+	UINT32 *cpyPtrRH =  fbstart;
+	UINT8  offset = size >>1;
+	int xnegBound = xpos - offset;
+	int xposBound = xpos + offset;
+	int yposBound = ypos + offset;
+	int ynegBound = ypos - offset;
+		
+		
+		
+		if (yposBound > SCREEN_HEIGHT  )/*Y clipping in effect*/
+		{
+
+			size = size -  (yposBound - SCREEN_HEIGHT);
+			
+
+		}
+
+		else if(ynegBound < 0)
+		{
+			size = size  + ynegBound;
+			ynegBound = 0;
+		}
+		
+		
+		cpyPtrLH +=(ynegBound * 20);
+		
+		
+	
+		
+		if(xnegBound < 0 || xposBound > SCREEN_WIDTH )
+		   
+		{
+		
+		
+		
+		
+		}
+		
+		else
+		{
+			
+			
+			cpyPtrLH += (xnegBound >> 5);
+			cpyPtrRH = cpyPtrLH;
+			cpyPtrRH++;
+			
+	
+			while(size--)
+		{
+			  *(cpyPtrLH) = *(background++);
+			  *(cpyPtrRH) = *(background++);		
+			  cpyPtrLH += 20;
+			  cpyPtrRH += 20;
+
+		}
+			
+		
+			
+		}
+	}
 
 
 

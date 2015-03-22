@@ -3,7 +3,7 @@
 
 #define START_OF_RENDER_AREA 0
 #define SCORE_AREA_OFFSET 0
-#define SCREEN_SIZE 0x8000
+#define SCREEN_SIZE 0x8000L
 
 #include "types.h"
 
@@ -44,7 +44,8 @@ void plotString(char *fbstart, char *theString, int size, int xpos,int ypos);
 
 
 
-void copyBackground(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
-		int ypostoPlot, int size);
+void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,int ypostoPlot, int size);
+
+void plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int size);
 #endif /* RENDERENGINE_H*/
 
