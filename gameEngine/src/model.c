@@ -143,6 +143,15 @@ void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *objec
 {
 	static int time_now;
 	time_now = getTime();
+	if(DSconis == 0)
+	{
+		DSconws("Cconis is 0\r\n\0");
+	}
+	else
+	{
+		DSconws("Cconis is -1\r\n\0");
+	}
+	while(getTime() <= time_now+10);
 	if(input_valid)
 	{
 /*		input = DSnecin();*/
@@ -160,7 +169,7 @@ void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *objec
 		input_valid = 0;
 	}
 	assess_situation(enemy, player, object, missile, num_enemies, num_missiles);
-	if(getTime() >= time_now+10)
+	if(getTime() <= time_now+10)
 	{
 		tank_respond(enemy, missile, num_missiles, num_enemies, object, num_objects);
 		time_now = getTime();

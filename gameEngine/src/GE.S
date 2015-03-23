@@ -355,19 +355,16 @@ L14:
 	bne	L17
 	;line	250
 	pea	L2
-	move.w	#9,-(a7)
-	jsr	(a4)
-	addq.l	#6,a7
+	jsr	_DSconws
+	addq.l	#4,a7
 	;line	251
 	pea	L3
-	move.w	#9,-(a7)
-	jsr	(a4)
-	addq.l	#6,a7
+	jsr	_DSconws
+	addq.l	#4,a7
 	;line	252
 	pea	L2
-	move.w	#9,-(a7)
-	jsr	(a4)
-	addq.l	#6,a7
+	jsr	_DSconws
+	addq.l	#4,a7
 L17:
 	;line	255
 	cmp.b	#1,d3
@@ -376,16 +373,12 @@ L17:
 	addq.b	#1,d3
 L18:
 L15:
-	move.w	#11,-(a7)
-	jsr	__trap_1_w
-	addq.l	#2,a7
-	tst.w	d0
+	jsr	_DSconis
+	tst.b	d0
 	beq	L14
 L16:
 	;line	261
-	move.w	#8,-(a7)
-	jsr	__trap_1_w
-	addq.l	#2,a7
+	jsr	_DSnecin
 	move.b	d0,d7
 	;line	263
 	cmp.b	#113,d7
@@ -449,6 +442,9 @@ L22:
 	jsr	__trap_14_wllw
 	lea	12(a7),a7
 L24:
+	;line	281
+	jsr	_DSnecin
+	move.b	d0,d7
 	;line	286
 	jsr	_DSconis
 	tst.b	d0
@@ -486,16 +482,12 @@ L24:
 L29:
 L30:
 	;line	299
-	move.w	#11,-(a7)
-	jsr	__trap_1_w
-	addq.l	#2,a7
-	tst.w	d0
+	jsr	_DSconis
+	tst.b	d0
 	beq	L29
 L31:
 	;line	300
-	move.w	#8,-(a7)
-	jsr	__trap_1_w
-	addq.l	#2,a7
+	jsr	_DSnecin
 	move.b	d0,d7
 L28:
 	bra	L32
