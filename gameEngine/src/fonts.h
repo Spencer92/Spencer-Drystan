@@ -15,7 +15,7 @@
 */
 
 /* Character bitmaps for Tw Cen MT Condensed Extra Bold 18pt */
-const uint_8 gameFonts[] =
+const uint_8 GAME_FONT gameFonts[] =
 {
 	/* @0 '!' (3 pixels wide) */
 	0x00, /**/

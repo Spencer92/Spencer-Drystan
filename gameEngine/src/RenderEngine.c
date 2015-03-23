@@ -504,7 +504,32 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 void plotString(char *fbstart, char *theString, int length, int xpos, int ypos)
 {
 
-UINT16 *trackPtr = fbstart;
+UINT16	 *trackPtr = fbstart;
+UINT8 	 *arrayRd = theString;
+UINT8    lookup;
+UINT8    *fonts = GAME_FONT;
+UINT8    *lookup = FONT_CHAR_INFO;
+	
+	if((xpos + length < SCREEN_WIDTH) &&(ypos >= 0 && ypos + 16 < SCREEN_HEIGHT))
+	{
+		
+		trackPtr +=(40 *ypos);
+		trackPtr += (xpos  >> 4);
+		
+	
+		
+		while(length--)
+	{
+		lookup = *(arrayRd) - 32;
+		
+	
+	}
+	
+	
+	
+	}
+	
+	
 	
 	
 
@@ -564,9 +589,7 @@ void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,in
 			backgroundLocation[offset] = *(cpyPtrLH);	
 			
 			}
-			
-			
-			
+				
 			}
 			else
 			{
