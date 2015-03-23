@@ -278,7 +278,7 @@ int main() {
 		do {
 
 			
-
+			keypress = DSnecin();
 			
 			
 			
