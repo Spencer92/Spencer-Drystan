@@ -70,6 +70,7 @@ int main() {
 	char *backGamescreen;
 	char *backdropScreen;
 	
+	long time_now;
 	long readfile;
 	int  handle;
 	Missile missile[MAX_MISSILES];
@@ -272,19 +273,15 @@ int main() {
 
 		Vsync();
 		Setscreen(gameScreen, gameScreen, -1L);
-
+		time_now = getTime();
 		
 		
 		do {
-
-			
-			keypress = DSnecin();
-			
-			
 			
 			
 			if(DSconis())
 			{
+				keypress = DSnecin();
 				playerInput = 1;
 				if (keypress == 'p') {
 				/*=====================here is pause game loop==================*/
@@ -295,17 +292,17 @@ int main() {
 				Cconws("In pause game loop \r\n\0");
 				Cconws("Please press any key to start \r\n\0");
 
-				while (!DSconis()) {
-				}
-				keypress = DSnecin();
-				}
+					while (!DSconis()) {
+					}
+						keypress = DSnecin();
+					}
 			}
 			else
 			{
 				playerInput = 0;
 			}
 			model(&playerDemo,demoArray,missile, landobjects, 
-			NUMBER_OFENEMYTANKS,MAX_MISSILES, NUM_OBJECTS,keypress,playerInput);
+			NUMBER_OFENEMYTANKS,MAX_MISSILES, NUM_OBJECTS,keypress,playerInput, &time_now);
 			
 			plotLargeSprite(gameScreen, playerDemo.sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,32);
 

@@ -5,8 +5,9 @@
 #include "osbind.h"
 #include "system.h"
 #include "keyboard.h"
+#include "stdio.h"
 
-
+String getBehaviour(BEHAVIOUR behaviour);
 
 /* Not really needed, but I'll keep it in anyway
 int main()
@@ -139,10 +140,9 @@ int main()
 
 
 void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *object, 
-			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid)
+			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid, long* time_now)
 {
-	static int time_now;
-	time_now = getTime();
+	long current_time = *time_now;
 	if(DSconis == 0)
 	{
 		DSconws("Cconis is 0\r\n\0");
@@ -151,29 +151,29 @@ void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *objec
 	{
 		DSconws("Cconis is -1\r\n\0");
 	}
-	while(getTime() <= time_now+10);
+	while(getTime() <= current_time+10);
 	if(input_valid)
 	{
-/*		input = DSnecin();*/
+/* 		input = DSnecin(); */
 		player_action_check(player, 
 		enemy, 
 		num_enemies, 
 		input, 
 		missile, 
 		num_missiles);
-		if(getTime() >= time_now+10)
-		{
+/*		if(getTime() <= current_time+10)*/
+/*		{*/
 			player_action(player,missile,input);
-			time_now = getTime();
-		}
+/*		}*/
 		input_valid = 0;
 	}
 	assess_situation(enemy, player, object, missile, num_enemies, num_missiles);
-	if(getTime() <= time_now+10)
+	if(getTime() <= current_time+10)
 	{
 		tank_respond(enemy, missile, num_missiles, num_enemies, object, num_objects);
-		time_now = getTime();
+		current_time = getTime();
 	}
+	time_now = &current_time;
 	
 }
 
@@ -222,26 +222,22 @@ void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input,
 {
 	long time = getTime();
 	DSconws("In player action check\r\n\0");
-	while(getTime() <= time+10);
 	
 	if((input == 'd' || input == 'a')/* && !tanks_at(player, enemy, num_enemies)*/)
 	{
 		player->current_behaviour = MOVE_X;
 		DSconws("Pressed a or d\r\n\0");
-			while(getTime() <= time+10);
 	}
 	else if((input == 'w' || input == 's') /*&& !tanks_at(player,enemy, num_enemies)*/)
 	{
 		player->current_behaviour = MOVE_Y;
 		DSconws("Pressed w or s\r\n\0");
-			while(getTime() <= time+10);
 	}
 	else if(input == ' ')
 	{
 		player->current_behaviour = SHOOT;
 		player->is_firing = 1;
 		DSconws("Pressed space\r\n\0");
-			while(getTime() <= time+10);
 	}
 	else if(die_check(player, missile, num_missiles))
 	{
@@ -280,13 +276,22 @@ void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input,
 
 void player_action(Tank* player, Missile* missile, char input)
 {
+	long time = getTime();
+	DSconws(getBehaviour(player->current_behaviour));
+	DSconws("\r\n\0");
+	while(getTime() <= time+10);
 	if(player->current_behaviour == MOVE_X && input == 'd')
 	{
 		player->x_coordinate++;
+		printf("%i\n", player->x_coordinate);
+		while(getTime() <= time+10);
 	}
 	else if(player->current_behaviour == MOVE_X && input == 'a')
 	{
 		player->x_coordinate--;
+		printf("%i\n", player->x_coordinate);
+		while(getTime() <= time+10);
+
 	}
 	else if(player->current_behaviour == MOVE_Y && input == 'w')
 	{
@@ -300,6 +305,35 @@ void player_action(Tank* player, Missile* missile, char input)
 	{
 		missile_check(player, missile, player->missile_available, 1);
 		player->is_firing = 0;
+	}
+
+}
+
+
+String getBehaviour(BEHAVIOUR behaviour)
+{
+	switch(behaviour)
+	{
+		case SHOOT:
+			return "SHOOT";
+		case DODGE_X:
+			return "DODGE_X";
+		case DODGE_Y:
+			return "DODGE_Y";
+		case MOVE_X:
+			return "MOVE_X";
+		case MOVE_Y:
+			return "MOVE_Y";
+		case DIE:
+			return "DIE";
+		case RESPAWN:
+			return "RESPAWN";
+		case TURN:
+			return "TURN";
+		case DO_NOTHING:
+			return "DO_NOTHING";
+		default:
+			return "???";
 	}
 }
 
@@ -382,39 +416,32 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 			{
 				missile_check(&enemy[index], missile, enemy[index].missile_available, 1);
 				enemy[index].is_firing = 0;
-/*				DSconws("shooting\r\n\0");*/
 			}
 			else if(enemy[index].current_behaviour == DODGE_X)
 			{
 				dodge_x(&enemy[index], object, &(enemy[index].h_facing), num_objects);
-/*				DSconws("Dodging x\r\n\0");*/
 			}
 			else if(enemy[index].current_behaviour == DODGE_Y)
 			{
 				dodge_y(&enemy[index], object, 
 										&(enemy[index].v_facing), num_objects);
-/*				DSconws("Dodging y\r\n\0");*/
 			}
 			else if(enemy[index].current_behaviour == MOVE_X)
 			{
 				move_x(&enemy[index], object, 
 										&enemy[index].h_facing, num_objects);
-/*				DSconws("Moving x\r\n\0");*/
 			}
 			else if(enemy[index].current_behaviour == MOVE_Y)
 			{
 				move_y(&enemy[index], object, &enemy[index].v_facing, num_objects);
-/*				DSconws("Moving y\r\n\0");*/
 			}
 			else if(enemy[index].current_behaviour == DIE)
 			{
 				enemy[index].is_visible == 0;
-/*				DSconws("Dying\r\n\0");*/
 			}
 			else if(enemy[index].current_behaviour == TURN)
 			{
 				turn(&enemy[index]);
-/*				DSconws("Turning\r\n\0");*/
 			}
 		}
 
