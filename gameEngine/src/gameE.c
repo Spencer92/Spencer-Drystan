@@ -32,7 +32,7 @@
 
 #include  "behavior.h"
 #include  "model.h"
-#include  "rE.h"
+#include  "renderE.h"
 #include  "AsRou.h"
 #include  "bitmaps.h"
 #include  "system.h"
@@ -50,6 +50,7 @@
 #define  MAX_MISSILES 10
 #define  FILE_SIZE 0x8000L
 #define  NUM_OBJECTS 6
+#define  SPRITE_SIZE 32
 
 void gameReset();
 void pauseAndchill(int duration);
@@ -264,10 +265,10 @@ int main() {
 	if (keypress != 'q') {
 
 /*=====================here is main game loop==================*/
-		plotLargeSprite(gameScreen, playerDemo.sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,32);
+		plotLargeSprite(gameScreen, playerDemo.sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,SPRITE_SIZE);
 		for(i = 0; i < NUMBER_OFENEMYTANKS; i++)
 		{
-			plotLargeSprite(gameScreen, demoArray[i].sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,32);
+			plotLargeSprite(gameScreen, demoArray[i].sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,SPRITE_SIZE);
 		}
 	
 
@@ -277,49 +278,65 @@ int main() {
 		
 		
 		do {
-			
+
 			
 			if(DSconis())
 			{
 				keypress = DSnecin();
 				playerInput = 1;
+				
 				if (keypress == 'p') {
 				/*=====================here is pause game loop==================*/
-				clear(mainScreen);
+			
+				
 				Vsync();
 				Setscreen(logMainscreen, mainScreen, -1L);
 				
 				Cconws("In pause game loop \r\n\0");
 				Cconws("Please press any key to start \r\n\0");
 
-					while (!DSconis()) {
-					}
-						keypress = DSnecin();
-					}
+				while (!DSconis()) {
+				}
+				keypress = DSnecin();
+				}
 			}
 			else
 			{
 				playerInput = 0;
 			}
-			model(&playerDemo,demoArray,missile, landobjects, 
-			NUMBER_OFENEMYTANKS,MAX_MISSILES, NUM_OBJECTS,keypress,playerInput, &time_now);
-			
-			plotLargeSprite(gameScreen, playerDemo.sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,32);
-
-			for(i = 0; i < NUMBER_OFENEMYTANKS; i++)
+		
+			if(getTime() >= time_now+1)
 			{
-				plotLargeSprite(gameScreen, demoArray[i].sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,32);
+				model(&playerDemo,demoArray,missile, landobjects, 			
+				NUMBER_OFENEMYTANKS,MAX_MISSILES, NUM_OBJECTS
+				  ,keypress,playerInput);
+				  time_now = getTime();
+			}
+			else
+			{
+			
+				copyBackground(gameScreen, playerDemo.backMask, playerDemo.x_coordinate, playerDemo.y_coordinate, SPRITE_SIZE);
+				plotLargeSprite(gameScreen, playerDemo.sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,SPRITE_SIZE);
+			
+				for(i = 0; i < NUMBER_OFENEMYTANKS; i++)
+				{
+					copyBackground(gameScreen, demoArray[i].backMask, demoArray[i].x_coordinate, demoArray[i].y_coordinate, SPRITE_SIZE);
+					plotLargeSprite(gameScreen, demoArray[i].sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,SPRITE_SIZE);
 
-/*				plotLargeSprite(gameScreen, demoArray[i].sprite, demoArray[i].x_coordinate
-				demoArray[i].y_coordinate, 32);*/
+
+				}
 			}
 			Vsync();
 			Setscreen(gameScreen, gameScreen, -1L);
-			clear(backGamescreen);
+			
+/*			clear(backGamescreen);*/
 
-
+			
 			Vsync();
 			Setscreen(backGamescreen, backGamescreen, -1L);
+			
+
+			
 		} while (keypress != 'q');
 
 	}

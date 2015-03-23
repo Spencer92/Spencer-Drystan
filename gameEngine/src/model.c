@@ -140,18 +140,8 @@ int main()
 
 
 void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *object, 
-			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid, long* time_now)
+			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid)
 {
-	long current_time = *time_now;
-	if(DSconis == 0)
-	{
-		DSconws("Cconis is 0\r\n\0");
-	}
-	else
-	{
-		DSconws("Cconis is -1\r\n\0");
-	}
-	while(getTime() <= current_time+10);
 	if(input_valid)
 	{
 /* 		input = DSnecin(); */
@@ -163,18 +153,13 @@ void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *objec
 		num_missiles);
 /*		if(getTime() <= current_time+10)*/
 /*		{*/
-			player_action(player,missile,input);
+		player_action(player,missile,input);
 /*		}*/
 		input_valid = 0;
 	}
 	assess_situation(enemy, player, object, missile, num_enemies, num_missiles);
-	if(getTime() <= current_time+10)
-	{
 		tank_respond(enemy, missile, num_missiles, num_enemies, object, num_objects);
-		current_time = getTime();
-	}
-	time_now = &current_time;
-	
+
 }
 
 
@@ -220,24 +205,19 @@ int thing()
 
 void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input, Missile* missile, int num_missiles)
 {
-	long time = getTime();
-	DSconws("In player action check\r\n\0");
-	
+
 	if((input == 'd' || input == 'a')/* && !tanks_at(player, enemy, num_enemies)*/)
 	{
 		player->current_behaviour = MOVE_X;
-		DSconws("Pressed a or d\r\n\0");
 	}
 	else if((input == 'w' || input == 's') /*&& !tanks_at(player,enemy, num_enemies)*/)
 	{
 		player->current_behaviour = MOVE_Y;
-		DSconws("Pressed w or s\r\n\0");
 	}
 	else if(input == ' ')
 	{
 		player->current_behaviour = SHOOT;
 		player->is_firing = 1;
-		DSconws("Pressed space\r\n\0");
 	}
 	else if(die_check(player, missile, num_missiles))
 	{
@@ -277,21 +257,13 @@ void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input,
 void player_action(Tank* player, Missile* missile, char input)
 {
 	long time = getTime();
-	DSconws(getBehaviour(player->current_behaviour));
-	DSconws("\r\n\0");
-	while(getTime() <= time+10);
 	if(player->current_behaviour == MOVE_X && input == 'd')
 	{
 		player->x_coordinate++;
-		printf("%i\n", player->x_coordinate);
-		while(getTime() <= time+10);
 	}
 	else if(player->current_behaviour == MOVE_X && input == 'a')
 	{
 		player->x_coordinate--;
-		printf("%i\n", player->x_coordinate);
-		while(getTime() <= time+10);
-
 	}
 	else if(player->current_behaviour == MOVE_Y && input == 'w')
 	{

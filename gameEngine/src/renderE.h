@@ -18,10 +18,7 @@ void plotArbLine(char *fbstart, int xstart, int ystart, int xfin, int yfin);
 
 void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size);
-/*
-void copyBackground(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
-		int ypostoPlot, int size);
-*/
+void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,int ypostoPlot, int size);
 void printvertical(unsigned char* base, unsigned int x_loc, unsigned int y_loc,
 		unsigned int length);
 
@@ -40,11 +37,6 @@ typedef struct Screen {
 
 } Screen;
 
-void plotString(char *fbstart, char *theString, int size, int xpos,int ypos);
-
-
-
-void copyBackground(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
-		int ypostoPlot, int size);
+void plotString(char *fbstart, char *theString, int length, int xpos, int ypos);
 #endif /* RENDERENGINE_H*/
 

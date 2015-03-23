@@ -141,10 +141,7 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks, Stationary_Object *object, int num_objects);
 
 void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *object, 
-			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid, long* time_now);
-
-
-
+			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid);
 
 
 #endif

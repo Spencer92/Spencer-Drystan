@@ -5,9 +5,12 @@
 #define NEGTIVE_X_LIMIT -24
 #define POSTIVE_Y_LIMIT 504
 #define NEGTIVE_Y_LIMIT -24
-#include "rE.h"
+#define COPY_MASK 0x00000000
+#include "RenderE.h"
 #include <stdlib.h>
 #include  <stdio.h>
+#include "types.h"
+/*#include "fonts.h"*/
 
 
 /*
@@ -498,64 +501,210 @@ void plotLargeSprite(
 	return;
 }
 
-void plotString(char *fbstart, char *theString, int size, int xpos,int ypos)
+/*void plotString(char *fbstart, char *theString, int length, int xpos, int ypos)
 {
 /*TODO for the length of the string convert into a integer value array then use this value to offset
  * into the font array. The   xpos and ypos are assumed to be left hand side of the string.
  *(X,Y )->[String] all fonts limited to 16x16 max.
  *Maybe a boolean to confirm it is within limits ?
  * */
+/*UINT16	 *trackPtr = fbstart;
+UINT8 	 *arrayRd = theString;
+UINT8    lookup;
+UINT8    *fonts = GAME_FONT;
+UINT8    *lookup = FONT_CHAR_INFO;
+	
+	if((xpos + length < SCREEN_WIDTH) &&(ypos >= 0 && ypos + 16 < SCREEN_HEIGHT))
+	{
+		
+		trackPtr +=(40 *ypos);
+		trackPtr += (xpos  >> 4);
+		
+	
+		
+		while(length--)
+	{
+		lookup = *(arrayRd) - 32;
+		
+	
+	}
+	
+	
+	
+	}
+	
+	
+	
+	
+
+	
+
 
 
 
 }
-/*
-void copyBackground(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,int ypostoPlot, 
-					int size)
-{
-
-    UINT16 *leftHandPtr;
-    UINT16 *rightHandPtr;
-    UINT8 offset = size >>1;
-	UINT8 copy[size * 4];
-	int xnegBound = xpostoPlot - offset;;
-	int xposBound = xpostoPlot + offset;
-	int yposBound;
-	int ynegBound;
-
-
-    if((((xpostoPlot + offset) <= POSTIVE_X_LIMIT ) && ((xpostoPlot - offset) >= NEGTIVE_X_LIMIT)) &&
-	((ypostoPlot + offset) <= POSTIVE_Y_LIMIT) && (ypostoPlot - offset) >= NEGTIVE_Y_LIMIT)
-    {
-
-	if(yposBound > SCREEN_HEIGHT)
-	{
-
-	}
-
-
-	else if(xnegBound < 0 || xposBound > SCREEN_WIDTH)
-	{
-
-	}
-
-
-
-
-
-
-
-
-	}
-
-
-
-
-	return;
-  }
 */
+void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,int ypostoPlot, int size)
+
+{
+	register UINT32 mask = COPY_MASK;
+	register UINT32 *cpyPtrLH =  fbstart;
+	register UINT32 *cpyPtrRH =  fbstart;
+	UINT8  offset = size >>1;
+	int xnegBound = xpostoPlot - offset;
+	int xposBound = xpostoPlot + offset;
+	int yposBound = ypostoPlot + offset;
+	int ynegBound = ypostoPlot - offset;
 
 
+	if((((xpostoPlot + offset) <= POSTIVE_X_LIMIT ) && ((xpostoPlot - offset) >= NEGTIVE_X_LIMIT)) &&
+			((ypostoPlot + offset) <= POSTIVE_Y_LIMIT) && (ypostoPlot - offset) >= NEGTIVE_Y_LIMIT) 
+	{
+
+	
+		if (yposBound > SCREEN_HEIGHT  )/*Y clipping in effect*/
+		{
+
+			size = size -  (yposBound - SCREEN_HEIGHT);
+			
+
+		}
+
+		else if(ynegBound < 0)
+		{
+			size = size  + ynegBound;
+			ynegBound = 0;
+		}
+
+	/*X clipping section*/	
+		cpyPtrLH += (ynegBound *20);
+		
+		if(xnegBound < 0 || xposBound > SCREEN_WIDTH )
+		{
+		
+			size = size << 1;
+			
+			if(xnegBound < 0)
+			{
+			for(offset = 1; offset < size; offset +2)
+			{
+			
+			backgroundLocation[offset - 1] = mask;
+			backgroundLocation[offset] = *(cpyPtrLH);	
+			
+			}
+				
+			}
+			else
+			{
+			for(offset = 0; offset < size; offset +2)
+			{
+			
+			backgroundLocation[offset + 1] = mask;
+			backgroundLocation[offset] = *(cpyPtrLH);	
+			
+			}
+			
+			
+			}
+			
+			
+		}	
+		
+			
+		else
+		{
+			
+			
+			cpyPtrLH += (xnegBound >> 5);
+			cpyPtrRH = cpyPtrLH;
+			cpyPtrRH++;
+			
+	
+			while(size--)
+		{
+			*(backgroundLocation++) = *(cpyPtrLH);
+			*(backgroundLocation++) = *(cpyPtrRH);		
+			  cpyPtrLH += 20;
+			  cpyPtrRH += 20;
+
+		}
+			
+		
+			
+		}
+		
+	
+	}	
+		return;
+  
+}
+
+
+void plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int size)
+	{
+	
+	UINT32 *cpyPtrLH =  fbstart;
+	UINT32 *cpyPtrRH =  fbstart;
+	UINT8  offset = size >>1;
+	int xnegBound = xpos - offset;
+	int xposBound = xpos + offset;
+	int yposBound = ypos + offset;
+	int ynegBound = ypos - offset;
+		
+		
+		
+		if (yposBound > SCREEN_HEIGHT  )/*Y clipping in effect*/
+		{
+
+			size = size -  (yposBound - SCREEN_HEIGHT);
+			
+
+		}
+
+		else if(ynegBound < 0)
+		{
+			size = size  + ynegBound;
+			ynegBound = 0;
+		}
+		
+		
+		cpyPtrLH +=(ynegBound * 20);
+		
+		
+	
+		
+		if(xnegBound < 0 || xposBound > SCREEN_WIDTH )
+		   
+		{
+		
+		/*TODO x clipping issue to deal with.*/
+		
+		
+		}
+		
+		else
+		{
+			
+			
+			cpyPtrLH += (xnegBound >> 5);
+			cpyPtrRH = cpyPtrLH;
+			cpyPtrRH++;
+			
+	
+			while(size--)
+		{
+			  *(cpyPtrLH) = *(background++);
+			  *(cpyPtrRH) = *(background++);		
+			  cpyPtrLH += 20;
+			  cpyPtrRH += 20;
+
+		}
+			
+		
+			
+		}
+	}
 
 
 
