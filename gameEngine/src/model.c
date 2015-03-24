@@ -6,6 +6,10 @@
 #include "system.h"
 #include "keyboard.h"
 #include "stdio.h"
+#define RIGHT_EDGE 639
+#define LEFT_EDGE 0
+#define DOWN_EDGE 400
+#define UP_EDGE 0
 
 String getBehaviour(BEHAVIOUR behaviour);
 
@@ -142,6 +146,7 @@ int main()
 void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *object, 
 			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid)
 {
+
 	if(input_valid)
 	{
 /* 		input = DSnecin(); */
@@ -209,10 +214,12 @@ void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input,
 	if((input == 'd' || input == 'a')/* && !tanks_at(player, enemy, num_enemies)*/)
 	{
 		player->current_behaviour = MOVE_X;
+		Cconws("Move x \r\0");
 	}
 	else if((input == 'w' || input == 's') /*&& !tanks_at(player,enemy, num_enemies)*/)
 	{
 		player->current_behaviour = MOVE_Y;
+		Cconws("Move y \r\0");
 	}
 	else if(input == ' ')
 	{
@@ -256,20 +263,28 @@ void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input,
 
 void player_action(Tank* player, Missile* missile, char input)
 {
-	long time = getTime();
-	if(player->current_behaviour == MOVE_X && input == 'd')
+        if(player->current_behaviour == MOVE_X && input == 'd')
 	{
-		player->x_coordinate++;
+	  if(player->x_coordinate < RIGHT_EDGE)
+	    {
+	      player->x_coordinate++;
+	    }
+		printf("player: %i\n", player->x_coordinate);
+
 	}
-	else if(player->current_behaviour == MOVE_X && input == 'a')
+	else if(player->current_behaviour == MOVE_X && input == 'a' && player->x_coordinate-16 >= LEFT_EDGE)
 	{
-		player->x_coordinate--;
+	  if(player->x_coordinate > LEFT_EDGE)
+	    {
+	      player->x_coordinate--;
+	    }
+	  printf("player: %i\n", player->x_coordinate);
 	}
-	else if(player->current_behaviour == MOVE_Y && input == 'w')
+	else if(player->current_behaviour == MOVE_Y && input == 'w' && player->y_coordinate-16 >= UP_EDGE)
 	{
 		player->y_coordinate--;
 	}
-	else if(player->current_behaviour == MOVE_Y && input == 'd')
+	else if(player->current_behaviour == MOVE_Y && input == 'd' && player->y_coordinate+16 <= DOWN_EDGE)
 	{
 		player->y_coordinate++;
 	}

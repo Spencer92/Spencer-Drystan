@@ -120,6 +120,7 @@ int main() {
 	demoArray[0].is_visible = TRUE;
 	demoArray[0].current_behaviour = DO_NOTHING;
 	demoArray[0].missile_available = 2;
+
 	
 	demoArray[1].x_coordinate = 250;
 	demoArray[1].y_coordinate = 30;
@@ -284,7 +285,7 @@ int main() {
 			{
 				keypress = DSnecin();
 				playerInput = 1;
-				
+
 				if (keypress == 'p') {
 				/*=====================here is pause game loop==================*/
 			
@@ -304,12 +305,18 @@ int main() {
 			{
 				playerInput = 0;
 			}
-		
+			  printf("%i, x\t %i, y\n", playerDemo.x_coordinate, playerDemo.y_coordinate);
+
 			if(getTime() >= time_now+1)
 			{
+			  printf("%i, x\t %i, y\n", playerDemo.x_coordinate, playerDemo.y_coordinate);
+
+
 				model(&playerDemo,demoArray,missile, landobjects, 			
 				NUMBER_OFENEMYTANKS,MAX_MISSILES, NUM_OBJECTS
 				  ,keypress,playerInput);
+			  printf("%i, x\t %i, y\n", playerDemo.x_coordinate, playerDemo.y_coordinate);
+			  /*return 0;*/
 				  time_now = getTime();
 			}
 			else
