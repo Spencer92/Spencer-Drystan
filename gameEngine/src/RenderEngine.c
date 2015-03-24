@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include  <stdio.h>
 #include "types.h"
+#inculde "fonts.h"
 
 
 
@@ -504,11 +505,11 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 void plotString(char *fbstart, char *theString, int length, int xpos, int ypos)
 {
 
-UINT16	 *trackPtr = fbstart;
+UINT16	 *trackPtr = (UINT16*)fbstart;
 UINT8 	 *arrayRd = theString;
 UINT8    lookup;
-UINT8    *fonts = GAME_FONT;
-UINT8    *lookup = FONT_CHAR_INFO;
+UINT8    *fonts  	= GAME_FONT;
+UINT8    *lookupPtr = FONT_CHAR_INFO;
 	
 	if((xpos + length < SCREEN_WIDTH) &&(ypos >= 0 && ypos + 16 < SCREEN_HEIGHT))
 	{
@@ -521,6 +522,10 @@ UINT8    *lookup = FONT_CHAR_INFO;
 		while(length--)
 	{
 		lookup = *(arrayRd) - 32;
+			lookup[];
+			
+			
+			
 		
 	
 	}
