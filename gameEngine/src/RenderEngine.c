@@ -5,6 +5,7 @@
 #define NEGTIVE_X_LIMIT -24
 #define POSTIVE_Y_LIMIT 504
 #define NEGTIVE_Y_LIMIT -24
+#define FONT_SIZE 15
 #define COPY_MASK 0x00000000
 #include "RenderEngine.h"
 #include <stdlib.h>
@@ -505,39 +506,44 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 void plotString(char *fbstart, char *theString, int length, int xpos, int ypos)
 {
 
-UINT16	 *trackPtr = (UINT16*)fbstart;
-UINT8 	 *arrayRd = theString;
-UINT8    lookup;
-UINT8    *fonts  	= GAME_FONT;
-UINT8    *lookupPtr = FONT_CHAR_INFO;
+register UINT16	  *trackPtr  = (UINT16*)fbstart;
+register UINT16    *fonts  	 = GAME_FONT;
+register UINT16    *lookupPtr = GameFontDescriptors;
+register UINT16    *refPtr;
+register UINT8 	  *arrayRd = theString;
+register UINT8     lookup;
+
 	
-	if((xpos + length < SCREEN_WIDTH) &&(ypos >= 0 && ypos + 16 < SCREEN_HEIGHT))
+	if((xpos + length < SCREEN_WIDTH) &&(ypos >= 0 && (ypos + 16 < SCREEN_HEIGHT)))
 	{
 		
 		trackPtr +=(40 *ypos);
 		trackPtr += (xpos  >> 4);
-		
+		refPtr 	  = trackPtr;
 	
 		
 		while(length--)
 	{
 		lookup = *(arrayRd) - 32;
-			lookup[];
+		fonts += (lookupPtr[lookup]);
+	    refPtr++;
 			
+			for(lookup = 0; lookup < FONT_SIZE; loopup++)
+			{
+			 *(trackPtr) |= *(fonts);
+			   trackPtr +=40;
+			   fonts++;
 			
+			}	
 			
-		
-	
+	fonts = GAME_FONT;	
+	arrayRd ++;
 	}
 	
 	
 	
 	}
 	
-	
-	
-	
-
 	
 
 
