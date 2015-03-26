@@ -27,6 +27,7 @@
 /*#include "fonts.h"*/
 #include "types.h"
 #include "bitmaps.h"
+#include "BackDrop.h"
 /*===================================================*/
 /*Header files authored by Spencer Maslen or Drystan Mazur*/
 
@@ -36,6 +37,7 @@
 #include  "AsRou.h"
 #include  "bitmaps.h"
 #include  "system.h"
+#include  "fonts.h"
 
 /*===================================================*/
 #define  NUMBER_OFLIVES 3
@@ -56,6 +58,11 @@ void pauseAndchill(int duration);
 void makeScreen(void* screenChunk1);
 BOOL makeGameScreens(long* screenChunk1 ,long* screenChunk2);
 
+Tank playerDemo;
+Tank demoArray[5];
+
+
+
 int main() {
 
 	BOOL playerInput = 0;
@@ -75,8 +82,7 @@ int main() {
 	Missile missile[MAX_MISSILES];
 	
 	
-	Tank playerDemo;
-	Tank demoArray[5];
+	
 
 	for(i = 0; i < MAX_MISSILES; i++)
 	{
@@ -349,13 +355,6 @@ int main() {
 	return 0;
 
 }
-
-void pauseAndchill(int duration) 
-{
-
-	
-}
-
 
 
 void gameReset()

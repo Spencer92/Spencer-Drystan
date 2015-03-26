@@ -59,13 +59,6 @@ typedef struct ScoreBox
 	
 } ScoreBox;
 
-typedef struct FontTable
-{
-
-	
-	
-
-} FontTable;
 
 
 #endif /* RENDERENGINE_H*/
