@@ -95,19 +95,12 @@ int main() {
 	backGamescreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
 
 	
-	clear(gameScreen);BOOL vaildFile;
-		
-	readfile = Fopen("grass.pi1",0);
 	
-	handle = (readfile &= 0x0000FFFF); /*handle is in lower word */
 	
-	Fseek(34,handle,0); /*align to data offset in degas file */
-	 
-	readfile = Fread(handle,FILE_SIZE,fastCopyptSrc); /*load data to mem */
 	
 	if(readfile != 0){
 		
-	clear(backGamescreen);
+	
 	Cursconf(0, 0); /* removes cursor*/
 
 	
