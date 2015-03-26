@@ -3,9 +3,16 @@
 
 #define START_OF_RENDER_AREA 0
 #define SCORE_AREA_OFFSET 0
-#define SCREEN_SIZE 0x8000L
+
+#define RESULUTION_ADDRESS 0xff8260
+#define SCREEN_MEM_HIGH 0xff8201
+#define SCREEN_MEM_LOW  0xff8203
+
+
+
 
 #include "types.h"
+#include <tos.h>
 
 
 void plotPixel(char *fbstart, int x, int y);
@@ -60,6 +67,10 @@ typedef struct ScoreBox
 } ScoreBox;
 
 
+void setScreen(char *newScreen, char *oldScreen);
+
+int findRez();
+	
 
 #endif /* RENDERENGINE_H*/
 

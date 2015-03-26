@@ -33,34 +33,33 @@
 
 #include  "behavior.h"
 #include  "model.h"
-#include  "rE.h"
+#include  "renderE.h"
 #include  "AsRou.h"
 #include  "bitmaps.h"
 #include  "system.h"
 #include  "fonts.h"
+#include  "gameF.h"
 
 /*===================================================*/
-#define  NUMBER_OFLIVES 3
-#define  PLAYER_HITPOINTS 50
-#define  ENEMY_HITPOINTS 5
-#define  NUMBER_OFENEMYTANKS 5
+
+
 #define  NUMBER_TILES 1
 #define  MAXSPEED  5
 #define  BUFFER_SIZE   0x8100L
 #define  SCREEN_WIDTH 640
 #define  SCREEN_HEIGHT 400
-#define  MAX_MISSILES 10
-#define  FILE_SIZE 0x8000L
-#define  NUM_OBJECTS 6
 
-void gameReset();
-void pauseAndchill(int duration);
+
+
+
+
 void makeScreen(void* screenChunk1);
 BOOL makeGameScreens(long* screenChunk1 ,long* screenChunk2);
 
 Tank playerDemo;
-Tank demoArray[5];
-
+Tank demoArray[NUMBER_OFTANKS];
+Missile missile[MAX_MISSILES];
+Stationary_Object landobjects[NUM_OBJECTS];
 
 
 int main() {
@@ -70,138 +69,17 @@ int main() {
 
 	UINT16 playerScore = 0;
 	UINT8 i = 0;
-	Stationary_Object landobjects[6];
+	
 	char *mainScreen;
 	char *logMainscreen;
 	char *gameScreen;
 	char *backGamescreen;
-	char *backdropScreen;
-	
-	long readfile;
-	int  handle;
-	Missile missile[MAX_MISSILES];
-	
-	
+	char *backdropScreen;	
 	
 
-	for(i = 0; i < MAX_MISSILES; i++)
-	{
-		missile[i].is_visible = 0;
-		missile[i].x_coordinate = -1;
-		missile[i].y_coordinate = -1;
-		missile[i].sprite = NULL;
-	}
-	
-	
-/*	playerDemo = {20, 50, PLAYER_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL, NULL, 0,0,NULL,0, 1, TRUE, DO_NOTHING,2};*/
-	playerDemo.x_coordinate = 20;
-	playerDemo.y_coordinate = 50;
-	playerDemo.hitpoints = PLAYER_HITPOINTS;
-	playerDemo.current_speed = MAXSPEED;
-	playerDemo.is_moving = TRUE;
-	playerDemo.is_firing = FALSE;
-	getBitmap32(playerTankNorth, playerDemo.sprite);
-/*	playerDemo.sprite = &playerTankNorth;*/
-	playerDemo.x_posMask = 0;
-	playerDemo.y_posMask = 0;
-	playerDemo.h_facing = VERTICAL;
-	playerDemo.v_facing = UP;
-	playerDemo.is_visible = TRUE;
-	playerDemo.current_behaviour = DO_NOTHING;
-	playerDemo.missile_available = 2;
-	
-	demoArray[0].x_coordinate = 600;
-	demoArray[0].y_coordinate = 10;
-	demoArray[0].hitpoints = ENEMY_HITPOINTS;
-	demoArray[0].current_speed = MAXSPEED;
-	demoArray[0].is_moving = TRUE;
-	demoArray[0].is_firing = FALSE;
-/*	demoArray[0].sprite = enemyTankNorth;*/
-	demoArray[0].x_posMask = 0;
-	demoArray[0].y_posMask = 0;
-	demoArray[0].h_facing = LEFT;
-	demoArray[0].v_facing = UP;
-	demoArray[0].is_visible = TRUE;
-	demoArray[0].current_behaviour = DO_NOTHING;
-	demoArray[0].missile_available = 2;
-	
-	demoArray[1].x_coordinate = 250;
-	demoArray[1].y_coordinate = 30;
-	demoArray[1].hitpoints = ENEMY_HITPOINTS;
-	demoArray[1].current_speed = MAXSPEED;
-	demoArray[1].is_moving = TRUE;
-	demoArray[1].is_firing = FALSE;
-/*	demoArray[1].sprite = enemyTankEast;*/
-	demoArray[1].x_posMask = 0;
-	demoArray[1].y_posMask = 0;
-	demoArray[1].h_facing = LEFT;
-	demoArray[1].v_facing = UP;
-	demoArray[1].is_visible = TRUE;
-	demoArray[1].current_behaviour = DO_NOTHING;
-	demoArray[1].missile_available = 2;
-	
-/*	demoArray[1] = {600, 10, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE, D0_NOTHING,2};*/
-	demoArray[2].x_coordinate = 300;
-	demoArray[2].y_coordinate = 50;
-	demoArray[2].hitpoints = ENEMY_HITPOINTS;
-	demoArray[2].current_speed = MAXSPEED;
-	demoArray[2].is_moving = TRUE;
-	demoArray[2].is_firing = FALSE;
-/*	demoArray[2].sprite = enemyTankEast;*/
-	demoArray[2].x_posMask = 0;
-	demoArray[2].y_posMask = 0;
-	demoArray[2].h_facing = LEFT;
-	demoArray[2].v_facing = UP;
-	demoArray[2].is_visible = TRUE;
-	demoArray[2].current_behaviour = DO_NOTHING;
-	demoArray[2].missile_available = 2;
-	
-/*	demoArray[1] = {250, 30, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE, DO_NOTHING,2};*/
-	demoArray[4].x_coordinate = 400;
-	demoArray[4].y_coordinate = 70;
-	demoArray[4].hitpoints = ENEMY_HITPOINTS;
-	demoArray[4].current_speed = MAXSPEED;
-	demoArray[4].is_moving = TRUE;
-	demoArray[4].is_firing = FALSE;
-/*	demoArray[4].sprite = enemyTankEast;*/
-	demoArray[4].x_posMask = 0;
-	demoArray[4].y_posMask = 0;
-	demoArray[4].h_facing = LEFT;
-	demoArray[4].v_facing = UP;
-	demoArray[4].is_visible = TRUE;
-	demoArray[4].current_behaviour = DO_NOTHING;
-	demoArray[4].missile_available = 2;
-
-/*	demoArray[2] = {300, 50, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE, DO_NOTHING, 2};*/
-	demoArray[3].x_coordinate = 200;
-	demoArray[3].y_coordinate = 100;
-	demoArray[3].hitpoints = ENEMY_HITPOINTS;
-	demoArray[3].current_speed = MAXSPEED;
-	demoArray[3].is_moving = TRUE;
-	demoArray[3].is_firing = FALSE;
-/*	demoArray[3].sprite = enemyTankEast;*/
-	demoArray[3].x_posMask = 0;
-	demoArray[3].y_posMask = 0;
-	demoArray[3].h_facing = LEFT;
-	demoArray[3].v_facing = UP;
-	demoArray[3].is_visible = TRUE;
-	demoArray[3].current_behaviour = DO_NOTHING;
-	demoArray[3].missile_available = 2;
-
-/*	demoArray[3] = {400, 70, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE, DO_NOTHING, 2};*/
-/*	demoArray[5] = {200, 100, ENEMY_HITPOINTS, MAXSPEED, TRUE, FALSE, NULL,NULL, -1, 0, TRUE, DO_NOTHING, 2};*/
-/*
-	demoArray[1].sprite = enemyTankNorth;
-	demoArray[1].sprite = enemyTankNorth;
-	demoArray[2].sprite = enemyTankNorth;
-	demoArray[3].sprite = enemyTankNorth;
-	demoArray[5].sprite = enemyTankNorth;
-*/	
-
-	for(i = 1; i < NUMBER_OFENEMYTANKS; i++)
-	{
-		getBitmap32(enemyTankNorth, demoArray[i].sprite);
-	}
+	UINT8 screen1[BUFFER_SIZE];
+	UINT8 screen2[BUFFER_SIZE];
+	UINT8 welcomeScreen[BUFFER_SIZE];
 
 
 	/*=========Will Change in next system=========================*/
@@ -222,19 +100,6 @@ int main() {
 	clear(backGamescreen);
 	
 
-	/*===========================================================*/
-
-	/* TODO Initiate game system */
-
-	 readfile = Fopen("tankscreen.pi1",0);
-	
-	 handle = (readfile &= 0x0000FFFF); /*handle is in lower word */
-	
-	 Fseek(34,handle,0); /*align to data offset in degas file */
-	 
-	 Fread(handle,FILE_SIZE,backdropScreen); /*load data to mem */
-	
-	
 	Cursconf(0, 0); /* removes cursor*/
 
 	
@@ -357,12 +222,6 @@ int main() {
 }
 
 
-void gameReset()
-{
-	
-	
-	
-}
 	
 BOOL makeGameScreens(char* screenChunk1 ,char* screenChunk2)
 {

@@ -2,7 +2,7 @@
 #define BEHAVIOUR_H
 #include "types.h"
 #include "Missile.h"
-#include "model.h"
+
 
 
 #define BOOL UINT8

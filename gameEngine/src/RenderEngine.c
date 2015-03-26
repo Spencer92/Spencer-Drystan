@@ -18,38 +18,6 @@
 /*
  =============================================================================
  *
- * Function Name    : plotPixel (Note this function was defined in a lecture,
- * 					  we are not the authors of this function)
- *
- * Purpose          :To plot a pixel on the screen
- *
- *
- * Method           :The values are checked against the bounds of the screen.
- * 					 Then a mask is set to the x position, this mask is logically
- * 					 OR'ed with the Frame Buffer.
- *
- *
- * Input Parameters :(x,y) start position .A pointer to the
- * 					 screen buffer memory.
- *
- *
- * Return Value     :A modified screen buffer
- *
- *
- *=============================================================================*/
-
-void plotPixel(char *fbstart, int x, int y) {
-	if (x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT) {
-
-		*(fbstart + (y * 80) + (x >> 3)) |= 1 << 7 - (x & 7);
-
-	}
-
-}
-
-/*
- =============================================================================
- *
  * Function Name    : plotHorzLine
  *
  * Purpose          :To plot a horizontal line between two points on the screen
@@ -714,10 +682,44 @@ void plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int siz
 	}
 
 
+`
+void setScreen(char *newScreen, char *oldScreen)
+{
 
 
 
+}
 
+int findRez()
+{
+
+	int i;
+	UINT8 *infoPtr = NULL;
+	UINT8 value = 0x02;
+	
+	
+	
+	long oldssp;
+	oldssp = Super(0);
+	
+	infoPtr += 0xff8260;
+	value &= *infoPtr;
+	
+	Super(oldssp);	
+	
+	if(value == 2)
+	{
+	 i = 1;
+	}
+	else 
+	{
+	i = 0;
+	}
+	
+	
+	return i;
+
+}
 
 
 
