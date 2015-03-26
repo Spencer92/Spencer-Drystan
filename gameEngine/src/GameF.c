@@ -1,9 +1,11 @@
-#include "gameF.c"
+#include "GameF.h"
+#include "bitmaps.h"
+/*#include "GameE.h"*/
 
 const int xPostions[] = {600,250,300,400,200};
 const int yPostions[] = {10,30,50,70,100};
 
-void gameStart(Tank &gameArray[], Missile &missile[], int gameSize )
+void gameStart(struct Tank gameArray[], struct Missile missile[], int gameSize )
 {
 
     register int i;
@@ -59,11 +61,11 @@ void gameStart(Tank &gameArray[], Missile &missile[], int gameSize )
 	
 }
 
-void gameReset(int &score)
+void gameReset(int *score)
 {
 
-	score = 0;
+	*score = 0;
 	
-	gameStart(&gameArray[],&missile[],GAME_SIZE);
+	gameStart(gameArray,missile,GAME_SIZE);
 
 }

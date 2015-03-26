@@ -1,6 +1,7 @@
 #include"fonts.h"
+#include "types.h"
 
-uint_8 GameFontBitmaps[] = 
+UINT8 GameFontBitmaps[] = 
 {
 	/* @0 ' ' (2 pixels wide) */
 	0x00, 
@@ -1615,15 +1616,15 @@ uint_8 GameFontBitmaps[] =
 	0x00, 0x00, /**/             
 	0x00, 0x00, /**/             
 	0x00, 0x00, /**/             
-	0x00, 0x00, /**/             
+	0x00, 0x00  /**/             
 };
 
 
 /* Character descriptors */
 /* { [Char width in bits], [Char height in bits], [Offset into Bitmaps in bytes] } */
-const uint_16 FONT_CHAR_INFO GameFontDescriptors[] = 
+const UINT16 GameFontDescriptors[] = 
 {
-	{0}, 			/*   */ 
+	{0}, 		/*   */ 
 	{15}, 		/* ! */ 
 	{30}, 		/* " */ 
 	{45}, 		/*  */ 
@@ -1717,7 +1718,7 @@ const uint_16 FONT_CHAR_INFO GameFontDescriptors[] =
 	{2355}, 	/* { */ 
 	{2370}, 	/* | */ 
 	{2385}, 	/* } */ 
-	{2400}, 	/* ~ */ 
+	{2400}	 	/* ~ */ 
 };
 
 

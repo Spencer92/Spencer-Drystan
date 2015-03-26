@@ -1,13 +1,11 @@
-#ifndef RENDERENGINE_H
-#define RENDERENGINE_H
+#ifndef RENDERE_H
+#define RENDERE_H
 
 #define START_OF_RENDER_AREA 0
 #define SCORE_AREA_OFFSET 0
-
 #define RESULUTION_ADDRESS 0xff8260
 #define SCREEN_MEM_HIGH 0xff8201
 #define SCREEN_MEM_LOW  0xff8203
-
 #define  SCREEN_WIDTH  640
 #define  SCREEN_HEIGHT 400
 #define  SCREEN_SIZE   0x8000L
@@ -41,7 +39,7 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocationint, int xpostoPlot,
 		int ypostoPlot,int size);
 
 
-void plotString(char *fbstart, char *theString,int xpos,int ypos);
+void plotString(char *fbstart, char *theString,int length, int xpos,int ypos);
 
 void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,int ypostoPlot, int size);
 
@@ -70,8 +68,8 @@ typedef struct ScoreBox
 
 void setScreen(char *newScreen, char *oldScreen);
 
-int findRez();
+BOOL findRez();
 	
 
-#endif /* RENDERENGINE_H*/
+#endif 
 

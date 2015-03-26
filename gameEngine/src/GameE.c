@@ -27,42 +27,41 @@
 /*#include "fonts.h"*/
 #include "types.h"
 #include "bitmaps.h"
-#include "BackDrop.h"
 /*===================================================*/
 /*Header files authored by Spencer Maslen or Drystan Mazur*/
 
-#include  "behavior.h"
+#include  "Behavior.h"
 #include  "model.h"
-#include  "renderE.h"
-#include  "AsRou.h"
+#include  "RenderE.h"
+#include  "AssemblerR.h"
 #include  "bitmaps.h"
-#include  "system.h"
+#include  "System.h"
 #include  "fonts.h"
-#include  "gameF.h"
+#include  "GameF.h"
+#include  "Grass.h"
+#include  "GameF.h"
+#include  "BackDrop.h"
 
 /*===================================================*/
 
 
-#define  NUMBER_TILES 1
-#define  MAXSPEED  5
 #define  BUFFER_SIZE  0x8100L
 #define  PLAYER_LOCATION 0
+#define  NUMBER_OFENEMYTANKS 5
 
+void memCopy(char* screenChunk1 ,char* screenChunk2);
 
-
-
-
-
-void memCopy(long* screenChunk1 ,long* screenChunk2);
-
-Tank playerDemo;
-Tank demoArray[NUMBER_OFTANKS];
-Missile missile[MAX_MISSILES];
-Stationary_Object landobjects[NUM_OBJECTS];
 
 
 int main() {
 
+	Tank playerDemo;
+	Tank gameArray[NUMBER_OFTANKS];
+	Missile missile[MAX_MISSILES];
+	Stationary_Object landobjects[NUM_OBJECTS];
+
+	
+	
 	BOOL playerInput = 0;
 	char keypress = 0;
 
@@ -92,25 +91,19 @@ int main() {
 	gameScreen = screen1;
 	gameScreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
 	
-	backGamescreen = screen2
+	backGamescreen = screen2;
 	backGamescreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
-
-	
-	
 
 	
 	Cursconf(0, 0); /* removes cursor*/
 	
 	if(findRez()) /*If we are in High rez mode*/
 	{
-	 
-	
+	 	
 	 memCopy( backdrop, backdropScreen);
-	 memCopy(gameField,gameScreen);
+	 memCopy(grass,gameScreen);
 	 memCopy(gameScreen,backGamescreen);
-	 
-		
-		
+			
 		
 	Vsync();
 	 
@@ -139,10 +132,10 @@ int main() {
 
 /*=====================here is main game loop==================*/
 		
-		plotLargeSprite(gameScreen, playerDemo.sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,32);
+		plotLargeSprite(gameScreen, playerDemo.sprite, gameArray[i].x_coordinate,gameArray[i].y_coordinate,32);
 		for(i = 0; i < NUMBER_OFENEMYTANKS; i++)
 		{
-			plotLargeSprite(gameScreen, demoArray[i].sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,32);
+			plotLargeSprite(gameScreen, gameArray[i].sprite,gameArray[i].x_coordinate,gameArray[i].y_coordinate,32);
 		}
 	
 
@@ -179,15 +172,15 @@ int main() {
 				playerInput = 0;
 			}
 			
-			model(&playerDemo,demoArray,missile, landobjects, 			
+			model(&playerDemo,gameArray,missile, landobjects, 			
 				NUMBER_OFENEMYTANKS,MAX_MISSILES, NUM_OBJECTS
 				  ,keypress,playerInput);
 			
-			plotLargeSprite(gameScreen, playerDemo.sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,32);
+			plotLargeSprite(gameScreen, playerDemo.sprite, gameArray[i].x_coordinate,gameArray[i].y_coordinate,32);
 
 			for(i = 0; i < NUMBER_OFENEMYTANKS; i++)
 			{
-				plotLargeSprite(gameScreen, demoArray[i].sprite, demoArray[i].x_coordinate,demoArray[i].y_coordinate,32);
+				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate,gameArray[i].y_coordinate,32);
 
 
 			}
@@ -224,10 +217,10 @@ int main() {
 	
 void memCopy(char* screenChunk1 ,char* screenChunk2)
 {
-	long copySize;
-	long *fastCopyptSrc = screenChunk1;
-	long *fastCopyptDst = screenChunk2;
-	long i;
+	UINT32  copySize;
+	UINT32 *fastCopyptSrc =  screenChunk1;
+	UINT32 *fastCopyptDst =  screenChunk2;
+	UINT32 i;
 	
 	copySize = SCREEN_SIZE >> 3;
 		
@@ -247,9 +240,4 @@ void memCopy(char* screenChunk1 ,char* screenChunk2)
 	}	
 	
 	
-	
-	
-
-	
-	return ;
 }

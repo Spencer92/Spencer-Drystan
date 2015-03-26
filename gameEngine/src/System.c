@@ -12,7 +12,7 @@
 long getTime()
 {
 	long *timer = (long *)0x462;
-	long oldssp;
+	long *oldssp;
 	long new_time;
 	oldssp = Super(0);
 	new_time = *timer;

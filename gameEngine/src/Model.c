@@ -1,10 +1,10 @@
 #include "model.h"
-#include "behavior.h"
-#include "missile.h"
+#include "Behavior.h"
+#include "Missile.h"
 #include "stdlib.h"
-#include "osbind.h"
-#include "system.h"
-#include "keyboard.h"
+#include <osbind.h>
+#include "System.h"
+#include "Keyboard.h"
 
 
 
@@ -229,7 +229,7 @@ void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input,
 	}
 	else
 	{
-		player->current_behaviour == DO_NOTHING;
+		player->current_behaviour = DO_NOTHING;
 	}
 }
 
@@ -377,13 +377,17 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 			}
 			else if(enemy[index].current_behaviour == MOVE_X)
 			{
-				move_x(&enemy[index], object, 
-										&enemy[index].h_facing, num_objects);
+				move_x(&enemy[index], object,enemy[index].h_facing, 
+					   
+					   
+					   num_objects);
+				
+				
 				DSconws("Moving x\r\n\0");
 			}
 			else if(enemy[index].current_behaviour == MOVE_Y)
 			{
-				move_y(&enemy[index], object, &enemy[index].v_facing, num_objects);
+				move_y(&enemy[index], object, enemy[index].v_facing, num_objects);
 				DSconws("Moving y\r\n\0");
 			}
 			else if(enemy[index].current_behaviour == DIE)

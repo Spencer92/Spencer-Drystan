@@ -1,6 +1,7 @@
 #ifndef BACKDROP_H
 #define BACKDROP_H
+#include "types.h"
 
-extern unsigned char backdrop[];
+extern UINT8 backdrop[];
 
 #endif /*BACKDROP_H*/

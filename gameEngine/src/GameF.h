@@ -9,12 +9,17 @@
 #define  START_PLAYER_MISSILES 2
 #define  NUM_OBJECTS 6
 #define  NUMBER_OFTANKS 6
+#define  NUMBER_TILES 1
+#define  MAXSPEED  5
+#define  TRUE 1
+#define  FALSE 0
 
-#inculde "Behavior.h"
+#include <stddef.h>
 
-void gameStart(Tank &gameArray[], Missile &missile[], int gameSize );
+#include "Behavior.h"
 
-void gameReset(int &score);
+void gameStart(struct Tank gameArray[],struct Missile missile[], int gameSize );
 
+void gameReset(int *score);
 
 #endif

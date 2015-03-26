@@ -5,7 +5,7 @@
 
 
 
-#define BOOL UINT8
+
 typedef char* String;
 
 typedef enum H_DIRECTION
@@ -37,8 +37,6 @@ typedef enum BEHAVIOUR
 	DO_NOTHING
 
 }BEHAVIOUR;
-
-
 
 
 typedef struct Tank
