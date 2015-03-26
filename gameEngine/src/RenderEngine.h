@@ -8,8 +8,8 @@
 #define SCREEN_MEM_HIGH 0xff8201
 #define SCREEN_MEM_LOW  0xff8203
 
-
-
+#define  SCREEN_WIDTH 640
+#define  SCREEN_HEIGHT 400
 
 #include "types.h"
 #include <tos.h>

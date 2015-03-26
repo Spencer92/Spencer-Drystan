@@ -45,16 +45,15 @@
 
 #define  NUMBER_TILES 1
 #define  MAXSPEED  5
-#define  BUFFER_SIZE   0x8100L
-#define  SCREEN_WIDTH 640
-#define  SCREEN_HEIGHT 400
+#define  BUFFER_SIZE  0x8100L
+#define  PLAYER_LOCATION 0
 
 
 
 
 
-void makeScreen(void* screenChunk1);
-BOOL makeGameScreens(long* screenChunk1 ,long* screenChunk2);
+
+void memCopy(long* screenChunk1 ,long* screenChunk2);
 
 Tank playerDemo;
 Tank demoArray[NUMBER_OFTANKS];
@@ -77,29 +76,38 @@ int main() {
 	char *backdropScreen;	
 	
 
-	UINT8 screen1[BUFFER_SIZE];
-	UINT8 screen2[BUFFER_SIZE];
-	UINT8 welcomeScreen[BUFFER_SIZE];
+	UINT8 screen1[BUFFER_SIZE] = {0};
+	UINT8 screen2[BUFFER_SIZE] = {0};
+	UINT8 welcomeScreen[BUFFER_SIZE] = {0};
 
 
 	/*=========Will Change in next system=========================*/
 	mainScreen 		= (Physbase());
 	logMainscreen 	= (Logbase());
 	
-	backdropScreen 	= (char*) Malloc(BUFFER_SIZE);
-	backdropScreen 	= (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
+	backdropScreen 	= welcomeScreen;
+	backdropScreen 	= (char*) ((UINT32) (backdropScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
 	
-	gameScreen = (char*) Malloc(BUFFER_SIZE);
+	gameScreen = screen1;
 	gameScreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
 	
-	backGamescreen = (char*) Malloc(BUFFER_SIZE);
+	backGamescreen = screen2
 	backGamescreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
 
 	
-	clear(gameScreen);
-	clear(backGamescreen);
+	clear(gameScreen);BOOL vaildFile;
+		
+	readfile = Fopen("grass.pi1",0);
 	
-
+	handle = (readfile &= 0x0000FFFF); /*handle is in lower word */
+	
+	Fseek(34,handle,0); /*align to data offset in degas file */
+	 
+	readfile = Fread(handle,FILE_SIZE,fastCopyptSrc); /*load data to mem */
+	
+	if(readfile != 0){
+		
+	clear(backGamescreen);
 	Cursconf(0, 0); /* removes cursor*/
 
 	
@@ -107,7 +115,7 @@ int main() {
 	
 	
 	
-	if(makeGameScreens(gameScreen,backGamescreen);)
+	if(memCopy(gameScreen,backGamescreen);)
 	{
 	 
 	
@@ -223,29 +231,17 @@ int main() {
 
 
 	
-BOOL makeGameScreens(char* screenChunk1 ,char* screenChunk2)
+void memCopy(char* screenChunk1 ,char* screenChunk2)
 {
-	long readfile;
+	long copySize;
 	long *fastCopyptSrc = screenChunk1;
 	long *fastCopyptDst = screenChunk2;
-	int  handle;
 	long i;
-	BOOL vaildFile;
+	
+	copySize = SCREEN_SIZE >> 3;
 		
-	readfile = Fopen("grass.pi1",0);
 	
-	handle = (readfile &= 0x0000FFFF); /*handle is in lower word */
-	
-	Fseek(34,handle,0); /*align to data offset in degas file */
-	 
-	readfile = Fread(handle,FILE_SIZE,fastCopyptSrc); /*load data to mem */
-	
-	if(readfile != 0){
-		
-		readfile = SCREEN_SIZE >> 3;
-		vaildFile = TRUE;
-	
-	for(i = 0 ;i < readfile;i++)
+	for(i = 0 ;i < copySize;i++)
 	{
 	
 		*(fastCopyptDst++) = *(fastCopyptSrc++);
