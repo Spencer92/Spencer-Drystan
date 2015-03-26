@@ -690,12 +690,12 @@ void setScreen(char *newScreen, char *oldScreen)
 
 }
 
-int findRez()
+BOOL findRez()
 {
 
 	int i;
 	UINT8 *infoPtr = NULL;
-	UINT8 value = 0x02;
+	UINT8  value = 0x02;
 	
 	
 	

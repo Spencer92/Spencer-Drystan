@@ -71,14 +71,15 @@ int main() {
 	
 	char *mainScreen;
 	char *logMainscreen;
+	
 	char *gameScreen;
 	char *backGamescreen;
 	char *backdropScreen;	
 	
 
-	UINT8 screen1[BUFFER_SIZE] = {0};
-	UINT8 screen2[BUFFER_SIZE] = {0};
-	UINT8 welcomeScreen[BUFFER_SIZE] = {0};
+	UINT8 screen1[BUFFER_SIZE] 			= {0};
+	UINT8 screen2[BUFFER_SIZE] 			= {0};
+	UINT8 welcomeScreen[BUFFER_SIZE] 	= {0};
 
 
 	/*=========Will Change in next system=========================*/
@@ -96,24 +97,22 @@ int main() {
 
 	
 	
-	
-	
-	if(readfile != 0){
-		
+
 	
 	Cursconf(0, 0); /* removes cursor*/
-
 	
-
-	
-	
-	
-	if(memCopy(gameScreen,backGamescreen);)
+	if(findRez()) /*If we are in High rez mode*/
 	{
 	 
 	
+	 memCopy( backdrop, backdropScreen);
+	 memCopy(gameField,gameScreen);
+	 memCopy(gameScreen,backGamescreen);
 	 
-	 Vsync();
+		
+		
+		
+	Vsync();
 	 
 	 Setscreen(-1L,backdropScreen,-1L);
 	
@@ -209,12 +208,11 @@ int main() {
 	else
 	{
 	
-		Cconws("Error in file reading");
+		Cconws("Error in screen rezulution");
 	
 	}
 
-	Mfree(gameScreen);
-	Mfree(backGamescreen);
+	
 	Vsync();
 	SetScreen(mainScreen ,mainScreen ,-1L);
 
@@ -249,18 +247,9 @@ void memCopy(char* screenChunk1 ,char* screenChunk2)
 	}	
 	
 	
-	}
 	
 	
-	else
-	{
+
 	
-	
-	vaildfile = FALSE;
-	
-	}
-	
-	Fclose(handle);
-	
-	return vaildFile;
+	return ;
 }
