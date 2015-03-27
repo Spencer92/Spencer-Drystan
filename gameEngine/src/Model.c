@@ -1,7 +1,9 @@
 #include "Behavior.h"
 #include "Missile.h"
-#include "stdlib.h"
+
 #include <osbind.h>
+#include <stdlib.h>
+
 #include "System.h"
 #include "Keyboard.h"
 

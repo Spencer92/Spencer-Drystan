@@ -1,5 +1,5 @@
 #include "GameF.h"
-#include "bitmaps.h"
+#include "Bitmaps.h"
 
 
 const int xPostions[] = {600,250,300,400,200};

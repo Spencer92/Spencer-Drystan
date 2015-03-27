@@ -32,11 +32,11 @@
 /*Header files authored by Spencer Maslen or Drystan Mazur*/
 
 #include  "Behavior.h"
-#include  "model.h"
+#include  "Model.h"
 #include  "RenderE.h"
 #include  "AssemblerR.h"
 #include  "System.h"
-#include  "fonts.h"
+#include  "Fonts.h"
 #include  "GameF.h"
 #include  "Grass.h"
 #include  "GameF.h"

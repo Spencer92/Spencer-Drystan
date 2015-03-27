@@ -18,7 +18,7 @@
 #define FONT_SIZE 15
 #define COPY_MASK 0x00000000
 
-#include "fonts.h"
+#include "Fonts.h"
 #include "types.h"
 #include <tos.h>
 
