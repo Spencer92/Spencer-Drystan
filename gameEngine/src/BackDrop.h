@@ -2,6 +2,6 @@
 #define BACKDROP_H
 #include "types.h"
 
-extern UINT8 backdrop[];
+extern const UINT8 backdrop[];
 
 #endif /*BACKDROP_H*/

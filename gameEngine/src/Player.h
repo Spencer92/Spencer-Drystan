@@ -17,4 +17,4 @@ void player_move_up(Tank *player);
 void player_move_left(Tank *player);
 void player_move_down(Tank *player);
 
-#endif PLAYER_H
+#endif

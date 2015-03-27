@@ -1,4 +1,3 @@
-#include "model.h"
 #include "Behavior.h"
 #include "Missile.h"
 #include "stdlib.h"
@@ -8,111 +7,6 @@
 
 
 
-/* Not really needed, but I'll keep it in anyway
-int main()
-{
-	Tank player;
-	Tank enemy[3];
-	Missile missile[10];
-	Stationary_Object object[10];
-	int num_objects = 10;
-	int initial_offset = 100;
-	int index;
-	int number_of_enemies = 3;
-	char input = '\0';
-	BOOL done = 0;
-	long time_now;
-	
-	time_now = getTime();
-	
-	player.x_coordinate = 250;
-	player.y_coordinate = 250;
-	player.hitpoints = 100;
-	player.current_speed = 0;
-	player.is_moving = 0;
-	player.is_firing = 0;
-	player.sprite = NULL;
-	player.x_posMask = 0;
-	player.y_posMask = 0;
-	player.h_facing = VERTICAL;
-	player.v_facing = DOWN;
-	player.is_visible = 1;
-	player.current_behaviour = DO_NOTHING;
-	player.is_firing = 0;
-	player.missile_available = 2;
-	player.x_find = "X_find\r\n\0";
-	player.y_find = "Y_find\r\n\0";
-	player.end_coords = "end_coords\r\n\0";
-	
-	for(index = 0; index < number_of_enemies; index++)
-	{
-		enemy[index].x_coordinate = initial_offset;
-		enemy[index].y_coordinate = 100;
-		enemy[index].hitpoints = 100;
-		enemy[index].current_speed = 0;
-		enemy[index].is_moving = 0;
-		enemy[index].is_firing = 0;
-		enemy[index].sprite = NULL;
-		enemy[index].x_posMask = 0;
-		enemy[index].y_posMask = 0;
-		enemy[index].h_facing = VERTICAL;
-		enemy[index].v_facing = DOWN;
-		enemy[index].is_visible = 1;
-		enemy[index].current_behaviour = DO_NOTHING;
-		enemy[index].is_firing = 0;
-		enemy[index].x_find = "X_find\r\n\0";
-		enemy[index].y_find = "Y_find\r\n\0";
-		enemy[index].end_coords = "end_coords\r\n\0";
-		initial_offset += 32;
-	}
-	
-	thing();
-	while(!done && input != 'q')
-	{
-		if(DSconis() && getTime() >= time_now+10)
-		{
-			time_now = getTime();
-			DSconws("Got in \r\n\0");
-			input = DSnecin();
-			if(input == 'd')
-			{
-				DSconws("Player pressed \"d\"\r\n\n\0");
-			}
-			else if(input == 's')
-			{
-				DSconws("Player pressed \"s\"\r\n\n\0");
-			}
-			else if(input == 'a')
-			{
-				DSconws("Player pressed \"a\"\r\n\n\0");
-			}
-			else if(input == 'w')
-			{
-				DSconws("Player pressed \"d\"\r\n\n\0");
-			}
-			else if(input == 'q')
-			{
-				DSconws("Player pressed \"q\"\r\n\n\0");
-				done = 1;
-			}
-		}
-		else if(!DSconis() && getTime() >= time_now+10)
-		{
-			time_now = getTime();
-			DSconws("No input\r\n\0");
-			assess_situation(enemy, &player, object, missile, 10, 0);
-			tank_respond(enemy, missile, 10, number_of_enemies, object, num_objects);
-		}
-	}
-	
-	DSconout(input);
-	DSconws("\r\n\0");
-	
-	
-	
-	return 0;
-}
-*/
 
 
 /***************************************************************************
@@ -145,7 +39,7 @@ void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *objec
 	time_now = getTime();
 	if(input_valid)
 	{
-/*		input = DSnecin();*/
+
 		player_action_check(player, 
 		enemy, 
 		num_enemies, 
@@ -177,9 +71,6 @@ int thing()
 	register int whatever = 3;
 	return whatever;
 }
-
-
-
 
 /***************************************************************************
    Function Name:   player_action_check
@@ -392,7 +283,7 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 			}
 			else if(enemy[index].current_behaviour == DIE)
 			{
-				enemy[index].is_visible == 0;
+				enemy[index].is_visible = 0;
 				DSconws("Dying\r\n\0");
 			}
 			else if(enemy[index].current_behaviour == TURN)

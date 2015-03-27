@@ -17,16 +17,17 @@
  Method       :
 
  ============================================================================ */
-/*#include <tos.h>*/
+
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "osbind.h"
+#include <osbind.h>
+#include <tos.h>
 /*===================================================*/
 /*Header files authored by Others*/
-/*#include "fonts.h"*/
+
 #include "types.h"
-#include "bitmaps.h"
+
 /*===================================================*/
 /*Header files authored by Spencer Maslen or Drystan Mazur*/
 
@@ -34,7 +35,6 @@
 #include  "model.h"
 #include  "RenderE.h"
 #include  "AssemblerR.h"
-#include  "bitmaps.h"
 #include  "System.h"
 #include  "fonts.h"
 #include  "GameF.h"
@@ -86,21 +86,21 @@ int main() {
 	logMainscreen 	= (Logbase());
 	
 	backdropScreen 	= welcomeScreen;
-	backdropScreen 	= (char*) ((UINT32) (backdropScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
+	backdropScreen 	= (char*) ((UINT32) (backdropScreen + 256) & 0x00FFFF00L); /* The screens have to be 256 byte aligned */
 	
 	gameScreen = screen1;
-	gameScreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
+	gameScreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00L); /* The screens have to be 256 byte aligned */
 	
 	backGamescreen = screen2;
-	backGamescreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00); /* The screens have to be 256 byte aligned */
+	backGamescreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00L); /* The screens have to be 256 byte aligned */
 
 	
 	Cursconf(0, 0); /* removes cursor*/
 	
-	if(findRez()) /*If we are in High rez mode*/
+	if(/*findRez()*/  1 ) /*If we are in High rez mode*/
 	{
 	 	
-	 memCopy( backdrop, backdropScreen);
+	 memCopy(backdrop, backdropScreen);
 	 memCopy(grass,gameScreen);
 	 memCopy(gameScreen,backGamescreen);
 			
@@ -207,7 +207,7 @@ int main() {
 
 	
 	Vsync();
-	SetScreen(mainScreen ,mainScreen ,-1L);
+	Setscreen(mainScreen ,mainScreen ,-1L);
 
 	return 0;
 
@@ -218,8 +218,8 @@ int main() {
 void memCopy(char* screenChunk1 ,char* screenChunk2)
 {
 	UINT32  copySize;
-	UINT32 *fastCopyptSrc =  screenChunk1;
-	UINT32 *fastCopyptDst =  screenChunk2;
+	UINT32 *fastCopyptSrc =  (UINT32*) screenChunk1;
+	UINT32 *fastCopyptDst =  (UINT32*) screenChunk2;
 	UINT32 i;
 	
 	copySize = SCREEN_SIZE >> 3;

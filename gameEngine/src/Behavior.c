@@ -2,10 +2,6 @@
 #include "model.h"
 #include "osbind.h"
 
-BOOL event();
-BOOL flip(int position);
-
-
 
 
 /***************************************************************************

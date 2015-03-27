@@ -1,4 +1,6 @@
-#include "osbind.h"
+#include <tos.h>
+
+
 /***************************************************************************
    Function Name:   getTime
   
@@ -11,9 +13,9 @@
 
 long getTime()
 {
-	long *timer = (long *)0x462;
+	long *timer = (long *)0x462L;
 	long *oldssp;
-	long new_time;
+	long  new_time;
 	oldssp = Super(0);
 	new_time = *timer;
 	Super(oldssp);

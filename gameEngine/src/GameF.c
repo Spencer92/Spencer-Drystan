@@ -1,15 +1,16 @@
 #include "GameF.h"
 #include "bitmaps.h"
-/*#include "GameE.h"*/
+
 
 const int xPostions[] = {600,250,300,400,200};
 const int yPostions[] = {10,30,50,70,100};
 
-void gameStart(struct Tank gameArray[], struct Missile missile[], int gameSize )
+void gameStart(Tank gameArray[], Missile missile[], int gameSize, int *score )
 {
 
     register int i;
 
+	*score = 0;
 	
 	gameArray[0].x_coordinate = 20;
 	gameArray[0].y_coordinate = 50;
@@ -17,7 +18,7 @@ void gameStart(struct Tank gameArray[], struct Missile missile[], int gameSize )
 	gameArray[0].current_speed = MAXSPEED;
 	gameArray[0].is_moving = TRUE;
 	gameArray[0].is_firing = FALSE;	
-    gameArray[0].sprite = &playerTankNorth;
+    gameArray[0].sprite = playerTankNorth;
 	gameArray[0].x_posMask = 0;
 	gameArray[0].y_posMask = 0;
 	gameArray[0].h_facing = VERTICAL;
@@ -25,8 +26,7 @@ void gameStart(struct Tank gameArray[], struct Missile missile[], int gameSize )
 	gameArray[0].is_visible = TRUE;
 	gameArray[0].current_behaviour = DO_NOTHING;
 	gameArray[0].missile_available = START_PLAYER_MISSILES;
-	
-	getBitmap32(playerTankNorth, gameArray[0].sprite);
+
 	
 	
 	for(i = 1; i < gameSize; i++)
@@ -37,6 +37,7 @@ void gameStart(struct Tank gameArray[], struct Missile missile[], int gameSize )
 	gameArray[i].current_speed = MAXSPEED;
 	gameArray[i].is_moving = TRUE;
 	gameArray[i].is_firing = FALSE;
+	gameArray[i].sprite = playerTankNorth;
 	gameArray[i].x_posMask = 0;
 	gameArray[i].y_posMask = 0;
 	gameArray[i].h_facing = LEFT;
@@ -44,7 +45,7 @@ void gameStart(struct Tank gameArray[], struct Missile missile[], int gameSize )
 	gameArray[i].is_visible = TRUE;
 	gameArray[i].current_behaviour = DO_NOTHING;
 	gameArray[i].missile_available = START_PLAYER_MISSILES;	
-	getBitmap32(playerTankNorth, gameArray[i].sprite);
+	
 	
 	}
 
@@ -59,13 +60,4 @@ void gameStart(struct Tank gameArray[], struct Missile missile[], int gameSize )
 	
 	
 	
-}
-
-void gameReset(int *score)
-{
-
-	*score = 0;
-	
-	gameStart(gameArray,missile,GAME_SIZE);
-
 }

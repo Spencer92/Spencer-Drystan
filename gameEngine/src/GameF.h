@@ -18,8 +18,7 @@
 
 #include "Behavior.h"
 
-void gameStart(struct Tank gameArray[],struct Missile missile[], int gameSize );
+void gameStart(Tank gameArray[],Missile missile[], int gameSize, int *score );
 
-void gameReset(int *score);
 
 #endif

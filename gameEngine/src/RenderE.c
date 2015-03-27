@@ -1,19 +1,43 @@
-/*Define screen dimensions  */
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 400
-#define POSTIVE_X_LIMIT 664
-#define NEGTIVE_X_LIMIT -24
-#define POSTIVE_Y_LIMIT 504
-#define NEGTIVE_Y_LIMIT -24
-#define FONT_SIZE 15
-#define COPY_MASK 0x00000000
+
 #include "RenderE.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <tos.h>
-#include "types.h"
-#include "fonts.h"
 
+
+
+/*
+ =============================================================================
+ *
+ * Function Name    : plotPixel (Note this function was defined in a lecture,
+ * 					  we are not the authors of this function)
+ *
+ * Purpose          :To plot a pixel on the screen
+ *
+ *
+ * Method           :The values are checked against the bounds of the screen.
+ * 					 Then a mask is set to the x position, this mask is logically
+ * 					 OR'ed with the Frame Buffer.
+ *
+ *
+ * Input Parameters :(x,y) start position .A pointer to the
+ * 					 screen buffer memory.
+ *
+ *
+ * Return Value     :A modified screen buffer
+ *
+ *
+ *=============================================================================*/
+
+void plotPixel(char *fbstart, int x, int y) {
+	if (x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT) {
+
+		*(fbstart + (y * 80) + (x >> 3)) |= 1 << 7 - (x & 7);
+
+	}
+
+}
 
 
 /*
@@ -475,12 +499,12 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 void plotString(char *fbstart, char *theString, int length, int xpos, int ypos)
 {
 
-register UINT16	   *trackPtr  = (UINT16*)fbstart;
-register UINT16    *fonts  	  = (UINT16*)GameFontBitmaps;
-register UINT16    *lookupPtr = GameFontDescriptors;
+register UINT16	   *trackPtr  = (UINT16*) fbstart;
+register UINT16    *fonts  	  = (UINT16*) GameFontBitmaps;
+register UINT16    *lookupPtr = (UINT16*) GameFontDescriptors;
 register UINT16    *refPtr;
 register UINT8 	   *arrayRd = theString;
-register UINT8      lookup;
+register UINT8     lookup;
 
 	
 	
@@ -506,7 +530,7 @@ register UINT8      lookup;
 			
 			}	
 			
-	fonts = GameFontBitmaps;	
+	fonts = (UINT16*) GameFontBitmaps;	
 	arrayRd ++;
 	}
 	
