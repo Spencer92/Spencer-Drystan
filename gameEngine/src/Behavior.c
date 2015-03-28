@@ -1,5 +1,5 @@
 #include "Behavior.h"
-#include "model.h"
+#include "Model.h"
 #include "osbind.h"
 
 

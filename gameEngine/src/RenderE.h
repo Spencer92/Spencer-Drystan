@@ -6,7 +6,7 @@
 #define RESULUTION_ADDRESS 0xff8260
 #define SCREEN_MEM_HIGH 0xff8201
 #define SCREEN_MEM_LOW  0xff8203
-#define  SCREEN_SIZE   0x8000L
+#define SCREEN_SIZE     0x7D00L
 
 /*Define screen dimensions  */
 #define SCREEN_WIDTH 640
@@ -18,7 +18,7 @@
 #define FONT_SIZE 15
 #define COPY_MASK 0x00000000
 
-#include "fonts.h"
+#include "Fonts.h"
 #include "types.h"
 #include <tos.h>
 
