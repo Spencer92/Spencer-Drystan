@@ -13,11 +13,11 @@
 #define SCREEN_HEIGHT 400
 #define POSTIVE_X_LIMIT 664
 #define NEGTIVE_X_LIMIT -24
-#define POSTIVE_Y_LIMIT 504
+#define POSTIVE_Y_LIMIT 424
 #define NEGTIVE_Y_LIMIT -24
 #define FONT_SIZE 15
 #define COPY_MASK 0x00000000
-#define SPRITE_SIZE
+#define SPRITE_SIZE 32
 
 #include "Fonts.h"
 #include "types.h"

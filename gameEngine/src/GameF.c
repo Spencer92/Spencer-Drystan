@@ -18,7 +18,7 @@ void gameStart(struct Tank gameArray[],struct Tank player, Missile missile[], in
 	player.current_speed = MAXSPEED;
 	player.is_moving = TRUE;
 	player.is_firing = FALSE;	
-    player.sprite = playerTankNorth;
+    player.sprite = &playerTankNorth;
 	player.x_posMask = 0;
 	player.y_posMask = 0;
 	player.h_facing = VERTICAL;
@@ -37,7 +37,7 @@ void gameStart(struct Tank gameArray[],struct Tank player, Missile missile[], in
 	gameArray[i].current_speed = MAXSPEED;
 	gameArray[i].is_moving = TRUE;
 	gameArray[i].is_firing = FALSE;
-	gameArray[i].sprite = playerTankNorth;
+	gameArray[i].sprite = &playerTankNorth;
 	gameArray[i].x_posMask = 0;
 	gameArray[i].y_posMask = 0;
 	gameArray[i].h_facing = LEFT;

@@ -17,7 +17,7 @@
 #include <stddef.h>
 #include "Behavior.h"
 
-void gameStart(Tank gameArray[], Tank player,   Missile missile[],  int numOfEnemy  int *score );
+void gameStart(Tank gameArray[], Tank player,   Missile missile[],  int numOfEnemy,  int *score );
 
 
 #endif 

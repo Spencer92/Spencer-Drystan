@@ -77,9 +77,9 @@ int main() {
 	char *backdropScreen;	
 	
 
-	UINT8 screen1[BUFFER_SIZE] 			= {0};
-	UINT8 screen2[BUFFER_SIZE] 			= {0};
-	UINT8 welcomeScreen[BUFFER_SIZE] 	= {0};
+	UINT8 screen1[BUFFER_SIZE];
+	UINT8 screen2[BUFFER_SIZE];
+	UINT8 welcomeScreen[BUFFER_SIZE];
 
 
 	/*=========Will Change in next system=========================*/
@@ -136,7 +136,7 @@ int main() {
 		
 		
 		
-		plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate,SPRITE_SIZE);
+		plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
 		
 		
 		
@@ -149,7 +149,8 @@ int main() {
 		Vsync();
 		Setscreen(gameScreen, gameScreen, -1L);
 
-		
+		waitForinput();
+		waitForinput();
 		
 		
 		
@@ -165,7 +166,7 @@ int main() {
 				playerInput = 1;
 				
 				if (keypress == 'p') {
-		/*=====================here is pause game loop==================*/
+		/*=====================here is the pause game loop==================*/
 			
 				
 				Vsync();
@@ -178,6 +179,9 @@ int main() {
 				}
 				keypress = DSnecin();
 				}
+		/*=====================here is the pause game loop==================*/	
+			
+			
 			}
 			else
 			{
@@ -192,7 +196,7 @@ int main() {
 
 			for(i = 0; i < NUMBER_OF_TANKS; i++)
 			{
-				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
+				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate, gameArray[i].y_coordinate, SPRITE_SIZE);
 
 
 			}
@@ -201,7 +205,7 @@ int main() {
 			Vsync();
 			Setscreen(gameScreen, gameScreen, -1L);
 			
-			clear(backGamescreen);
+			
 
 
 			Vsync();

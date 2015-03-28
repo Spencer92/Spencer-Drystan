@@ -1,8 +1,8 @@
-
 #include "types.h"
+#include "RenderE.h"
 
 
-UINT32 playerTankEast[] = {
+const UINT32 playerTankEast[SPRITE_SIZE] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -37,7 +37,7 @@ UINT32 playerTankEast[] = {
 	0xFFFFFFFFL
 };
 
-UINT32 playerTankNorth[] = {
+ const UINT32 playerTankNorth[SPRITE_SIZE] = {
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
@@ -72,7 +72,7 @@ UINT32 playerTankNorth[] = {
 	0xFF0000FFL
 };
 
-UINT32 playerTankSouth[] = {
+const UINT32 playerTankSouth[SPRITE_SIZE] = {
 	0xFF0000FFL, 
 	0xFF0000FFL, 
 	0xFF0000FFL, 
@@ -107,7 +107,7 @@ UINT32 playerTankSouth[] = {
 	0xFF03C0FFL
 };
 
-UINT32 playerTankWest[] = {
+const UINT32 playerTankWest[SPRITE_SIZE] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -142,7 +142,7 @@ UINT32 playerTankWest[] = {
 	0xFFFFFFFFL,
 };
 
-UINT32 playerTankTwoEast[] = {
+const UINT32 playerTankTwoEast[SPRITE_SIZE] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -177,7 +177,7 @@ UINT32 playerTankTwoEast[] = {
 	0xFFFFFFFFL
 };
 
-UINT32 playerTankTwoNorth[] = {
+const UINT32 playerTankTwoNorth[SPRITE_SIZE] = {
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
@@ -212,7 +212,7 @@ UINT32 playerTankTwoNorth[] = {
 	0xFF0000FFL
 };
 
-UINT32 playerTankTwoSouth[] = {
+const UINT32 playerTankTwoSouth[SPRITE_SIZE] = {
 	0xFF0000FFL, 
 	0xFF0000FFL, 
 	0xFF0000FFL, 
@@ -247,7 +247,7 @@ UINT32 playerTankTwoSouth[] = {
 	0xFF03C0FFL
 };
 
-UINT32 playerTankTwoWest[] = {
+const UINT32 playerTankTwoWest[SPRITE_SIZE] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -282,7 +282,7 @@ UINT32 playerTankTwoWest[] = {
 	0xFFFFFFFFL
 };
 
-UINT32 Rock401[] = {
+const UINT32 Rock401[SPRITE_SIZE] = {
 	0x00049000L, 
 	0x000FF800L, 
 	0x00049000L, 
@@ -317,7 +317,7 @@ UINT32 Rock401[] = {
 	0x0000105DL
 };
 
-UINT32 explosion[] = {
+const UINT32 explosion[SPRITE_SIZE] = {
 	0x01249000L, 
 	0x0BFFFA00L, 
 	0x01249000L, 
@@ -352,7 +352,7 @@ UINT32 explosion[] = {
 	0x0001D000L
 };
 
-UINT32 lake[] = {
+const UINT32 lake[SPRITE_SIZE] = {
 	0x09241248L, 
 	0x5FFEBFFDL, 
 	0x09241248L, 
@@ -387,7 +387,7 @@ UINT32 lake[] = {
 	0xFFFFFFFFL
 };
 
-UINT32 tree2[] = {
+const UINT32 tree2[SPRITE_SIZE] = {
 	0x09249200L, 
 	0x5FFFFF40L, 
 	0x09249200L, 
