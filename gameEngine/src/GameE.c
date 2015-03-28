@@ -45,12 +45,12 @@
 /*===================================================*/
 
 
-#define  BUFFER_SIZE  0x8100L
+#define  BUFFER_SIZE  0x7E00L
 #define  PLAYER_LOCATION 0
 #define  NUMBER_OFENEMYTANKS 5
 
 void memCopy(char* screenChunk1 ,char* screenChunk2);
-
+void waitForinput();
 
 
 int main() {
@@ -86,18 +86,18 @@ int main() {
 	logMainscreen 	= (Logbase());
 	
 	backdropScreen 	= welcomeScreen;
-	backdropScreen 	= (char*) ((UINT32) (backdropScreen + 256) & 0x00FFFF00L); /* The screens have to be 256 byte aligned */
+	backdropScreen 	= (char*) ((UINT32) (backdropScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 	
 	gameScreen = screen1;
-	gameScreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00L); /* The screens have to be 256 byte aligned */
+	gameScreen = (char*) ((UINT32) (gameScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 	
 	backGamescreen = screen2;
-	backGamescreen = (char*) ((UINT32) (gameScreen + 256) & 0x00FFFF00L); /* The screens have to be 256 byte aligned */
+	backGamescreen = (char*) ((UINT32) (gameScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 
 	
 	Cursconf(0, 0); /* removes cursor*/
 	
-	if(/*findRez()*/  1 ) /*If we are in High rez mode*/
+	if(findRez() ) /*If we are in High rez mode*/
 	{
 	 	
 	 memCopy(backdrop, backdropScreen);
@@ -105,12 +105,13 @@ int main() {
 	 memCopy(gameScreen,backGamescreen);
 			
 		
-	Vsync();
-	 
+	 Vsync();	 
 	 Setscreen(-1L,backdropScreen,-1L);
 	
-	
-	
+
+		
+	waitForinput();
+	waitForinput();
 
 	while (!DSconis()) {
 
@@ -172,9 +173,9 @@ int main() {
 				playerInput = 0;
 			}
 			
-			model(&playerDemo,gameArray,missile, landobjects, 			
+			/*model(&playerDemo,gameArray,missile, landobjects, 			
 				NUMBER_OFENEMYTANKS,MAX_MISSILES, NUM_OBJECTS
-				  ,keypress,playerInput);
+				  ,keypress,playerInput);*/
 			
 			plotLargeSprite(gameScreen, playerDemo.sprite, gameArray[i].x_coordinate,gameArray[i].y_coordinate,32);
 
@@ -218,26 +219,34 @@ int main() {
 void memCopy(char* screenChunk1 ,char* screenChunk2)
 {
 	UINT32  copySize;
-	UINT32 *fastCopyptSrc =  (UINT32*) screenChunk1;
-	UINT32 *fastCopyptDst =  (UINT32*) screenChunk2;
+	UINT32 *srcPtr =  (UINT32*) screenChunk1;
+	UINT32 *dstPtr =  (UINT32*) screenChunk2;
 	UINT32 i;
 	
-	copySize = SCREEN_SIZE >> 3;
+	copySize = SCREEN_SIZE >> 2;
+	
+
 		
 	
 	for(i = 0 ;i < copySize;i++)
 	{
 	
-		*(fastCopyptDst++) = *(fastCopyptSrc++);
-		*(fastCopyptDst++) = *(fastCopyptSrc++);
-		*(fastCopyptDst++) = *(fastCopyptSrc++);
-		*(fastCopyptDst++) = *(fastCopyptSrc++);
-		*(fastCopyptDst++) = *(fastCopyptSrc++);
-		*(fastCopyptDst++) = *(fastCopyptSrc++);
-		*(fastCopyptDst++) = *(fastCopyptSrc++);
-		*(fastCopyptDst++) = *(fastCopyptSrc++);
-	
+		*dstPtr = *srcPtr;
+		dstPtr++;
+		srcPtr++;
+			
+		
 	}	
 	
 	
+}
+
+void waitForinput() {
+
+	UINT32 i;
+
+	for(i = 0;i < 100000;i++)
+	{
+
+	}
 }

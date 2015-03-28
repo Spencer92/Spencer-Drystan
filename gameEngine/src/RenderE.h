@@ -6,7 +6,7 @@
 #define RESULUTION_ADDRESS 0xff8260
 #define SCREEN_MEM_HIGH 0xff8201
 #define SCREEN_MEM_LOW  0xff8203
-#define  SCREEN_SIZE   0x8000L
+#define SCREEN_SIZE     0x7D00L
 
 /*Define screen dimensions  */
 #define SCREEN_WIDTH 640
