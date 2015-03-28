@@ -17,6 +17,7 @@
 #define NEGTIVE_Y_LIMIT -24
 #define FONT_SIZE 15
 #define COPY_MASK 0x00000000
+#define SPRITE_SIZE
 
 #include "Fonts.h"
 #include "types.h"

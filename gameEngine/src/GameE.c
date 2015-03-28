@@ -47,7 +47,7 @@
 
 #define  BUFFER_SIZE  0x7E00L
 #define  PLAYER_LOCATION 0
-#define  NUMBER_OFENEMYTANKS 5
+
 
 void memCopy(char* screenChunk1 ,char* screenChunk2);
 void waitForinput();
@@ -55,8 +55,8 @@ void waitForinput();
 
 int main() {
 
-	Tank playerDemo;
-	Tank gameArray[NUMBER_OFTANKS];
+	Tank thePlayer;
+	Tank gameArray[NUMBER_OF_TANKS];
 	Missile missile[MAX_MISSILES];
 	Stationary_Object landobjects[NUM_OBJECTS];
 
@@ -65,7 +65,8 @@ int main() {
 	BOOL playerInput = 0;
 	char keypress = 0;
 
-	UINT16 playerScore = 0;
+	UINT16 playerScore = 0;	
+	
 	UINT8 i = 0;
 	
 	char *mainScreen;
@@ -109,10 +110,6 @@ int main() {
 	 Setscreen(-1L,backdropScreen,-1L);
 	
 
-		
-	waitForinput();
-	waitForinput();
-
 	while (!DSconis()) {
 
 		if (i == 0) {
@@ -131,12 +128,21 @@ int main() {
 
 	if (keypress != 'q') {
 
-/*=====================here is main game loop==================*/
+
 		
-		plotLargeSprite(gameScreen, playerDemo.sprite, gameArray[i].x_coordinate,gameArray[i].y_coordinate,32);
-		for(i = 0; i < NUMBER_OFENEMYTANKS; i++)
+		gameStart(gameArray,thePlayer,missile,NUMBER_OF_TANKS, &playerScore);
+		
+		
+		
+		
+		
+		plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate,SPRITE_SIZE);
+		
+		
+		
+		for(i = 0; i < NUMBER_OF_TANKS; i++)
 		{
-			plotLargeSprite(gameScreen, gameArray[i].sprite,gameArray[i].x_coordinate,gameArray[i].y_coordinate,32);
+			plotLargeSprite(gameScreen, gameArray[i].sprite,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
 		}
 	
 
@@ -144,6 +150,11 @@ int main() {
 		Setscreen(gameScreen, gameScreen, -1L);
 
 		
+		
+		
+		
+		
+	/*=====================here is main game loop==================*/	
 		
 		do {
 
@@ -154,7 +165,7 @@ int main() {
 				playerInput = 1;
 				
 				if (keypress == 'p') {
-				/*=====================here is pause game loop==================*/
+		/*=====================here is pause game loop==================*/
 			
 				
 				Vsync();
@@ -173,18 +184,20 @@ int main() {
 				playerInput = 0;
 			}
 			
-			/*model(&playerDemo,gameArray,missile, landobjects, 			
-				NUMBER_OFENEMYTANKS,MAX_MISSILES, NUM_OBJECTS
+			/*model(&thePlayer,gameArray,missile, landobjects, 			
+				NUMBER_OF_TANKS,MAX_MISSILES, NUM_OBJECTS
 				  ,keypress,playerInput);*/
 			
-			plotLargeSprite(gameScreen, playerDemo.sprite, gameArray[i].x_coordinate,gameArray[i].y_coordinate,32);
+			plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate,SPRITE_SIZE);
 
-			for(i = 0; i < NUMBER_OFENEMYTANKS; i++)
+			for(i = 0; i < NUMBER_OF_TANKS; i++)
 			{
-				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate,gameArray[i].y_coordinate,32);
+				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
 
 
 			}
+			
+			
 			Vsync();
 			Setscreen(gameScreen, gameScreen, -1L);
 			
@@ -193,6 +206,9 @@ int main() {
 
 			Vsync();
 			Setscreen(backGamescreen, backGamescreen, -1L);
+		
+		
+		
 		} while (keypress != 'q');
 
 	}

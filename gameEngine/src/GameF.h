@@ -8,17 +8,16 @@
 #define  ENEMY_HITPOINTS 5
 #define  START_PLAYER_MISSILES 2
 #define  NUM_OBJECTS 6
-#define  NUMBER_OFTANKS 6
+#define  NUMBER_OF_TANKS 5
 #define  NUMBER_TILES 1
 #define  MAXSPEED  5
 #define  TRUE 1
 #define  FALSE 0
 
 #include <stddef.h>
-
 #include "Behavior.h"
 
-void gameStart(Tank gameArray[],Missile missile[], int gameSize, int *score );
+void gameStart(Tank gameArray[], Tank player,   Missile missile[],  int numOfEnemy  int *score );
 
 
-#endif
+#endif 

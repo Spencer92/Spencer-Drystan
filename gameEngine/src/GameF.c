@@ -1,38 +1,38 @@
 #include "GameF.h"
 #include "Bitmaps.h"
-
+#include "Behavior.h"
 
 const int xPostions[] = {600,250,300,400,200};
 const int yPostions[] = {10,30,50,70,100};
 
-void gameStart(Tank gameArray[], Missile missile[], int gameSize, int *score )
+void gameStart(struct Tank gameArray[],struct Tank player, Missile missile[], int numOfEnemy, int *score )
 {
 
     register int i;
 
 	*score = 0;
 	
-	gameArray[0].x_coordinate = 20;
-	gameArray[0].y_coordinate = 50;
-	gameArray[0].hitpoints = PLAYER_HITPOINTS;
-	gameArray[0].current_speed = MAXSPEED;
-	gameArray[0].is_moving = TRUE;
-	gameArray[0].is_firing = FALSE;	
-    gameArray[0].sprite = playerTankNorth;
-	gameArray[0].x_posMask = 0;
-	gameArray[0].y_posMask = 0;
-	gameArray[0].h_facing = VERTICAL;
-	gameArray[0].v_facing = UP;
-	gameArray[0].is_visible = TRUE;
-	gameArray[0].current_behaviour = DO_NOTHING;
-	gameArray[0].missile_available = START_PLAYER_MISSILES;
+	player.x_coordinate = 20;
+	player.y_coordinate = 50;
+	player.hitpoints = PLAYER_HITPOINTS;
+	player.current_speed = MAXSPEED;
+	player.is_moving = TRUE;
+	player.is_firing = FALSE;	
+    player.sprite = playerTankNorth;
+	player.x_posMask = 0;
+	player.y_posMask = 0;
+	player.h_facing = VERTICAL;
+	player.v_facing = UP;
+	player.is_visible = TRUE;
+	player.current_behaviour = DO_NOTHING;
+	player.missile_available = START_PLAYER_MISSILES;
 
 	
 	
-	for(i = 1; i < gameSize; i++)
+	for(i = 0; i < numOfEnemy; i++)
 	{
-	gameArray[i].x_coordinate = xPostions[i -1];
-	gameArray[i].y_coordinate = yPostions[i -1];
+	gameArray[i].x_coordinate = xPostions[i];
+	gameArray[i].y_coordinate = yPostions[i];
 	gameArray[i].hitpoints = ENEMY_HITPOINTS;
 	gameArray[i].current_speed = MAXSPEED;
 	gameArray[i].is_moving = TRUE;
