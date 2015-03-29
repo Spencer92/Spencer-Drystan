@@ -43,7 +43,7 @@
 #include  "BackDrop.h"
 
 /*===================================================*/
-#define  BUFFER_SIZE  0x8100L
+#define  BUFFER_SIZE  0x8400L
 #define  PLAYER_LOCATION 0
 
 
@@ -78,6 +78,7 @@ int main() {
 	UINT8 screen1[BUFFER_SIZE];
 	UINT8 screen2[BUFFER_SIZE];
 	UINT8 welcomeScreen[BUFFER_SIZE];
+
 
 
 	/*=========Will Change in next system=========================*/
@@ -235,10 +236,10 @@ int main() {
 	
 void memCopy(char* screenChunk1 ,char* screenChunk2)
 {
-	UINT32  copySize;
-	UINT32 *srcPtr =  (UINT32*) screenChunk1;
-	UINT32 *dstPtr =  (UINT32*) screenChunk2;
-	UINT32 i;
+	register UINT32  copySize;
+	register UINT32 *srcPtr =  (UINT32*) screenChunk1;
+	register UINT32 *dstPtr =  (UINT32*) screenChunk2;
+	register UINT32 i;
 	
 	copySize = SCREEN_SIZE >> 2;
 		
@@ -247,8 +248,8 @@ void memCopy(char* screenChunk1 ,char* screenChunk2)
 	{
 	
 		*dstPtr = *srcPtr;
-		dstPtr++;
-		srcPtr++;
+		 dstPtr++;
+		 srcPtr++;
 			
 		
 	}	
