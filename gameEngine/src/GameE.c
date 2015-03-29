@@ -43,8 +43,6 @@
 #include  "BackDrop.h"
 
 /*===================================================*/
-
-
 #define  BUFFER_SIZE  0x7E00L
 #define  PLAYER_LOCATION 0
 
@@ -93,7 +91,7 @@ int main() {
 	gameScreen = (char*) ((UINT32) (gameScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 	
 	backGamescreen = screen2;
-	backGamescreen = (char*) ((UINT32) (gameScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
+	backGamescreen = (char*) ((UINT32) (backGamescreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 
 	
 	Cursconf(0, 0); /* removes cursor*/
@@ -130,9 +128,7 @@ int main() {
 
 
 		
-		gameStart(gameArray,thePlayer,missile,NUMBER_OF_TANKS, &playerScore);
-		
-		
+		gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
 		
 		
 		
@@ -142,15 +138,14 @@ int main() {
 		
 		for(i = 0; i < NUMBER_OF_TANKS; i++)
 		{
-			plotLargeSprite(gameScreen, gameArray[i].sprite,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
+			plotLargeSprite(gameScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
 		}
 	
 
 		Vsync();
 		Setscreen(gameScreen, gameScreen, -1L);
 
-		waitForinput();
-		waitForinput();
+	
 		
 		
 		
@@ -190,16 +185,16 @@ int main() {
 			
 			/*model(&thePlayer,gameArray,missile, landobjects, 			
 				NUMBER_OF_TANKS,MAX_MISSILES, NUM_OBJECTS
-				  ,keypress,playerInput);*/
+				  ,keypress,playerInput);
 			
-			plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate,SPRITE_SIZE);
+			plotLargeSprite(gameScreen, &thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate,SPRITE_SIZE);
 
 			for(i = 0; i < NUMBER_OF_TANKS; i++)
 			{
-				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate, gameArray[i].y_coordinate, SPRITE_SIZE);
+				plotLargeSprite(gameScreen, &gameArray[i].sprite, gameArray[i].x_coordinate, gameArray[i].y_coordinate, SPRITE_SIZE);
 
 
-			}
+			}*/
 			
 			
 			Vsync();
@@ -244,8 +239,6 @@ void memCopy(char* screenChunk1 ,char* screenChunk2)
 	UINT32 i;
 	
 	copySize = SCREEN_SIZE >> 2;
-	
-
 		
 	
 	for(i = 0 ;i < copySize;i++)

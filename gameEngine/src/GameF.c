@@ -5,27 +5,27 @@
 const int xPostions[] = {600,250,300,400,200};
 const int yPostions[] = {10,30,50,70,100};
 
-void gameStart(struct Tank gameArray[],struct Tank player, Missile missile[], int numOfEnemy, int *score )
+void gameStart(struct Tank gameArray[], Tank *player, Missile missile[], int numOfEnemy, int *score )
 {
 
     register int i;
 
 	*score = 0;
 	
-	player.x_coordinate = 20;
-	player.y_coordinate = 50;
-	player.hitpoints = PLAYER_HITPOINTS;
-	player.current_speed = MAXSPEED;
-	player.is_moving = TRUE;
-	player.is_firing = FALSE;	
-    player.sprite = &playerTankNorth;
-	player.x_posMask = 0;
-	player.y_posMask = 0;
-	player.h_facing = VERTICAL;
-	player.v_facing = UP;
-	player.is_visible = TRUE;
-	player.current_behaviour = DO_NOTHING;
-	player.missile_available = START_PLAYER_MISSILES;
+	player->x_coordinate = 20;
+	player->y_coordinate = 50;
+	player->hitpoints = PLAYER_HITPOINTS;
+	player->current_speed = MAXSPEED;
+	player->is_moving = TRUE;
+	player->is_firing = FALSE;	
+    player->sprite = playerTankNorth;
+	player->x_posMask = 0;
+	player->y_posMask = 0;
+	player->h_facing = VERTICAL;
+	player->v_facing = UP;
+	player->is_visible = TRUE;
+	player->current_behaviour = DO_NOTHING;
+	player->missile_available = START_PLAYER_MISSILES;
 
 	
 	
