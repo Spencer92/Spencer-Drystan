@@ -43,7 +43,7 @@
 #include  "BackDrop.h"
 
 /*===================================================*/
-#define  BUFFER_SIZE  0x7E00L
+#define  BUFFER_SIZE  0x8100L
 #define  PLAYER_LOCATION 0
 
 
@@ -102,7 +102,9 @@ int main() {
 	 memCopy(backdrop, backdropScreen);
 	 memCopy(grass,gameScreen);
 	 memCopy(gameScreen,backGamescreen);
-			
+	
+	
+	gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
 		
 	 Vsync();	 
 	 Setscreen(-1L,backdropScreen,-1L);
@@ -143,7 +145,7 @@ int main() {
 	
 
 		Vsync();
-		Setscreen(gameScreen, gameScreen, -1L);
+		Setscreen(-1L, gameScreen, -1L);
 
 	
 		
@@ -198,13 +200,13 @@ int main() {
 			
 			
 			Vsync();
-			Setscreen(gameScreen, gameScreen, -1L);
+			Setscreen(-1L, gameScreen, -1L);
 			
 			
 
 
-			Vsync();
-			Setscreen(backGamescreen, backGamescreen, -1L);
+			/*Vsync();
+			Setscreen(backGamescreen, backGamescreen, -1L);*/
 		
 		
 		
