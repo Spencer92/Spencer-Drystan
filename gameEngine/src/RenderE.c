@@ -338,6 +338,7 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
     register UINT32 bufferleft;
 	register UINT32 bufferright;
+	register UINT32 *ptr = spriteLocation;
 
 	UINT32 *writePtrLH = (UINT32*)fbstart;
 	UINT32 *writePtrRH = NULL;
@@ -345,7 +346,7 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	UINT8 *arrayRd2;
 
 	UINT16 *trackPtr = (UINT16*)fbstart;
-	UINT8 *track8Ptr = (UINT8*)fbstart;
+	UINT8  *track8Ptr = (UINT8*)fbstart;
 
 	UINT8 offset = size >> 1;
 
@@ -457,10 +458,10 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 		else { /*No x clipping is taking place*/
 
-			writePtrLH += ((xpostoPlot - offset) >> 5);
-			trackPtr = (UINT16*)writePtrLH;
+			writePtrLH 	+= ((xpostoPlot - offset) >> 5);
+			trackPtr	 = (UINT16*)writePtrLH;
 			trackPtr++;
-			writePtrRH = (UINT32*)trackPtr;
+			writePtrRH	 = (UINT32*)trackPtr;
 
 			shiftleft = ((xpostoPlot - offset) & 15);
 			shiftright = (16 - shiftleft);

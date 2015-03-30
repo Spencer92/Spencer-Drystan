@@ -2,7 +2,9 @@
 #define GRASS_H
 #include "types.h"
 
-extern const UINT8 grass[];
+#define GRASS_SIZE 0x7CD00
+
+extern const UINT8 grass[GRASS_SIZE];
 
 
 #endif

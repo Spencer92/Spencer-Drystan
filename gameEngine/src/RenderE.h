@@ -13,10 +13,11 @@
 #define SCREEN_HEIGHT 400
 #define POSTIVE_X_LIMIT 664
 #define NEGTIVE_X_LIMIT -24
-#define POSTIVE_Y_LIMIT 504
+#define POSTIVE_Y_LIMIT 424
 #define NEGTIVE_Y_LIMIT -24
 #define FONT_SIZE 15
 #define COPY_MASK 0x00000000
+
 
 #include "Fonts.h"
 #include "types.h"
@@ -44,8 +45,8 @@ void printArbitrary(unsigned char* base, unsigned int x_loc_start,
 		unsigned int y_loc_start, unsigned int x_loc_end,
 		unsigned int y_loc_end);
 
-void plotLargeSprite(char *fbstart, UINT32 *spriteLocationint, int xpostoPlot,
-		int ypostoPlot,int size);
+void plotLargeSprite(char *fbstart, UINT32 *spriteLocation , int xpostoPlot,
+					int ypostoPlot,int size);
 
 
 void plotString(char *fbstart, char *theString,int length, int xpos,int ypos);
