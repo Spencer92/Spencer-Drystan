@@ -66,7 +66,7 @@ int main() {
 	UINT16 playerScore = 0;	
 	
 	UINT8 i = 0;
-	UINT  lives = 0;
+	UINT8  lives = 0;
 	
 	char *mainScreen;
 	char *logMainscreen;
@@ -182,14 +182,14 @@ int main() {
 				{
 				
 					/*Spencer's model works on the players movement and we plot the player's movement */
-					
+									
 					/*plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int size) wipe over the old backgnd*/
 					
 					/*copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);*/
 					
 					
 					
-					/*plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE); plot the player*/
+					/*plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE); plot the player on the back  screen*/
 					
 					
 				
