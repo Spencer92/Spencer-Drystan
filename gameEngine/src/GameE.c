@@ -106,7 +106,7 @@ int main() {
 	 memCopy(gameScreen,backGamescreen);
 	
 	
-	gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
+	
 		
 	 Vsync();	 
 	 Setscreen(-1L,backdropScreen,-1L);
@@ -134,7 +134,7 @@ int main() {
 		
 		gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
 		
-		
+		copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
 		
 		plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
 		
@@ -142,6 +142,7 @@ int main() {
 		
 		for(i = 0; i < NUMBER_OF_TANKS; i++)
 		{
+			copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
 			plotLargeSprite(gameScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
 		}
 	
@@ -178,8 +179,17 @@ int main() {
 				}
 				keypress = DSnecin();
 				}
-		/*=====================here is the pause game loop==================*/	
+		/*=====================here is the end of pause game loop==================*/	
 			
+				else
+				{
+				
+					/*Spencer's model works on the players movement*/
+					
+					
+				
+				
+				}
 			
 			}
 			else
@@ -187,9 +197,15 @@ int main() {
 				playerInput = 0;
 			}
 			
+			
+			
+			
 			/*model(&thePlayer,gameArray,missile, landobjects, 			
 				NUMBER_OF_TANKS,MAX_MISSILES, NUM_OBJECTS
 				  ,keypress,playerInput);
+			
+			
+			
 			
 			plotLargeSprite(gameScreen, &thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate,SPRITE_SIZE);
 

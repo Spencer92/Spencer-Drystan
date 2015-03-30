@@ -44,7 +44,7 @@ typedef struct Tank
 	BOOL is_moving;
 	BOOL is_firing;
 	UINT32 *sprite;
-	UINT32 backMask[32];
+	UINT32 backMask[64];
 	UINT16 x_posMask;
 	UINT16 y_posMask;
 	UINT8  *Missile;
