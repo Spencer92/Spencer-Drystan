@@ -1,5 +1,6 @@
 #include "types.h"
 #include "RenderE.h"
+#include  "Bitmaps.h"
 
 
 const UINT32 playerTankEast[SPRITE_SIZE] = {

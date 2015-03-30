@@ -41,6 +41,7 @@
 #include  "Grass.h"
 #include  "GameF.h"
 #include  "BackDrop.h"
+#include  "Bitmaps.h"
 
 /*===================================================*/
 #define  BUFFER_SIZE  0x8400L
