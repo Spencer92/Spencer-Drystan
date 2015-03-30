@@ -99,7 +99,7 @@ int main() {
 	
 	Cursconf(0, 0); /* removes cursor*/
 	
-	if(findRez() ) /*If we are in High rez mode*/
+	if(findRez()) /*If we are in High rez mode*/
 	{
 	 	
 	 memCopy(backdrop, backdropScreen);
@@ -133,7 +133,7 @@ int main() {
 		
 		gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
 		
-		copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
+		/*copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);*/
 		
 		plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
 		
@@ -141,7 +141,7 @@ int main() {
 		
 		for(i = 0; i < NUMBER_OF_TANKS; i++)
 		{
-			copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
+			/*copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);*/
 			plotLargeSprite(gameScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
 		}
 	
