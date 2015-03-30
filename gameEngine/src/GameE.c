@@ -46,7 +46,7 @@
 #define  BUFFER_SIZE  0x8400L
 
 
-
+volatile void thing2(){}
 void memCopy(char* screenChunk1 ,char* screenChunk2);
 void waitForinput();
 	UINT8 screen1[BUFFER_SIZE];
@@ -67,7 +67,7 @@ int main() {
 	UINT16 playerScore = 0;	
 	
 	UINT8 i = 0;
-	UINT8  lives = 0;
+	UINT8  lives = 3;
 	
 	char *mainScreen;
 	char *logMainscreen;
@@ -75,8 +75,8 @@ int main() {
 	char *gameScreen;
 	char *backGamescreen;
 	char *backdropScreen;
-	char *currentScreen;
-	long time_test;
+	char *plottingScreen;
+	long time_now;
 
 
 
@@ -136,7 +136,7 @@ int main() {
 		
 		plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
 		
-		currentScreen = gameScreen;
+		plottingScreen = gameScreen;
 		
 		for(i = 0; i < NUMBER_OF_TANKS; i++)
 		{
@@ -146,14 +146,24 @@ int main() {
 	
 
 		Vsync();
-		Setscreen(-1L, currentScreen, -1L);
+		Setscreen(plottingScreen, plottingScreen, -1L);
 
 			
 	/*=====================here is main game loop==================*/	
-		
+		time_now = getTime();
 		do {
-
-			DSconws("Got in do-while\r\n\0");
+	
+/* 			if(plottingScreen != gameScreen)
+			{
+				plottingScreen = gameScreen;
+			}
+			else
+			{
+				plottingScreen = backGamescreen;
+			}
+ */			
+/* 			DSconws("Got in do-while\r\n\0"); */
+			
 			if(DSconis())
 			{
 				keypress = DSnecin();
@@ -181,9 +191,9 @@ int main() {
 				{
 				
 					player_action_check(&thePlayer, gameArray, NUMBER_OF_TANKS, keypress, missile, MAX_MISSILES);
-					DSconws("Player pressed ");
+/* 					DSconws("Player pressed ");
 					DSconout(keypress);
-					DSconws("\r\n\0");
+					DSconws("\r\n\0"); */
 					/*Spencer's model works on the players movement and we plot the player's movement */
 					
 					/*plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int size) wipe over the old backgnd*/
@@ -209,11 +219,16 @@ int main() {
 			
 			
 			
+			assess_situation(gameArray, &thePlayer, landobjects, missile, NUMBER_OF_TANKS, MAX_MISSILES);
+
+			if(getTime() >= time_now+10)
+			{
 			
-			/*model(&thePlayer,gameArray,missile, landobjects, 			
+			model(&thePlayer,gameArray,missile, landobjects, 			
 				NUMBER_OF_TANKS,MAX_MISSILES, NUM_OBJECTS
-				  ,keypress,playerInput);
-			
+				  ,keypress,playerInput); 
+				 time_now = getTime();
+			}
 				
 
 			for(i = 0; i < NUMBER_OF_TANKS; i++) 
@@ -222,13 +237,13 @@ int main() {
 				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate, gameArray[i].y_coordinate, SPRITE_SIZE);
 
 
-			}*/
+			}
 			
 			if(lives > 0)
 			{
-			Vsync();
-			Setscreen(-1L, currentScreen, -1L);
-			}
+/* 			Vsync();
+			Setscreen(-1L, plottingScreen, -1L);
+ */			}
 			
 			
 			else
@@ -239,29 +254,29 @@ int main() {
 				{
 				gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
 				
-				memCopy(grass,gameScreen);
-	 			memCopy(gameScreen,backGamescreen);
-					
-				copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
+				memCopy(grass,plottingScreen);
+/* 	 			memCopy(plottingScreen,backGamescreen);
+ */					
+/* 				copyBackground(plottingScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
 		
-				plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
-		
-				currentScreen = gameScreen;
-		
+				plotLargeSprite(plottingScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
+						
 				for(i = 0; i < NUMBER_OF_TANKS; i++)
 				{
-			    copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
-				plotLargeSprite(gameScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
+			    copyBackground(plottingScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
+				plotLargeSprite(plottingScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
 				}
+ */				
 				
-				Vsync();
-		        Setscreen(-1L, currentScreen, -1L);
+				
+				
+				
+
 				
 				
 				
 				}
-				
-				
+			
 /*				else
 				{
 				keypress = 'q'; /*Clean up and we are done*/
@@ -272,8 +287,35 @@ int main() {
 			
 			}
 			
+				thing2();
+				if(plottingScreen != gameScreen)
+				{
+ 					DSconws("Screen flip1\r\0");
+ 					plottingScreen = gameScreen;
+ 					thePlayer.x_coordinate = 100;
+ 				}
+				else
+				{
+					DSconws("Screen flip2\r\0");
+					plottingScreen = backGamescreen;
+ 					thePlayer.x_coordinate = 30;
+ 				}
+				plotBackground(plottingScreen,thePlayer.backMask,thePlayer.x_coordinate, thePlayer.y_coordinate ,32);					
+				
+				copyBackground(plottingScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
+				
+				plotLargeSprite(plottingScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
+						
+				for(i = 0; i < NUMBER_OF_TANKS; i++)
+				{
+			    copyBackground(plottingScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
+				plotLargeSprite(plottingScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
+				}
+				
+				Vsync();
+		        Setscreen(-1L, plottingScreen, -1L);	
 		
-		
+				
 		
 		} while (keypress != 'q');
 
@@ -295,6 +337,8 @@ int main() {
 	return 0;
 
 }
+
+
 
 
 	
