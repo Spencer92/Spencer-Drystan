@@ -22,7 +22,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <osbind.h>
-#include <tos.h>
+#include <osbind.h>
 /*===================================================*/
 /*Header files authored by Others*/
 
@@ -87,13 +87,13 @@ int main() {
 	mainScreen 		= (Physbase());
 	logMainscreen 	= (Logbase());
 	
-	backdropScreen 	= welcomeScreen;
+	backdropScreen 	= (char *)welcomeScreen;
 	backdropScreen 	= (char*) ((UINT32) (backdropScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 	
-	gameScreen = screen1;
+	gameScreen = (char*)screen1;
 	gameScreen = (char*) ((UINT32) (gameScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 	
-	backGamescreen = screen2;
+	backGamescreen = (char*)screen2;
 	backGamescreen = (char*) ((UINT32) (backGamescreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 
 	
@@ -232,6 +232,7 @@ int main() {
 			{
 			
 				/*ask player if he/she would wish to play again*/
+				
 				if(keypress == 'y')
 				{
 				gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);

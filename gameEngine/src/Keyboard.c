@@ -1,5 +1,5 @@
 /*Routines to read the keyboard directly*/
-#include <tos.h>
+#include <osbind.h>
 #include "types.h"
 
 void DSconout(char output)

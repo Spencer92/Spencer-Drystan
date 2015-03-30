@@ -423,8 +423,7 @@ const UINT32 tree2[SPRITE_SIZE] = {
 	0x4BFFFFE8L
 };
 
-UINT8 player_missile[] =
-{
+const UINT8 player_missile[SMALL_SPRITE_SIZE] = {
 	0xFF,
 	0xFF,
 	0xFF,
@@ -435,8 +434,7 @@ UINT8 player_missile[] =
 	0xFF
 };
 
-UINT8 enemy_missile[] =
-{
+const UINT8 enemy_missile[SMALL_SPRITE_SIZE] = {
 	0x81,
 	0x81,
 	0x81,
