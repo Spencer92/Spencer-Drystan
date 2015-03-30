@@ -40,12 +40,12 @@ void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *objec
 	if(input_valid)
 	{
 
-		player_action_check(player, 
+/*		player_action_check(player, 
 		enemy, 
 		num_enemies, 
 		input, 
 		missile, 
-		num_missiles);
+		num_missiles);*/
 		if(getTime() >= time_now+10)
 		{
 			player_action(player,missile,input);

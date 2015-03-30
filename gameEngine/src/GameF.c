@@ -4,6 +4,7 @@
 
 const int xPostions[] = {600,250,300,400,200};
 const int yPostions[] = {10,30,50,70,100};
+volatile void thing3(){}
 
 void gameStart(struct Tank gameArray[], Tank *player, Missile missile[], int numOfEnemy, int *score )
 {
@@ -28,7 +29,7 @@ void gameStart(struct Tank gameArray[], Tank *player, Missile missile[], int num
 	player->missile_available = START_PLAYER_MISSILES;
 
 	
-	
+	thing3();
 	for(i = 0; i < numOfEnemy; i++)
 	{
 	gameArray[i].x_coordinate = xPostions[i];
@@ -48,7 +49,7 @@ void gameStart(struct Tank gameArray[], Tank *player, Missile missile[], int num
 	
 	
 	}
-
+	thing3();
 	
 	for(i = 0; i < MAX_MISSILES; i++)
 	{
@@ -57,7 +58,7 @@ void gameStart(struct Tank gameArray[], Tank *player, Missile missile[], int num
 		missile[i].y_coordinate = -1;
 		missile[i].sprite = NULL;
 	}
-	
+	thing3();
 	
 	
 }

@@ -22,7 +22,6 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <osbind.h>
-#include <tos.h>
 /*===================================================*/
 /*Header files authored by Others*/
 
@@ -34,7 +33,7 @@
 #include  "Behavior.h"
 #include  "Model.h"
 #include  "RenderE.h"
-#include  "AssemblerR.h"
+#include  "AsRou.h"
 #include  "System.h"
 #include  "Fonts.h"
 #include  "GameF.h"
@@ -50,14 +49,16 @@
 
 void memCopy(char* screenChunk1 ,char* screenChunk2);
 void waitForinput();
-
-
-int main() {
-
+	UINT8 screen1[BUFFER_SIZE];
+	UINT8 screen2[BUFFER_SIZE];
+	UINT8 welcomeScreen[BUFFER_SIZE];
 	Tank thePlayer;
 	Tank gameArray[NUMBER_OF_TANKS];
 	Missile missile[MAX_MISSILES];
 	Stationary_Object landobjects[NUM_OBJECTS];
+int main() {
+
+
 	
 	
 	BOOL playerInput = 0;
@@ -66,7 +67,7 @@ int main() {
 	UINT16 playerScore = 0;	
 	
 	UINT8 i = 0;
-	UINT  lives = 0;
+	UINT8  lives = 0;
 	
 	char *mainScreen;
 	char *logMainscreen;
@@ -75,11 +76,9 @@ int main() {
 	char *backGamescreen;
 	char *backdropScreen;
 	char *currentScreen;
-	
+	long time_test;
 
-	UINT8 screen1[BUFFER_SIZE];
-	UINT8 screen2[BUFFER_SIZE];
-	UINT8 welcomeScreen[BUFFER_SIZE];
+
 
 
 
@@ -154,7 +153,7 @@ int main() {
 		
 		do {
 
-			
+			DSconws("Got in do-while\r\n\0");
 			if(DSconis())
 			{
 				keypress = DSnecin();
@@ -181,6 +180,10 @@ int main() {
 				else
 				{
 				
+					player_action_check(&thePlayer, gameArray, NUMBER_OF_TANKS, keypress, missile, MAX_MISSILES);
+					DSconws("Player pressed ");
+					DSconout(keypress);
+					DSconws("\r\n\0");
 					/*Spencer's model works on the players movement and we plot the player's movement */
 					
 					/*plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int size) wipe over the old backgnd*/
@@ -259,13 +262,13 @@ int main() {
 				}
 				
 				
-				else
+/*				else
 				{
 				keypress = 'q'; /*Clean up and we are done*/
 				
-				
+/*				
 				}
-
+*/
 			
 			}
 			

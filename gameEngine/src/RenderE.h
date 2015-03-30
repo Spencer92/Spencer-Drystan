@@ -21,7 +21,7 @@
 
 #include "Fonts.h"
 #include "types.h"
-#include <tos.h>
+#include "osbind.h"
 
 
 void plotPixel(char *fbstart, int x, int y);
@@ -35,8 +35,7 @@ void plotArbLine(char *fbstart, int xstart, int ystart, int xfin, int yfin);
 void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size);
 
-void copyBackground(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
-		int ypostoPlot, int size);
+void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,int ypostoPlot, int size);
 
 void printvertical(unsigned char* base, unsigned int x_loc, unsigned int y_loc,
 		unsigned int length);
