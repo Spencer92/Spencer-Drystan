@@ -9,7 +9,7 @@
  *Course      : Comp 2659
  *Instructor  : Paul Pospisil
  *Copyright   : Released under GPL v3
- *Description : Raster library for Atarti St, ANSI-style C89
+ *Description : A tank game for Atarti St, ANSI-style C89
  *Source File : GameEngine.c
  =============================================================================
  Purpose      : To demonstrate a working game model
@@ -90,10 +90,10 @@ int main() {
 	backdropScreen 	= (char *)welcomeScreen;
 	backdropScreen 	= (char*) ((UINT32) (backdropScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 	
-	gameScreen = (char*)screen1;
+	gameScreen = (char*) screen1;
 	gameScreen = (char*) ((UINT32) (gameScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 	
-	backGamescreen = (char*)screen2;
+	backGamescreen = (char*) screen2;
 	backGamescreen = (char*) ((UINT32) (backGamescreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 
 	
