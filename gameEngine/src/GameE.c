@@ -73,7 +73,8 @@ int main() {
 	
 	char *gameScreen;
 	char *backGamescreen;
-	char *backdropScreen;	
+	char *backdropScreen;
+	char *currentScreen;
 	
 
 	UINT8 screen1[BUFFER_SIZE];
@@ -138,7 +139,7 @@ int main() {
 		
 		plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
 		
-		
+		currentScreen = gameScreen;
 		
 		for(i = 0; i < NUMBER_OF_TANKS; i++)
 		{
@@ -148,7 +149,7 @@ int main() {
 	
 
 		Vsync();
-		Setscreen(-1L, gameScreen, -1L);
+		Setscreen(-1L, currentScreen, -1L);
 
 	
 		
@@ -220,7 +221,7 @@ int main() {
 			
 			
 
-			for(i = 0; i < NUMBER_OF_TANKS; i++)
+			for(i = 0; i < NUMBER_OF_TANKS; i++) 
 			{
 				copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
 				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate, gameArray[i].y_coordinate, SPRITE_SIZE);
@@ -228,15 +229,54 @@ int main() {
 
 			}*/
 			
-			
+			if(lives > 0)
+			{
 			Vsync();
-			Setscreen(-1L, gameScreen, -1L);
+			Setscreen(-1L, currentScreen, -1L);
+			}
 			
 			
+			else
+			{
+			
+				/*ask player if he/she would wish to play again*/
+				if(keypress == 'y')
+				{
+				gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
+				
+				memCopy(grass,gameScreen);
+	 			memCopy(gameScreen,backGamescreen);
+					
+				copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
+		
+				plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
+		
+				currentScreen = gameScreen;
+		
+				for(i = 0; i < NUMBER_OF_TANKS; i++)
+				{
+			    copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
+				plotLargeSprite(gameScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
+				}
+				
+				Vsync();
+		        Setscreen(-1L, currentScreen, -1L);
+				
+				
+				
+				}
+				
+				
+				else
+				{
+				keypress = 'q'; /*Clean up and we are done*/
+				
+				
+				}
 
-
-			/*Vsync();
-			Setscreen(backGamescreen, backGamescreen, -1L);*/
+			
+			}
+			
 		
 		
 		
