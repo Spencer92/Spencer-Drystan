@@ -1,0 +1,8 @@
+*.o
+*.tos
+Makefile
+MAKEFILE
+makefile
+*.c~
+*.h~
+*.s~
