@@ -45,7 +45,7 @@
 
 /*===================================================*/
 #define  BUFFER_SIZE  0x8400L
-#define  PLAYER_LOCATION 0
+
 
 
 void memCopy(char* screenChunk1 ,char* screenChunk2);
@@ -165,7 +165,8 @@ int main() {
 				keypress = DSnecin();
 				playerInput = 1;
 				
-				if (keypress == 'p') {
+				if (keypress == 'p') 
+				{
 		/*=====================here is the pause game loop==================*/
 			
 				
@@ -184,10 +185,17 @@ int main() {
 				else
 				{
 				
-					/*Spencer's model works on the players movement*/
+					/*Spencer's model works on the players movement and we plot the player's movement */
+					
+					/*plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int size) wipe over the old backgnd*/
+					
+					/*copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);*/
 					
 					
-				
+					
+					/*plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE); plot the player*/
+					
+					
 				
 				}
 			
@@ -195,6 +203,9 @@ int main() {
 			else
 			{
 				playerInput = 0;
+			
+			
+			
 			}
 			
 			
@@ -207,11 +218,12 @@ int main() {
 			
 			
 			
-			plotLargeSprite(gameScreen, &thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate,SPRITE_SIZE);
+			
 
 			for(i = 0; i < NUMBER_OF_TANKS; i++)
 			{
-				plotLargeSprite(gameScreen, &gameArray[i].sprite, gameArray[i].x_coordinate, gameArray[i].y_coordinate, SPRITE_SIZE);
+				copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
+				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate, gameArray[i].y_coordinate, SPRITE_SIZE);
 
 
 			}*/
