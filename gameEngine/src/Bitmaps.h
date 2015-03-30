@@ -10,8 +10,6 @@ extern const UINT32 playerTankNorth[SPRITE_SIZE];
 extern const UINT32 playerTankSouth[SPRITE_SIZE];
 extern const UINT32 playerTankWest[SPRITE_SIZE];
 
-	
-
 extern const UINT32 playerTankTwoEast[SPRITE_SIZE];
 extern const UINT32 playerTankTwoNorth[SPRITE_SIZE];
 extern const UINT32 playerTankTwoSouth[SPRITE_SIZE];

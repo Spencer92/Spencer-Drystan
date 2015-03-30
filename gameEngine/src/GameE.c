@@ -58,7 +58,6 @@ int main() {
 	Tank gameArray[NUMBER_OF_TANKS];
 	Missile missile[MAX_MISSILES];
 	Stationary_Object landobjects[NUM_OBJECTS];
-
 	
 	
 	BOOL playerInput = 0;
@@ -67,6 +66,7 @@ int main() {
 	UINT16 playerScore = 0;	
 	
 	UINT8 i = 0;
+	UINT  lives = 0;
 	
 	char *mainScreen;
 	char *logMainscreen;
@@ -105,8 +105,6 @@ int main() {
 	 memCopy(backdrop, backdropScreen);
 	 memCopy(grass,gameScreen);
 	 memCopy(gameScreen,backGamescreen);
-	
-	
 	
 		
 	 Vsync();	 
@@ -151,11 +149,7 @@ int main() {
 		Vsync();
 		Setscreen(-1L, currentScreen, -1L);
 
-	
-		
-		
-		
-		
+			
 	/*=====================here is main game loop==================*/	
 		
 		do {
@@ -172,6 +166,7 @@ int main() {
 			
 				
 				Vsync();
+				
 				Setscreen(logMainscreen, mainScreen, -1L);
 				
 				Cconws("In pause game loop \r\n\0");
@@ -216,10 +211,7 @@ int main() {
 				NUMBER_OF_TANKS,MAX_MISSILES, NUM_OBJECTS
 				  ,keypress,playerInput);
 			
-			
-			
-			
-			
+				
 
 			for(i = 0; i < NUMBER_OF_TANKS; i++) 
 			{
