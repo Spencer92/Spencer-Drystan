@@ -500,6 +500,15 @@ L46:
 	addq.l	#6,a7
 	tst.b	d0
 	bne	L48
+	;line	284
+	ext.l	d3
+	move.l	d3,-(a7)
+	move.l	d4,-(a7)
+	jsr	.Xlmul
+	add.l	a3,d0
+	move.l	d0,-(a7)
+	jsr	_turn
+	addq.l	#4,a7
 L48:
 L47:
 L45:

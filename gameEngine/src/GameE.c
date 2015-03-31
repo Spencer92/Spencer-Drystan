@@ -76,6 +76,7 @@ int main() {
 	char *backGamescreen;
 	char *backdropScreen;
 	char *plottingScreen;
+	char *plottingTankScreen;
 	long time_now;
 	int tank_one_action;
 	int tank_two_action;
@@ -268,7 +269,7 @@ int main() {
 				{
 				gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
 				
-				memCopy(grass,plottingScreen);
+/* 				memCopy(grass,plottingScreen); */
 /* 	 			memCopy(plottingScreen,backGamescreen);
  */					
 /* 				copyBackground(plottingScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
@@ -305,11 +306,13 @@ int main() {
 				{
  					DSconws("Screen flip1\r\0");
  					plottingScreen = gameScreen;
+					plottingTankScreen = backGamescreen;
  				}
 				else
 				{
 					DSconws("Screen flip2\r\0");
 					plottingScreen = backGamescreen;
+					plottingTankScreen = gameScreen;
  				}
 				plotBackground(plottingScreen,thePlayer.backMask,thePlayer.x_coordinate, thePlayer.y_coordinate ,32);					
 				
@@ -325,7 +328,7 @@ int main() {
 				
 				Vsync();
 		        Setscreen(-1L, plottingScreen, -1L);	
-		
+				memCopy(grass,plottingTankScreen);
 				
 		
 		} while (keypress != 'q');
@@ -352,6 +355,8 @@ int main() {
 
 
 
+
+
 	
 void memCopy(char* screenChunk1 ,char* screenChunk2)
 {
@@ -361,17 +366,22 @@ void memCopy(char* screenChunk1 ,char* screenChunk2)
 	register UINT32 i;
 	
 	copySize = SCREEN_SIZE >> 2;
-		
+	i = copySize>>3;
 	
-	for(i = 0 ;i < copySize;i++)
+	do/*for(i = 0 ;i < copySize;i++)*/
 	{
 	
-		*dstPtr = *srcPtr;
-		 dstPtr++;
-		 srcPtr++;
-			
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
 		
-	}	
+		
+	}while(i--);
 	
 	
 }
