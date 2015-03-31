@@ -78,8 +78,8 @@ typedef struct Stationary_Object
 
 
 void turn(Tank *tank);
-void dodge_y(Tank *tank, Stationary_Object *object, int *direction, int num_objects);
-void dodge_x(Tank *tank, Stationary_Object *object, int *direction, int num_objects);
+void dodge_y(Tank *tank, Stationary_Object *object, int direction, int num_objects);
+void dodge_x(Tank *tank, Stationary_Object *object, int direction, int num_objects);
 void move_y(Tank *tank, Stationary_Object *object, int offset, int num_objects);
 void move_x(Tank *tank, Stationary_Object *object, int offset, int num_objects);
 void shoot(Tank *tank, Missile *missile);

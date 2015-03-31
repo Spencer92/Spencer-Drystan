@@ -5,8 +5,14 @@
 #include "System.h"
 #include "Keyboard.h"
 
-
-
+BOOL playAlin(Tank* enemy, Tank* player);
+BOOL needTurn(Tank* enemy, Tank* player);
+BOOL yMove(Tank* enemy, Tank* player);
+BOOL xMove(Tank* enemy, Tank* player);
+BOOL wrong(Tank* enemy);
+BOOL notBehaviour(Tank* enemy, BEHAVIOUR behaviour);
+void yfacing(Tank* enemy, Tank* player);
+void xfacing(Tank* enemy, Tank* player);
 
 
 /***************************************************************************
@@ -35,6 +41,11 @@
 void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *object, 
 			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid)
 {
+	int tank_one_action = enemy[0].current_behaviour;
+	int tank_two_action = enemy[1].current_behaviour;
+	int tank_three_action = enemy[2].current_behaviour;
+	int tank_four_action = enemy[3].current_behaviour;
+	int tank_five_action = enemy[4].current_behaviour;
 	if(input_valid)
 	{
 		player_action(player,missile,input);
@@ -222,53 +233,73 @@ BOOL tanks_at(Tank* player, Tank* enemy, int num_tanks)
 ***************************************************************************/
 
 
-
+volatile void thing4(){}
 void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks, Stationary_Object *object, int num_objects)
 {
 	int index;
+	BOOL missile_avail;
+	int dodge_loc;
+	int move_loc;
+
 	for(index = 0; index < num_tanks; index++)
 	{
-		if(enemy[index].is_visible && !enemy[index].current_behaviour == DO_NOTHING)
+		if(!wrong(&enemy[index]))
 		{
-			if(enemy[index].current_behaviour == SHOOT)
+			if(!(notBehaviour(&enemy[index],SHOOT)))
 			{
-				missile_check(&enemy[index], missile, enemy[index].missile_available, 1);
+				missile_avail = enemy[index].missile_available;
+				missile_check(&enemy[index], missile, missile_avail, 1);
 				enemy[index].is_firing = 0;
 			}
-			else if(enemy[index].current_behaviour == DODGE_X)
+			else if(!(notBehaviour(&enemy[index],DODGE_X)))
 			{
-				dodge_x(&enemy[index], object, &(enemy[index].h_facing), num_objects);
+				dodge_loc = enemy[index].h_facing;
+				dodge_x(&enemy[index], object, dodge_loc, num_objects);
 			}
-			else if(enemy[index].current_behaviour == DODGE_Y)
+			else if(!(notBehaviour(&enemy[index], DODGE_Y)))
 			{
+				dodge_loc = enemy[index].v_facing;
 				dodge_y(&enemy[index], object, 
-										&(enemy[index].v_facing), num_objects);
+										dodge_loc, num_objects);
 			}
-			else if(enemy[index].current_behaviour == MOVE_X)
+			else if(!(notBehaviour(&enemy[index],MOVE_X)))
 			{
-				move_x(&enemy[index], object,enemy[index].h_facing, 
-					   
-					   
+				move_loc = enemy[index].h_facing;
+				move_x(&enemy[index], object,move_loc, 
 					   num_objects);
 
 			}
-			else if(enemy[index].current_behaviour == MOVE_Y)
+			else if(!(notBehaviour(&enemy[index],MOVE_Y)))
 			{
-				move_y(&enemy[index], object, enemy[index].v_facing, num_objects);
+				thing4();
+				move_loc = enemy[index].v_facing;
+				move_y(&enemy[index], object, move_loc, num_objects);
 			}
-			else if(enemy[index].current_behaviour == DIE)
+			else if(!(notBehaviour(&enemy[index],DIE)))
 			{
 				enemy[index].is_visible = 0;
 			}
-			else if(enemy[index].current_behaviour == TURN)
+			else if(!(notBehaviour(&enemy[index],TURN)))
 			{
 				turn(&enemy[index]);
 			}
 		}
-
+		enemy[index].current_behaviour = DO_NOTHING;
 	}
+
 }
 
+BOOL notBehaviour(Tank* enemy, BEHAVIOUR behaviour)
+{
+	return enemy->current_behaviour != behaviour;
+}
+
+
+BOOL wrong(Tank* enemy)
+{
+	int current_behaviour = enemy->current_behaviour;
+	return !(enemy->is_visible && enemy->current_behaviour != DO_NOTHING);
+}
 
 
 
@@ -397,10 +428,15 @@ void missile_check(Tank *tank, Missile *missile, int num_missiles, int num_tanks
 
 ***************************************************************************/
 
-
+volatile void thing5(){}
 void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles)
 {
 	int index;
+	int tank_one_value;
+	int tank_two_value;
+	int tank_three_value;
+	int tank_four_value;
+	int tank_five_value;
 	for(index = 0; index < num_enemies; index++)
 	{
 		if(player->is_firing) /* Case One */
@@ -422,37 +458,42 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 		{
 			enemy[index].current_behaviour = DODGE_Y; /* Case Three */
 		}
-		else if((enemy[index].x_coordinate >= player->x_coordinate-8
+		else if(playAlin(&enemy[index],player)/*(enemy[index].x_coordinate >= player->x_coordinate-8
 		&&enemy[index].x_coordinate <= player->x_coordinate+8)
 		|| 
 		(enemy[index].y_coordinate >= player->y_coordinate-8
-		&& enemy[index].y_coordinate <= player->y_coordinate+8)) /* Case 4*/
+		&& enemy[index].y_coordinate <= player->y_coordinate+8)*/) /* Case 4*/
 		{
 			enemy[index].current_behaviour = SHOOT;
+			DSconws("SHOOT goddammit!! Y\r\0");
 		}
-		else if(((enemy[index].x_coordinate >= player->x_coordinate-16
+		else if(needTurn(&enemy[index], player)/* ((enemy[index].x_coordinate >= player->x_coordinate-16
 		&& enemy[index].x_coordinate <= player->x_coordinate+16) 
 		&& enemy[index].v_facing == HORIZONTAL) || 
 		((enemy[index].y_coordinate >= player->y_coordinate-16
-		&&enemy[index].y_coordinate <= player->y_coordinate+16) && enemy[index].h_facing == VERTICAL)) /* Case 5*/
+		&&enemy[index].y_coordinate <= player->y_coordinate+16) && enemy[index].h_facing == VERTICAL) */) /* Case 5*/
 		{
 			enemy[index].current_behaviour = TURN;
 		}
-		else if(((enemy[index].y_coordinate - player->y_coordinate) < ((enemy[index].x_coordinate - player->x_coordinate) + 16)
+		else if(yMove(&enemy[index], player)/* ((enemy[index].y_coordinate - player->y_coordinate) < ((enemy[index].x_coordinate - player->x_coordinate) + 16)
 		&& (enemy[index].y_coordinate - player->y_coordinate > 16))
 		||
-		((enemy[index].y_coordinate - player->y_coordinate) > ((enemy[index].x_coordinate - player->x_coordinate)+16)/* Case 6 */
-		&& (enemy[index].y_coordinate - player->y_coordinate < -16)))
+		((enemy[index].y_coordinate - player->y_coordinate) > ((enemy[index].x_coordinate - player->x_coordinate)+16)
+		&& (enemy[index].y_coordinate - player->y_coordinate < -16)) */)/* Case 6 */
 		{
 			enemy[index].current_behaviour = MOVE_Y;
+			yfacing(&enemy[index], player);
+			DSconws("MOVE Y\r\0");
 		}
-		else if(((enemy[index].x_coordinate - player->x_coordinate) < ((enemy[index].y_coordinate - player->y_coordinate)-16) /*Check to see if the player should move in the x direction because it's y offset is greater than it's x offset */
+		else if(xMove(&enemy[index], player)/* ((enemy[index].x_coordinate - player->x_coordinate) < ((enemy[index].y_coordinate - player->y_coordinate)-16) 
 		&& (enemy[index].x_coordinate - player->x_coordinate > 16))
 		||
-		((enemy[index].x_coordinate - player->x_coordinate) > ((enemy[index].y_coordinate - player->y_coordinate)+16)/* Case 7*/
-		&& (enemy[index].x_coordinate - player->x_coordinate < -16)))
-		{
+		((enemy[index].x_coordinate - player->x_coordinate) > ((enemy[index].y_coordinate - player->y_coordinate)+16)
+		&& (enemy[index].x_coordinate - player->x_coordinate < -16)) */)/* Case 7*/
+		{/*Check to see if the player should move in the x direction because it's y offset is greater than it's x offset */
+			thing5();			
 			enemy[index].current_behaviour = MOVE_X;
+			xfacing(&enemy[index], player);
 		}
 		else if(die_check(&enemy[index], missile, num_missiles))/*Case 8 */
 		{
@@ -463,8 +504,108 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 			enemy[index].current_behaviour = DO_NOTHING;
 		}
 	}
+	tank_one_value = enemy[0].current_behaviour;
+	tank_two_value = enemy[1].current_behaviour;
+	tank_three_value = enemy[2].current_behaviour;
+	tank_four_value = enemy[3].current_behaviour;
+	tank_five_value = enemy[4].current_behaviour;
+	
 }
 
+void yfacing(Tank* enemy, Tank* player)
+{
+	register int enemy_coord = enemy->y_coordinate;
+	register int player_coord = player->y_coordinate;
+	
+	if(enemy_coord - player_coord < 0)
+	{
+		enemy->v_facing = DOWN;
+	}
+	else
+	{
+		enemy->v_facing = UP;
+	}
+	enemy->h_facing = VERTICAL;
+}
+
+void xfacing(Tank* enemy, Tank* player)
+{
+	register int enemy_coord = enemy->x_coordinate;
+	register int player_coord = player->x_coordinate;
+	if(enemy_coord - player_coord < 0)
+	{
+		enemy->h_facing = RIGHT;
+	}
+	else
+	{
+		enemy->h_facing = LEFT;
+	}
+	enemy->v_facing = HORIZONTAL;
+}
+
+BOOL playAlin(Tank* enemy, Tank* player)
+{
+	int xdifference = enemy->x_coordinate - player->x_coordinate;
+	int ydifference = enemy->y_coordinate - player->y_coordinate;
+
+	BOOL check1 = enemy->x_coordinate >= player->x_coordinate-16;
+	BOOL check2 = enemy->x_coordinate <= player->x_coordinate+16;
+	BOOL check3 = enemy->y_coordinate >= player->y_coordinate-16;
+	BOOL check4 = enemy->y_coordinate <= player->y_coordinate+16;
+	if(xdifference < 0)
+	{
+		xdifference *= -1;
+	}
+	if(ydifference < 0)
+	{
+		ydifference *= -1;
+	}
+	
+	return ((check1 && check2)
+			|| 
+			(check3 && check4));
+}
+
+BOOL needTurn(Tank* enemy, Tank* player)
+{
+	BOOL check1 = enemy->x_coordinate >= player->x_coordinate-32;
+	BOOL check2 = enemy->x_coordinate <= player->x_coordinate+32;
+	BOOL check3 = enemy->v_facing == HORIZONTAL;
+	BOOL check4 = enemy->y_coordinate >= player->y_coordinate-32;
+	BOOL check5 = enemy->y_coordinate <= player->y_coordinate+32;
+	BOOL check6 = enemy->h_facing == VERTICAL;
+
+	return ((check1 && check2 
+		&& check3) || 
+		((check4 && check5) && check6));
+}
+
+BOOL yMove(Tank* enemy, Tank* player)
+{
+	BOOL check1 = (enemy->y_coordinate - player->y_coordinate) < ((enemy->x_coordinate - player->x_coordinate) + 32);
+	BOOL check2 = (enemy->y_coordinate - player->y_coordinate > 32);
+	BOOL check3 = (enemy->y_coordinate - player->y_coordinate) > ((enemy->x_coordinate - player->x_coordinate)+32);
+	BOOL check4 = (enemy->y_coordinate - player->y_coordinate < -32);
+	
+	return ((check1 && check2)
+		||
+		(check3	&& check4));
+}
+
+
+BOOL xMove(Tank* enemy, Tank* player)
+{
+	BOOL check1 = (enemy->x_coordinate - player->x_coordinate) < ((enemy->y_coordinate - player->y_coordinate)-32);
+	BOOL check2 = (enemy->x_coordinate - player->x_coordinate > 32);
+	BOOL check3 = (enemy->x_coordinate - player->x_coordinate) > ((enemy->y_coordinate - player->y_coordinate)+32);
+	BOOL check4 = (enemy->x_coordinate - player->x_coordinate < -32);
+
+	return ((check1 && check2)
+		||
+		(check3 && check4));
+}
+
+	
 
 
 /***************************************************************************

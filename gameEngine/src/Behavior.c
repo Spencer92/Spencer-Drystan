@@ -156,16 +156,16 @@ void turn(Tank *tank)
 					to determine if the tank is going to dodge left or right
 ***************************************************************************/
 
-void dodge_x(Tank *tank, Stationary_Object *object, int *direction, int num_objects)
+void dodge_x(Tank *tank, Stationary_Object *object, int direction, int num_objects)
 {
 
 	if(flip(tank->x_coordinate))
 	{
-		move_x(tank, object, *direction, num_objects);
+		move_x(tank, object, direction, num_objects);
 	}
 	else
 	{
-		move_x(tank, object, (*direction) *-1, num_objects);
+		move_x(tank, object, direction *-1, num_objects);
 	}
 
 
@@ -184,15 +184,15 @@ void dodge_x(Tank *tank, Stationary_Object *object, int *direction, int num_obje
 					to determine if the tank is going to dodge up or down
 ***************************************************************************/
 
-void dodge_y(Tank *tank, Stationary_Object *object, int *direction, int num_objects)
+void dodge_y(Tank *tank, Stationary_Object *object, int direction, int num_objects)
 {
 	if(flip(tank->y_coordinate))
 	{
-		move_y(tank, object, *direction, num_objects);
+		move_y(tank, object, direction, num_objects);
 	}
 	else
 	{
-		move_y(tank, object, (*direction) * -1, num_objects);
+		move_y(tank, object, direction * -1, num_objects);
 	}
 	
 }
@@ -605,7 +605,7 @@ void move_y(Tank *tank, Stationary_Object *object, int offset, int num_objects)
 {
 	int index;
 	BOOL all_clear = 1;
-	for(index = 0; index < num_objects && all_clear; index++)
+/*	for(index = 0; index < num_objects && all_clear; index++)
 	{
 		if(!((tank->y_coordinate+offset >= object[index].y_coordinate-16
 			&& tank->y_coordinate+offset <= object[index].y_coordinate+16)
@@ -614,7 +614,7 @@ void move_y(Tank *tank, Stationary_Object *object, int offset, int num_objects)
 		{
 			all_clear = 0;
 		} 
-	}
+	}*/
 	if(all_clear)
 	{
 		tank->y_coordinate += offset;

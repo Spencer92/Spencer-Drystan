@@ -13,8 +13,8 @@ void gameStart(struct Tank gameArray[], Tank *player, Missile missile[], int num
 
 	*score = 0;
 	
-	player->x_coordinate = 20;
-	player->y_coordinate = 50;
+	player->x_coordinate = 320;
+	player->y_coordinate = 200;
 	player->hitpoints = PLAYER_HITPOINTS;
 	player->current_speed = MAXSPEED;
 	player->is_moving = TRUE;

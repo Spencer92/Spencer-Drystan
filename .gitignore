@@ -6,3 +6,8 @@ makefile
 *.c~
 *.h~
 *.s~
+BACKDROP.S
+FONTS.S
+GAMEE.S
+GRASS.S
+MODEL.S

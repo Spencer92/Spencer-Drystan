@@ -52,13 +52,13 @@ void waitForinput();
 	UINT8 screen1[BUFFER_SIZE];
 	UINT8 screen2[BUFFER_SIZE];
 	UINT8 welcomeScreen[BUFFER_SIZE];
+
+int main() {
+
 	Tank thePlayer;
 	Tank gameArray[NUMBER_OF_TANKS];
 	Missile missile[MAX_MISSILES];
 	Stationary_Object landobjects[NUM_OBJECTS];
-int main() {
-
-
 	
 	
 	BOOL playerInput = 0;
@@ -77,6 +77,11 @@ int main() {
 	char *backdropScreen;
 	char *plottingScreen;
 	long time_now;
+	int tank_one_action;
+	int tank_two_action;
+	int tank_three_action;
+	int tank_four_action;
+	int tank_five_action;
 
 
 
@@ -218,12 +223,21 @@ int main() {
 			}
 			
 			
-			
+			thing2();		
 			assess_situation(gameArray, &thePlayer, landobjects, missile, NUMBER_OF_TANKS, MAX_MISSILES);
-
+			tank_one_action = gameArray[0].current_behaviour;
+			tank_two_action = gameArray[1].current_behaviour;
+			tank_three_action = gameArray[2].current_behaviour;
+			tank_four_action = gameArray[3].current_behaviour;
+			tank_five_action = gameArray[4].current_behaviour;
+			if(gameArray[0].current_behaviour == DO_NOTHING)
+			{
+				return 0;
+			}
+			
 			if(getTime() >= time_now+10)
 			{
-			
+	
 			model(&thePlayer,gameArray,missile, landobjects, 			
 				NUMBER_OF_TANKS,MAX_MISSILES, NUM_OBJECTS
 				  ,keypress,playerInput); 
@@ -287,18 +301,15 @@ int main() {
 			
 			}
 			
-				thing2();
 				if(plottingScreen != gameScreen)
 				{
  					DSconws("Screen flip1\r\0");
  					plottingScreen = gameScreen;
- 					thePlayer.x_coordinate = 100;
  				}
 				else
 				{
 					DSconws("Screen flip2\r\0");
 					plottingScreen = backGamescreen;
- 					thePlayer.x_coordinate = 30;
  				}
 				plotBackground(plottingScreen,thePlayer.backMask,thePlayer.x_coordinate, thePlayer.y_coordinate ,32);					
 				

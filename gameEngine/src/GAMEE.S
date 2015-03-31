@@ -32,108 +32,108 @@ L1:
 	dc.b	13,10,0,0
 	even
 _main:
-	link	a6,#-34
+	link	a6,#-2012
 	movem.l	d3/d4/d5/d6/d7/a3/a4/a5,-(a7)
-	lea	_gameArray,a3
-	lea	_thePlayer,a4
+	lea	-1740(a6),a3
 	move.l	#290,d7
+	lea	-290(a6),a4
 	lea	__trap_14_w,a5
-	;line	86
-	clr.b	-1(a6)
+	;line	91
+	clr.b	-1969(a6)
 	moveq	#0,d6
-	clr.w	-4(a6)
+	clr.w	-1972(a6)
 	moveq	#0,d3
-	move.b	#3,-6(a6)
-	;line	86
+	move.b	#3,-1974(a6)
+	;line	91
 	move.w	#2,-(a7)
 	jsr	(a5)
 	addq.l	#2,a7
-	move.l	d0,-10(a6)
-	;line	87
+	move.l	d0,-1978(a6)
+	;line	92
 	move.w	#3,-(a7)
 	jsr	(a5)
 	addq.l	#2,a7
-	move.l	d0,-14(a6)
-	;line	89
-	move.l	#_welcomeScreen,-26(a6)
-	;line	90
-	move.l	-26(a6),d0
+	move.l	d0,-1982(a6)
+	;line	94
+	move.l	#_welcomeScreen,-1994(a6)
+	;line	95
+	move.l	-1994(a6),d0
 	add.l	#255,d0
 	and.l	#-256,d0
-	move.l	d0,-26(a6)
-	;line	92
+	move.l	d0,-1994(a6)
+	;line	97
 	move.l	#_screen1,d4
-	;line	93
+	;line	98
 	move.l	#255,d0
 	add.l	d4,d0
 	and.l	#-256,d0
 	move.l	d0,d4
-	;line	95
-	move.l	#_screen2,-22(a6)
-	;line	96
-	move.l	-22(a6),d0
+	;line	100
+	move.l	#_screen2,-1990(a6)
+	;line	101
+	move.l	-1990(a6),d0
 	add.l	#255,d0
 	and.l	#-256,d0
-	move.l	d0,-22(a6)
-	;line	99
+	move.l	d0,-1990(a6)
+	;line	104
 	clr.w	-(a7)
 	clr.w	-(a7)
 	move.w	#21,-(a7)
 	jsr	__trap_14_www
 	addq.l	#6,a7
-	;line	101
+	;line	106
 	jsr	_findRez
 	tst.b	d0
 	beq	L8
-	;line	104
-	move.l	-26(a6),-(a7)
+	;line	109
+	move.l	-1994(a6),-(a7)
 	pea	_backdrop
 	jsr	_memCopy
 	addq.l	#8,a7
-	;line	105
+	;line	110
 	move.l	d4,-(a7)
 	pea	_grass
 	jsr	_memCopy
 	addq.l	#8,a7
-	;line	106
-	move.l	-22(a6),-(a7)
+	;line	111
+	move.l	-1990(a6),-(a7)
 	move.l	d4,-(a7)
 	jsr	_memCopy
 	addq.l	#8,a7
-	;line	109
+	;line	114
 	move.w	#37,-(a7)
 	jsr	(a5)
 	addq.l	#2,a7
-	;line	110
+	;line	115
 	move.w	#-1,-(a7)
-	move.l	-26(a6),-(a7)
+	move.l	-1994(a6),-(a7)
 	pea	-1
 	move.w	#5,-(a7)
 	jsr	__trap_14_wllw
 	lea	12(a7),a7
-	;line	113
+	;line	118
 	bra	L10
 L9:
-	;line	115
+	;line	120
 	tst.b	d3
 	bne	L12
-	;line	116
+	;line	121
 	pea	L1
 	jsr	_DSconws
 	addq.l	#4,a7
-	;line	117
+	;line	122
 	pea	L2
 	jsr	_DSconws
 	addq.l	#4,a7
-	;line	118
+	;line	123
 	pea	L1
 	jsr	_DSconws
 	addq.l	#4,a7
 L12:
-	;line	121
+	;line	126
 	cmp.b	#1,d3
 	bcc	L13
-	;line	122
+	;line	127
 	addq.b	#1,d3
 L13:
 L10:
@@ -141,53 +141,53 @@ L10:
 	tst.b	d0
 	beq	L9
 L11:
-	;line	127
+	;line	132
 	jsr	_DSnecin
 	move.b	d0,d6
-	;line	129
+	;line	134
 	cmp.b	#113,d6
 	beq	L14
-	;line	133
-	pea	-4(a6)
+	;line	138
+	pea	-1972(a6)
 	move.w	#5,-(a7)
-	pea	_missile
+	pea	-1920(a6)
 	move.l	a4,-(a7)
 	move.l	a3,-(a7)
 	jsr	_gameStart
 	lea	18(a7),a7
-	;line	135
+	;line	140
 	move.w	#32,-(a7)
-	move.w	2(a4),-(a7)
+	move.w	-288(a6),-(a7)
 	move.w	(a4),-(a7)
-	moveq	#16,d0
-	add.l	a4,d0
-	move.l	d0,-(a7)
+	pea	-274(a6)
 	move.l	d4,-(a7)
 	jsr	_copyBackground
 	lea	14(a7),a7
-	;line	137
+	;line	142
 	move.w	#32,-(a7)
-	move.w	2(a4),-(a7)
+	move.w	-288(a6),-(a7)
 	move.w	(a4),-(a7)
-	move.l	12(a4),-(a7)
+	move.l	-278(a6),-(a7)
 	move.l	d4,-(a7)
 	jsr	_plotLargeSprite
 	lea	14(a7),a7
-	;line	139
+	;line	144
 	move.l	d4,d5
-	;line	141
+	;line	146
 	moveq	#0,d3
 	bra	L16
 L15:
-	;line	143
+	;line	148
 	move.w	#32,-(a7)
+	move.l	a3,a0
+	move.l	a0,-(a7)
 	clr.l	d0
 	move.b	d3,d0
 	move.l	d0,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
+	move.l	(a7)+,a0
+	add.l	d0,a0
 	move.w	2(a0),-(a7)
 	clr.l	d0
 	move.b	d3,d0
@@ -196,29 +196,34 @@ L15:
 	jsr	.Xlmul
 	move.w	0(a3,d0.l),-(a7)
 	moveq	#16,d0
+	move.l	a3,d1
 	move.l	d0,-(a7)
-	clr.l	d1
-	move.b	d3,d1
 	move.l	d1,-(a7)
+	clr.l	d2
+	move.b	d3,d2
+	move.l	d2,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,d1
-	add.l	a3,d1
+	move.l	d0,d2
+	move.l	(a7)+,d1
+	add.l	d2,d1
 	move.l	(a7)+,d0
 	add.l	d1,d0
 	move.l	d0,-(a7)
 	move.l	d4,-(a7)
 	jsr	_copyBackground
 	lea	14(a7),a7
-	;line	144
+	;line	149
 	move.w	#32,-(a7)
+	move.l	a3,a0
+	move.l	a0,-(a7)
 	clr.l	d0
 	move.b	d3,d0
 	move.l	d0,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
+	move.l	(a7)+,a0
+	add.l	d0,a0
 	move.w	2(a0),-(a7)
 	clr.l	d0
 	move.b	d3,d0
@@ -226,13 +231,15 @@ L15:
 	move.l	d7,-(a7)
 	jsr	.Xlmul
 	move.w	0(a3,d0.l),-(a7)
+	move.l	a3,a0
+	move.l	a0,-(a7)
 	clr.l	d0
 	move.b	d3,d0
 	move.l	d0,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
+	move.l	(a7)+,a0
+	add.l	d0,a0
 	move.l	12(a0),-(a7)
 	move.l	d4,-(a7)
 	jsr	_plotLargeSprite
@@ -243,69 +250,69 @@ L16:
 	cmp.b	#5,d3
 	bcs	L15
 L17:
-	;line	148
+	;line	153
 	move.w	#37,-(a7)
 	jsr	(a5)
 	addq.l	#2,a7
-	;line	149
+	;line	154
 	move.w	#-1,-(a7)
 	move.l	d5,-(a7)
 	move.l	d5,-(a7)
 	move.w	#5,-(a7)
 	jsr	__trap_14_wllw
 	lea	12(a7),a7
-	;line	153
+	;line	158
 	jsr	_getTime
-	move.l	d0,-34(a6)
+	move.l	d0,-2002(a6)
 L19:
-	;line	167
+	;line	172
 	jsr	_DSconis
 	tst.b	d0
 	beq	L22
-	;line	169
+	;line	174
 	jsr	_DSnecin
 	move.b	d0,d6
-	;line	170
-	move.b	#1,-1(a6)
-	;line	172
+	;line	175
+	move.b	#1,-1969(a6)
+	;line	177
 	cmp.b	#112,d6
 	bne	L23
-	;line	177
+	;line	182
 	move.w	#37,-(a7)
 	jsr	(a5)
 	addq.l	#2,a7
-	;line	179
+	;line	184
 	move.w	#-1,-(a7)
-	move.l	-10(a6),-(a7)
-	move.l	-14(a6),-(a7)
+	move.l	-1978(a6),-(a7)
+	move.l	-1982(a6),-(a7)
 	move.w	#5,-(a7)
 	jsr	__trap_14_wllw
 	lea	12(a7),a7
-	;line	181
+	;line	186
 	pea	L3
 	move.w	#9,-(a7)
 	jsr	__trap_1_wl
 	addq.l	#6,a7
-	;line	182
+	;line	187
 	pea	L4
 	move.w	#9,-(a7)
 	jsr	__trap_1_wl
 	addq.l	#6,a7
 L24:
 L25:
-	;line	185
+	;line	190
 	jsr	_DSconis
 	tst.b	d0
 	beq	L24
 L26:
-	;line	186
+	;line	191
 	jsr	_DSnecin
 	move.b	d0,d6
 	bra	L27
 L23:
-	;line	193
+	;line	198
 	move.w	#10,-(a7)
-	pea	_missile
+	pea	-1920(a6)
 	move.b	d6,d0
 	ext.w	d0
 	move.w	d0,-(a7)
@@ -317,30 +324,49 @@ L23:
 L27:
 	bra	L28
 L22:
-	;line	214
-	clr.b	-1(a6)
+	;line	219
+	clr.b	-1969(a6)
 L28:
-	;line	222
+	;line	226
+	jsr	_thing2
+	;line	227
 	move.w	#10,-(a7)
 	move.w	#5,-(a7)
-	pea	_missile
-	pea	_landobjects
+	pea	-1920(a6)
+	pea	-1968(a6)
 	move.l	a4,-(a7)
 	move.l	a3,-(a7)
 	jsr	_assess_situation
 	lea	20(a7),a7
-	;line	224
-	move.l	-34(a6),d0
+	;line	228
+	move.w	-1454(a6),-2004(a6)
+	;line	229
+	move.w	-1164(a6),-2006(a6)
+	;line	230
+	move.w	-874(a6),-2008(a6)
+	;line	231
+	move.w	-584(a6),-2010(a6)
+	;line	232
+	move.w	-294(a6),-2012(a6)
+	;line	233
+	cmp.w	#8,-1454(a6)
+	bne	L29
+	;line	235
+	moveq	#0,d0
+	bra	L30
+L29:
+	;line	238
+	move.l	-2002(a6),d0
 	add.l	#10,d0
 	move.l	d0,-(a7)
 	jsr	_getTime
 	move.l	d0,d1
 	move.l	(a7)+,d0
 	cmp.l	d0,d1
-	blt	L29
-	;line	227
+	blt	L31
+	;line	241
 	clr.w	d0
-	move.b	-1(a6),d0
+	move.b	-1969(a6),d0
 	move.w	d0,-(a7)
 	move.b	d6,d0
 	ext.w	d0
@@ -348,29 +374,31 @@ L28:
 	move.w	#6,-(a7)
 	move.w	#10,-(a7)
 	move.w	#5,-(a7)
-	pea	_landobjects
-	pea	_missile
+	pea	-1968(a6)
+	pea	-1920(a6)
 	move.l	a3,-(a7)
 	move.l	a4,-(a7)
 	jsr	_model
 	lea	26(a7),a7
-	;line	230
+	;line	244
 	jsr	_getTime
-	move.l	d0,-34(a6)
-L29:
-	;line	234
+	move.l	d0,-2002(a6)
+L31:
+	;line	248
 	moveq	#0,d3
-	bra	L31
-L30:
-	;line	236
+	bra	L33
+L32:
+	;line	250
 	move.w	#32,-(a7)
+	move.l	a3,a0
+	move.l	a0,-(a7)
 	clr.l	d0
 	move.b	d3,d0
 	move.l	d0,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
+	move.l	(a7)+,a0
+	add.l	d0,a0
 	move.w	2(a0),-(a7)
 	clr.l	d0
 	move.b	d3,d0
@@ -379,29 +407,34 @@ L30:
 	jsr	.Xlmul
 	move.w	0(a3,d0.l),-(a7)
 	moveq	#16,d0
+	move.l	a3,d1
 	move.l	d0,-(a7)
-	clr.l	d1
-	move.b	d3,d1
 	move.l	d1,-(a7)
+	clr.l	d2
+	move.b	d3,d2
+	move.l	d2,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,d1
-	add.l	a3,d1
+	move.l	d0,d2
+	move.l	(a7)+,d1
+	add.l	d2,d1
 	move.l	(a7)+,d0
 	add.l	d1,d0
 	move.l	d0,-(a7)
 	move.l	d4,-(a7)
 	jsr	_copyBackground
 	lea	14(a7),a7
-	;line	237
+	;line	251
 	move.w	#32,-(a7)
+	move.l	a3,a0
+	move.l	a0,-(a7)
 	clr.l	d0
 	move.b	d3,d0
 	move.l	d0,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
+	move.l	(a7)+,a0
+	add.l	d0,a0
 	move.w	2(a0),-(a7)
 	clr.l	d0
 	move.b	d3,d0
@@ -409,112 +442,106 @@ L30:
 	move.l	d7,-(a7)
 	jsr	.Xlmul
 	move.w	0(a3,d0.l),-(a7)
+	move.l	a3,a0
+	move.l	a0,-(a7)
 	clr.l	d0
 	move.b	d3,d0
 	move.l	d0,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
+	move.l	(a7)+,a0
+	add.l	d0,a0
 	move.l	12(a0),-(a7)
 	move.l	d4,-(a7)
 	jsr	_plotLargeSprite
 	lea	14(a7),a7
-L33:
+L35:
 	addq.b	#1,d3
-L31:
+L33:
 	cmp.b	#5,d3
-	bcs	L30
-L32:
-	;line	242
-	tst.b	-6(a6)
-	bls	L34
-	;line	246
-	bra	L35
+	bcs	L32
 L34:
-	;line	253
+	;line	256
+	tst.b	-1974(a6)
+	bls	L36
+	;line	260
+	bra	L37
+L36:
+	;line	267
 	cmp.b	#121,d6
-	bne	L36
-	;line	255
-	pea	-4(a6)
+	bne	L38
+	;line	269
+	pea	-1972(a6)
 	move.w	#5,-(a7)
-	pea	_missile
+	pea	-1920(a6)
 	move.l	a4,-(a7)
 	move.l	a3,-(a7)
 	jsr	_gameStart
 	lea	18(a7),a7
-	;line	257
+	;line	271
 	move.l	d5,-(a7)
 	pea	_grass
 	jsr	_memCopy
 	addq.l	#8,a7
-L36:
-L35:
-	;line	290
-	jsr	_thing2
-	;line	291
+L38:
+L37:
+	;line	304
 	cmp.l	d5,d4
-	beq	L37
-	;line	293
+	beq	L39
+	;line	306
 	pea	L5
 	jsr	_DSconws
 	addq.l	#4,a7
-	;line	294
-	move.l	d4,d5
-	;line	295
-	move.w	#100,(a4)
-	bra	L38
-L37:
-	;line	299
-	pea	L6
-	jsr	_DSconws
-	addq.l	#4,a7
-	;line	300
-	move.l	-22(a6),d5
-	;line	301
-	move.w	#30,(a4)
-L38:
-	;line	303
-	move.w	#32,-(a7)
-	move.w	2(a4),-(a7)
-	move.w	(a4),-(a7)
-	moveq	#16,d0
-	add.l	a4,d0
-	move.l	d0,-(a7)
-	move.l	d5,-(a7)
-	jsr	_plotBackground
-	lea	14(a7),a7
-	;line	305
-	move.w	#32,-(a7)
-	move.w	2(a4),-(a7)
-	move.w	(a4),-(a7)
-	moveq	#16,d0
-	add.l	a4,d0
-	move.l	d0,-(a7)
-	move.l	d5,-(a7)
-	jsr	_copyBackground
-	lea	14(a7),a7
 	;line	307
-	move.w	#32,-(a7)
-	move.w	2(a4),-(a7)
-	move.w	(a4),-(a7)
-	move.l	12(a4),-(a7)
-	move.l	d5,-(a7)
-	jsr	_plotLargeSprite
-	lea	14(a7),a7
-	;line	309
-	moveq	#0,d3
+	move.l	d4,d5
 	bra	L40
 L39:
 	;line	311
+	pea	L6
+	jsr	_DSconws
+	addq.l	#4,a7
+	;line	312
+	move.l	-1990(a6),d5
+L40:
+	;line	314
 	move.w	#32,-(a7)
+	move.w	-288(a6),-(a7)
+	move.w	(a4),-(a7)
+	pea	-274(a6)
+	move.l	d5,-(a7)
+	jsr	_plotBackground
+	lea	14(a7),a7
+	;line	316
+	move.w	#32,-(a7)
+	move.w	-288(a6),-(a7)
+	move.w	(a4),-(a7)
+	pea	-274(a6)
+	move.l	d5,-(a7)
+	jsr	_copyBackground
+	lea	14(a7),a7
+	;line	318
+	move.w	#32,-(a7)
+	move.w	-288(a6),-(a7)
+	move.w	(a4),-(a7)
+	move.l	-278(a6),-(a7)
+	move.l	d5,-(a7)
+	jsr	_plotLargeSprite
+	lea	14(a7),a7
+	;line	320
+	moveq	#0,d3
+	bra	L42
+L41:
+	;line	322
+	move.w	#32,-(a7)
+	move.l	a3,a0
+	move.l	a0,-(a7)
 	clr.l	d0
 	move.b	d3,d0
 	move.l	d0,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
+	move.l	(a7)+,a0
+	add.l	d0,a0
 	move.w	2(a0),-(a7)
 	clr.l	d0
 	move.b	d3,d0
@@ -523,29 +550,34 @@ L39:
 	jsr	.Xlmul
 	move.w	0(a3,d0.l),-(a7)
 	moveq	#16,d0
+	move.l	a3,d1
 	move.l	d0,-(a7)
-	clr.l	d1
-	move.b	d3,d1
 	move.l	d1,-(a7)
+	clr.l	d2
+	move.b	d3,d2
+	move.l	d2,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,d1
-	add.l	a3,d1
+	move.l	d0,d2
+	move.l	(a7)+,d1
+	add.l	d2,d1
 	move.l	(a7)+,d0
 	add.l	d1,d0
 	move.l	d0,-(a7)
 	move.l	d5,-(a7)
 	jsr	_copyBackground
 	lea	14(a7),a7
-	;line	312
+	;line	323
 	move.w	#32,-(a7)
+	move.l	a3,a0
+	move.l	a0,-(a7)
 	clr.l	d0
 	move.b	d3,d0
 	move.l	d0,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
+	move.l	(a7)+,a0
+	add.l	d0,a0
 	move.w	2(a0),-(a7)
 	clr.l	d0
 	move.b	d3,d0
@@ -553,28 +585,30 @@ L39:
 	move.l	d7,-(a7)
 	jsr	.Xlmul
 	move.w	0(a3,d0.l),-(a7)
+	move.l	a3,a0
+	move.l	a0,-(a7)
 	clr.l	d0
 	move.b	d3,d0
 	move.l	d0,-(a7)
 	move.l	d7,-(a7)
 	jsr	.Xlmul
-	move.l	d0,a0
-	add.l	a3,a0
+	move.l	(a7)+,a0
+	add.l	d0,a0
 	move.l	12(a0),-(a7)
 	move.l	d5,-(a7)
 	jsr	_plotLargeSprite
 	lea	14(a7),a7
-L42:
+L44:
 	addq.b	#1,d3
-L40:
+L42:
 	cmp.b	#5,d3
-	bcs	L39
-L41:
-	;line	315
+	bcs	L41
+L43:
+	;line	326
 	move.w	#37,-(a7)
 	jsr	(a5)
 	addq.l	#2,a7
-	;line	316
+	;line	327
 	move.w	#-1,-(a7)
 	move.l	d5,-(a7)
 	pea	-1
@@ -586,71 +620,71 @@ L20:
 	bne	L19
 L21:
 L14:
-	bra	L43
+	bra	L45
 L8:
-	;line	329
+	;line	340
 	pea	L7
 	move.w	#9,-(a7)
 	jsr	__trap_1_wl
 	addq.l	#6,a7
-L43:
-	;line	334
+L45:
+	;line	345
 	move.w	#37,-(a7)
 	jsr	(a5)
 	addq.l	#2,a7
-	;line	335
+	;line	346
 	move.w	#-1,-(a7)
-	move.l	-10(a6),-(a7)
-	move.l	-10(a6),-(a7)
+	move.l	-1978(a6),-(a7)
+	move.l	-1978(a6),-(a7)
 	move.w	#5,-(a7)
 	jsr	__trap_14_wllw
-	;line	337
+	;line	348
 	moveq	#0,d0
-L44:
-	movem.l	-66(a6),d3/d4/d5/d6/d7/a3/a4/a5
+L30:
+	movem.l	-2044(a6),d3/d4/d5/d6/d7/a3/a4/a5
 	unlk	a6
 	rts
 _memCopy:
 	link	a6,#-16
 	movem.l	d3/d4/a3/a4,-(a7)
-	;line	352
+	;line	363
 	move.l	8(a6),a3
 	move.l	12(a6),a4
-	;line	352
+	;line	363
 	move.l	#8000,d3
-	;line	355
+	;line	366
 	moveq	#0,d4
-	bra	L46
-L45:
-	;line	358
-	move.l	(a3),(a4)
-	;line	359
-	addq.l	#4,a4
-	;line	360
-	addq.l	#4,a3
-L48:
-	addq.l	#1,d4
+	bra	L47
 L46:
-	cmp.l	d4,d3
-	bhi	L45
+	;line	369
+	move.l	(a3),(a4)
+	;line	370
+	addq.l	#4,a4
+	;line	371
+	addq.l	#4,a3
+L49:
+	addq.l	#1,d4
 L47:
+	cmp.l	d4,d3
+	bhi	L46
+L48:
 	movem.l	(a7)+,d3/d4/a3/a4
 	unlk	a6
 	rts
 _waitForinput:
 	link	a6,#-4
 	move.l	d3,-(a7)
-	;line	372
+	;line	383
 	moveq	#0,d3
-	bra	L50
-L49:
-L52:
-	;line	375
-	addq.l	#1,d3
+	bra	L51
 L50:
-	cmp.l	#100000,d3
-	bcs	L49
+L53:
+	;line	386
+	addq.l	#1,d3
 L51:
+	cmp.l	#100000,d3
+	bcs	L50
+L52:
 	move.l	(a7)+,d3
 	unlk	a6
 	rts
@@ -667,17 +701,4 @@ _screen2:
 _welcomeScreen:
 	ds.b	33792
 	globl	_welcomeScreen
-	even
-_thePlayer:
-	ds.b	290
-	globl	_thePlayer
-_gameArray:
-	ds.b	1450
-	globl	_gameArray
-_missile:
-	ds.b	180
-	globl	_missile
-_landobjects:
-	ds.b	48
-	globl	_landobjects
 	globl	_main
