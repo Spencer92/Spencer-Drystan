@@ -123,7 +123,7 @@ void move_left(Missile *missile, int offset);
 void offscreen(Missile *missile);
 void explode(Missile *missile, Tank *tank);
 void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input, Missile* missile, int num_missiles);
-void player_action(Tank* player, Missile* missile, char input);
+void player_action(Tank* player, Missile* missile);
 
 char DSnecin();
 void DSconws(String output);

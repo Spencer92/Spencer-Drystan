@@ -340,7 +340,7 @@ int main() {
 	else
 	{
 	
-		Cconws("Error in screen rezulution");
+		Cconws("Error in screen resolution");
 	
 	}
 

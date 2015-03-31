@@ -13,6 +13,7 @@ BOOL wrong(Tank* enemy);
 BOOL notBehaviour(Tank* enemy, BEHAVIOUR behaviour);
 void yfacing(Tank* enemy, Tank* player);
 void xfacing(Tank* enemy, Tank* player);
+BOOL there(Tank* enemy, Tank* player);
 
 
 /***************************************************************************
@@ -48,7 +49,7 @@ void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *objec
 	int tank_five_action = enemy[4].current_behaviour;
 	if(input_valid)
 	{
-		player_action(player,missile,input);
+		player_action(player,missile);
 	}
 	tank_respond(enemy, missile, num_missiles, num_enemies, object, num_objects);	
 }
@@ -90,16 +91,35 @@ int thing()
 ***************************************************************************/
 
 
-
+volatile void thing9(){}
 void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input, Missile* missile, int num_missiles)
 {
+	thing9();
 	if((input == 'd' || input == 'a') && !tanks_at(player, enemy, num_enemies))
 	{
 		player->current_behaviour = MOVE_X;
+		if(input == 'a')
+		{
+			player->h_facing = LEFT;
+		}
+		else
+		{
+			player->h_facing = RIGHT;
+		}
+		player->v_facing = HORIZONTAL;
 	}
 	else if((input == 'w' || input == 's') && !tanks_at(player,enemy, num_enemies))
 	{
 		player->current_behaviour = MOVE_Y;
+		if(input == 'w')
+		{
+			player->v_facing = UP;
+		}
+		else
+		{
+			player->v_facing = DOWN;
+		}
+		player->h_facing = VERTICAL;
 	}
 	else if(input == ' ')
 	{
@@ -140,22 +160,23 @@ void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input,
 ***************************************************************************/
 
 
-
-void player_action(Tank* player, Missile* missile, char input)
+volatile void thing8(){}
+void player_action(Tank* player, Missile* missile)
 {
-	if(player->current_behaviour == MOVE_X && input == 'd')
+	thing8();
+	if(player->current_behaviour == MOVE_X && player->h_facing == RIGHT)
 	{
 		player->x_coordinate++;
 	}
-	else if(player->current_behaviour == MOVE_X && input == 'a')
+	else if(player->current_behaviour == MOVE_X && player->h_facing == LEFT)
 	{
 		player->x_coordinate--;
 	}
-	else if(player->current_behaviour == MOVE_Y && input == 'w')
+	else if(player->current_behaviour == MOVE_Y && player->v_facing == UP)
 	{
 		player->y_coordinate--;
 	}
-	else if(player->current_behaviour == MOVE_Y && input == 'd')
+	else if(player->current_behaviour == MOVE_Y && player->v_facing == DOWN)
 	{
 		player->y_coordinate++;
 	}
@@ -164,7 +185,10 @@ void player_action(Tank* player, Missile* missile, char input)
 		missile_check(player, missile, player->missile_available, 1);
 		player->is_firing = 0;
 	}
+	player->current_behaviour = DO_NOTHING;
 }
+
+
 
 
 /***************************************************************************
@@ -182,22 +206,32 @@ void player_action(Tank* player, Missile* missile, char input)
    
 ***************************************************************************/
 
-
+volatile void thin10(){}
 BOOL tanks_at(Tank* player, Tank* enemy, int num_tanks)
 {
 	int index;
 	BOOL something_there = 0;
+	thin10;
 	for(index = 0; index < num_tanks && !something_there; index++)
 	{
-		if(!((player->x_coordinate + 16 < enemy[index].x_coordinate - 16 ||
+		if(!(there(enemy, player)))/* ((player->x_coordinate + 16 < enemy[index].x_coordinate - 16 ||
 			player->x_coordinate - 16 > enemy[index].x_coordinate + 16) &&
 			(player->y_coordinate - 16 < enemy[index].y_coordinate + 16 ||
-			player->y_coordinate + 16 > enemy[index].y_coordinate - 16)))
+			player->y_coordinate + 16 > enemy[index].y_coordinate - 16)) )*/
 			{
 				something_there = 1;
 			}
 	}
 	return something_there;
+}
+
+BOOL there(Tank* enemy, Tank* player)
+{
+	BOOL check1 = player->x_coordinate + 16 < enemy->x_coordinate - 16;
+	BOOL check2 = player->x_coordinate - 16 > enemy->x_coordinate + 16;
+	BOOL check3 = player->y_coordinate - 16 < enemy->y_coordinate + 16;
+	BOOL check4 = player->y_coordinate + 16 > enemy->y_coordinate - 16;
+	return (check1 || check2) && (check3 || check4);
 }
 
 
@@ -475,7 +509,7 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 		{
 			enemy[index].current_behaviour = TURN;
 		}
-		else if(yMove(&enemy[index], player)/* ((enemy[index].y_coordinate - player->y_coordinate) < ((enemy[index].x_coordinate - player->x_coordinate) + 16)
+		else if(yMove(&enemy[index], player) && enemy[index].y_coordinate-32 >= 0 && enemy[index].y_coordinate+32 < 400/* ((enemy[index].y_coordinate - player->y_coordinate) < ((enemy[index].x_coordinate - player->x_coordinate) + 16)
 		&& (enemy[index].y_coordinate - player->y_coordinate > 16))
 		||
 		((enemy[index].y_coordinate - player->y_coordinate) > ((enemy[index].x_coordinate - player->x_coordinate)+16)
@@ -485,7 +519,7 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 			yfacing(&enemy[index], player);
 			DSconws("MOVE Y\r\0");
 		}
-		else if(xMove(&enemy[index], player)/* ((enemy[index].x_coordinate - player->x_coordinate) < ((enemy[index].y_coordinate - player->y_coordinate)-16) 
+		else if(xMove(&enemy[index], player) && enemy[index].x_coordinate-32 >= 0 && enemy[index].x_coordinate+32 < 640/* ((enemy[index].x_coordinate - player->x_coordinate) < ((enemy[index].y_coordinate - player->y_coordinate)-16) 
 		&& (enemy[index].x_coordinate - player->x_coordinate > 16))
 		||
 		((enemy[index].x_coordinate - player->x_coordinate) > ((enemy[index].y_coordinate - player->y_coordinate)+16)

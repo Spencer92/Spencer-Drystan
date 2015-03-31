@@ -8,7 +8,7 @@ _thing2:
 	rts
 L7:
 	dc.b	69,114,114,111,114,32,105,110,32,115,99,114
-	dc.b	101,101,110,32,114,101,122,117,108,117,116,105
+	dc.b	101,101,110,32,114,101,115,111,108,117,116,105
 	dc.b	111,110,0
 L6:
 	dc.b	83,99,114,101,101,110,32,102,108,105,112,50
@@ -651,20 +651,16 @@ L30:
 _memCopy:
 	link	a6,#-16
 	movem.l	d3/d4/a3/a4,-(a7)
-	;line	366
+	;line	368
 	move.l	8(a6),a3
 	move.l	12(a6),a4
-	;line	366
+	;line	368
 	move.l	#8000,d3
-	;line	367
+	;line	369
 	move.l	d3,d0
 	lsr.l	#3,d0
 	move.l	d0,d4
 L46:
-	;line	372
-	move.l	(a3)+,(a4)+
-	;line	373
-	move.l	(a3)+,(a4)+
 	;line	374
 	move.l	(a3)+,(a4)+
 	;line	375
@@ -676,6 +672,10 @@ L46:
 	;line	378
 	move.l	(a3)+,(a4)+
 	;line	379
+	move.l	(a3)+,(a4)+
+	;line	380
+	move.l	(a3)+,(a4)+
+	;line	381
 	move.l	(a3)+,(a4)+
 L47:
 	move.l	d4,d0
@@ -689,12 +689,12 @@ L48:
 _waitForinput:
 	link	a6,#-4
 	move.l	d3,-(a7)
-	;line	391
+	;line	393
 	moveq	#0,d3
 	bra	L50
 L49:
 L52:
-	;line	394
+	;line	396
 	addq.l	#1,d3
 L50:
 	cmp.l	#100000,d3
