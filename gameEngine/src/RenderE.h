@@ -10,13 +10,18 @@
 
 /*Define screen dimensions  */
 #define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 400
+#define SCREEN_HEIGHT 365
 #define POSTIVE_X_LIMIT 664
 #define NEGTIVE_X_LIMIT -24
 #define POSTIVE_Y_LIMIT 424
 #define NEGTIVE_Y_LIMIT -24
 #define FONT_SIZE 15
 #define COPY_MASK 0x00000000
+
+#define INFO_BOX_LINE 374
+#define LIVES_OFFSET 10
+#define SCORE_OFFSET 46
+
 
 
 #include "Fonts.h"
@@ -36,11 +41,11 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size);
 
 void printvertical(unsigned char* base, unsigned int x_loc, unsigned int y_loc,
-		unsigned int length);
+					unsigned int length);
 
 void printArbitrary(unsigned char* base, unsigned int x_loc_start,
-		unsigned int y_loc_start, unsigned int x_loc_end,
-		unsigned int y_loc_end);
+					unsigned int y_loc_start, unsigned int x_loc_end,
+					unsigned int y_loc_end);
 
 void plotLargeSprite(char *fbstart, UINT32 *spriteLocation , int xpostoPlot,
 					int ypostoPlot,int size);
