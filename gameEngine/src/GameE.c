@@ -48,7 +48,7 @@
 
 volatile void thing2(){}
 void memCopy(char* screenChunk1 ,char* screenChunk2);
-void waitForinput();
+/*void waitForinput();*/
 	UINT8 screen1[BUFFER_SIZE];
 	UINT8 screen2[BUFFER_SIZE];
 	UINT8 welcomeScreen[BUFFER_SIZE];
@@ -76,6 +76,7 @@ int main() {
 	char *backGamescreen;
 	char *backdropScreen;
 	char *plottingScreen;
+	char *plottingTankScreen;
 	long time_now;
 	int tank_one_action;
 	int tank_two_action;
@@ -223,17 +224,17 @@ int main() {
 			}
 			
 			
-			thing2();		
+	
 			assess_situation(gameArray, &thePlayer, landobjects, missile, NUMBER_OF_TANKS, MAX_MISSILES);
-			tank_one_action = gameArray[0].current_behaviour;
+/* 			tank_one_action = gameArray[0].current_behaviour;
 			tank_two_action = gameArray[1].current_behaviour;
 			tank_three_action = gameArray[2].current_behaviour;
 			tank_four_action = gameArray[3].current_behaviour;
-			tank_five_action = gameArray[4].current_behaviour;
+			tank_five_action = gameArray[4].current_behaviour; 
 			if(gameArray[0].current_behaviour == DO_NOTHING)
 			{
 				return 0;
-			}
+			}*/
 			
 			if(getTime() >= time_now+10)
 			{
@@ -268,7 +269,7 @@ int main() {
 				{
 				gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
 				
-				memCopy(grass,plottingScreen);
+
 /* 	 			memCopy(plottingScreen,backGamescreen);
  */					
 /* 				copyBackground(plottingScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
@@ -300,18 +301,20 @@ int main() {
 */
 			
 			}
-			
+				thing2();	
 				if(plottingScreen != gameScreen)
 				{
  					DSconws("Screen flip1\r\0");
  					plottingScreen = gameScreen;
+					plottingTankScreen = backGamescreen;
  				}
 				else
 				{
 					DSconws("Screen flip2\r\0");
 					plottingScreen = backGamescreen;
+					plottingTankScreen = gameScreen;
  				}
-				plotBackground(plottingScreen,thePlayer.backMask,thePlayer.x_coordinate, thePlayer.y_coordinate ,32);					
+ 				plotBackground(plottingScreen,thePlayer.backMask,thePlayer.x_coordinate, thePlayer.y_coordinate ,32);					
 				
 				copyBackground(plottingScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
 				
@@ -319,12 +322,15 @@ int main() {
 						
 				for(i = 0; i < NUMBER_OF_TANKS; i++)
 				{
-			    copyBackground(plottingScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
+ 			    copyBackground(plottingScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
 				plotLargeSprite(plottingScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
 				}
-				
 				Vsync();
 		        Setscreen(-1L, plottingScreen, -1L);	
+				memCopy(grass,plottingTankScreen);
+				
+				
+
 		
 				
 		
@@ -356,26 +362,45 @@ int main() {
 void memCopy(char* screenChunk1 ,char* screenChunk2)
 {
 	register UINT32  copySize;
-	register UINT32 *srcPtr =  (UINT32*) screenChunk1;
-	register UINT32 *dstPtr =  (UINT32*) screenChunk2;
+/*	UINT32 *srcPtr =  (UINT32*) screenChunk1;
+	UINT32 *dstPtr =  (UINT32*) screenChunk2;*/
 	register UINT32 i;
 	
 	copySize = SCREEN_SIZE >> 2;
-		
+	i = copySize >> 3;
+	i -= 8;
 	
-	for(i = 0 ;i < copySize;i++)
+	/*for(i = 0 ;i < copySize/8;i++)*/
+	do
 	{
-	
-		*dstPtr = *srcPtr;
-		 dstPtr++;
-		 srcPtr++;
+
+
+		*screenChunk2 = *screenChunk1;
+		*screenChunk2 = *screenChunk1;
+		*screenChunk2 = *screenChunk1;
+		*screenChunk2 = *screenChunk1;
+		*screenChunk2 = *screenChunk1;
+		*screenChunk2 = *screenChunk1;
+		*screenChunk2 = *screenChunk1;
+		*screenChunk2 = *screenChunk1;
+		
+/* 		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+ *//* 		 dstPtr++;
+		 srcPtr++; */
 			
 		
-	}	
+	}while(i--);	
 	
 	
 }
-
+/*
 void waitForinput() {
 
 	UINT32 i;
@@ -384,4 +409,4 @@ void waitForinput() {
 	{
 
 	}
-}
+}*/

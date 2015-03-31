@@ -7,8 +7,8 @@
 
 BOOL playAlin(Tank* enemy, Tank* player);
 BOOL needTurn(Tank* enemy, Tank* player);
-BOOL yMove(Tank* enemy, Tank* player);
-BOOL xMove(Tank* enemy, Tank* player);
+BOOL yMove(Tank* enemy, Tank* player, int index);
+BOOL xMove(Tank* enemy, Tank* player, int index);
 BOOL wrong(Tank* enemy);
 BOOL notBehaviour(Tank* enemy, BEHAVIOUR behaviour);
 void yfacing(Tank* enemy, Tank* player);
@@ -475,7 +475,7 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 		{
 			enemy[index].current_behaviour = TURN;
 		}
-		else if(yMove(&enemy[index], player)/* ((enemy[index].y_coordinate - player->y_coordinate) < ((enemy[index].x_coordinate - player->x_coordinate) + 16)
+		else if(yMove(&enemy[index], player, index)/* ((enemy[index].y_coordinate - player->y_coordinate) < ((enemy[index].x_coordinate - player->x_coordinate) + 16)
 		&& (enemy[index].y_coordinate - player->y_coordinate > 16))
 		||
 		((enemy[index].y_coordinate - player->y_coordinate) > ((enemy[index].x_coordinate - player->x_coordinate)+16)
@@ -485,7 +485,7 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 			yfacing(&enemy[index], player);
 			DSconws("MOVE Y\r\0");
 		}
-		else if(xMove(&enemy[index], player)/* ((enemy[index].x_coordinate - player->x_coordinate) < ((enemy[index].y_coordinate - player->y_coordinate)-16) 
+		else if(xMove(&enemy[index], player, index)/* ((enemy[index].x_coordinate - player->x_coordinate) < ((enemy[index].y_coordinate - player->y_coordinate)-16) 
 		&& (enemy[index].x_coordinate - player->x_coordinate > 16))
 		||
 		((enemy[index].x_coordinate - player->x_coordinate) > ((enemy[index].y_coordinate - player->y_coordinate)+16)
@@ -580,8 +580,9 @@ BOOL needTurn(Tank* enemy, Tank* player)
 		((check4 && check5) && check6));
 }
 
-BOOL yMove(Tank* enemy, Tank* player)
+BOOL yMove(Tank* enemy, Tank* player, int index)
 {
+	int loc = index;
 	BOOL check1 = (enemy->y_coordinate - player->y_coordinate) < ((enemy->x_coordinate - player->x_coordinate) + 32);
 	BOOL check2 = (enemy->y_coordinate - player->y_coordinate > 32);
 	BOOL check3 = (enemy->y_coordinate - player->y_coordinate) > ((enemy->x_coordinate - player->x_coordinate)+32);
@@ -593,13 +594,14 @@ BOOL yMove(Tank* enemy, Tank* player)
 }
 
 
-BOOL xMove(Tank* enemy, Tank* player)
+BOOL xMove(Tank* enemy, Tank* player, int index)
 {
+	int loc = index;
 	BOOL check1 = (enemy->x_coordinate - player->x_coordinate) < ((enemy->y_coordinate - player->y_coordinate)-32);
-	BOOL check2 = (enemy->x_coordinate - player->x_coordinate > 32);
+	BOOL check2 = 1;/*(enemy->x_coordinate - player->x_coordinate > 32);*/
 	BOOL check3 = (enemy->x_coordinate - player->x_coordinate) > ((enemy->y_coordinate - player->y_coordinate)+32);
-	BOOL check4 = (enemy->x_coordinate - player->x_coordinate < -32);
-
+	BOOL check4 = 1;/*(enemy->x_coordinate - player->x_coordinate < -32);*/
+	
 	return ((check1 && check2)
 		||
 		(check3 && check4));
