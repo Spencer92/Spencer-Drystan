@@ -4,6 +4,7 @@
 #include <osbind.h>
 #include "System.h"
 #include "Keyboard.h"
+#include "assess.h"
 
 BOOL playAlin(Tank* enemy, Tank* player);
 BOOL needTurn(Tank* enemy, Tank* player);
@@ -461,7 +462,6 @@ void missile_check(Tank *tank, Missile *missile, int num_missiles, int num_tanks
 					
 
 ***************************************************************************/
-
 volatile void thing5(){}
 void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles)
 {
@@ -471,10 +471,14 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 	int tank_three_value;
 	int tank_four_value;
 	int tank_five_value;
+	thing5();
+
 	for(index = 0; index < num_enemies; index++)
 	{
-		if(player->is_firing) /* Case One */
-		{
+		tankBehav(&enemy[index], player, missile, num_missiles);
+		
+/*		if(player->is_firing) /* Case One */
+/*		{
 			enemy[index].current_behaviour = 
 			missile_fired(&enemy[index], 
 			missile, 
@@ -483,7 +487,7 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 		else if(missiles_alive_x(&enemy[index],
 									missile, 
 									num_missiles))/* Case Two */
-		{
+/*		{
 			enemy[index].current_behaviour = DODGE_X;
 		}
 		else if(missiles_alive_y(&enemy[index], 
@@ -491,13 +495,13 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 									num_missiles))
 		{
 			enemy[index].current_behaviour = DODGE_Y; /* Case Three */
-		}
+/*		}
 		else if(playAlin(&enemy[index],player)/*(enemy[index].x_coordinate >= player->x_coordinate-8
 		&&enemy[index].x_coordinate <= player->x_coordinate+8)
 		|| 
 		(enemy[index].y_coordinate >= player->y_coordinate-8
-		&& enemy[index].y_coordinate <= player->y_coordinate+8)*/) /* Case 4*/
-		{
+		&& enemy[index].y_coordinate <= player->y_coordinate+8)*//*) /* Case 4*/
+/*		{
 			enemy[index].current_behaviour = SHOOT;
 			DSconws("SHOOT goddammit!! Y\r\0");
 		}
@@ -505,16 +509,16 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 		&& enemy[index].x_coordinate <= player->x_coordinate+16) 
 		&& enemy[index].v_facing == HORIZONTAL) || 
 		((enemy[index].y_coordinate >= player->y_coordinate-16
-		&&enemy[index].y_coordinate <= player->y_coordinate+16) && enemy[index].h_facing == VERTICAL) */) /* Case 5*/
-		{
+		&&enemy[index].y_coordinate <= player->y_coordinate+16) && enemy[index].h_facing == VERTICAL) *//*) /* Case 5*/
+/*		{
 			enemy[index].current_behaviour = TURN;
 		}
 		else if(yMove(&enemy[index], player) && enemy[index].y_coordinate-32 >= 0 && enemy[index].y_coordinate+32 < 400/* ((enemy[index].y_coordinate - player->y_coordinate) < ((enemy[index].x_coordinate - player->x_coordinate) + 16)
 		&& (enemy[index].y_coordinate - player->y_coordinate > 16))
 		||
 		((enemy[index].y_coordinate - player->y_coordinate) > ((enemy[index].x_coordinate - player->x_coordinate)+16)
-		&& (enemy[index].y_coordinate - player->y_coordinate < -16)) */)/* Case 6 */
-		{
+		&& (enemy[index].y_coordinate - player->y_coordinate < -16)) *//*)/* Case 6 */
+/*		{
 			enemy[index].current_behaviour = MOVE_Y;
 			yfacing(&enemy[index], player);
 			DSconws("MOVE Y\r\0");
@@ -523,20 +527,20 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 		&& (enemy[index].x_coordinate - player->x_coordinate > 16))
 		||
 		((enemy[index].x_coordinate - player->x_coordinate) > ((enemy[index].y_coordinate - player->y_coordinate)+16)
-		&& (enemy[index].x_coordinate - player->x_coordinate < -16)) */)/* Case 7*/
-		{/*Check to see if the player should move in the x direction because it's y offset is greater than it's x offset */
-			thing5();			
+		&& (enemy[index].x_coordinate - player->x_coordinate < -16)) *//*)/* Case 7*/
+/*		{/*Check to see if the player should move in the x direction because it's y offset is greater than it's x offset */
+/*			thing5();			
 			enemy[index].current_behaviour = MOVE_X;
 			xfacing(&enemy[index], player);
 		}
 		else if(die_check(&enemy[index], missile, num_missiles))/*Case 8 */
-		{
+/*		{
 			enemy[index].current_behaviour = DIE;
 		}
 		else/* Case 9 */
-		{
+/*		{
 			enemy[index].current_behaviour = DO_NOTHING;
-		}
+		}*/
 	}
 	tank_one_value = enemy[0].current_behaviour;
 	tank_two_value = enemy[1].current_behaviour;

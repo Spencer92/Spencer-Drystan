@@ -197,6 +197,10 @@ int main() {
 				{
 				
 					player_action_check(&thePlayer, gameArray, NUMBER_OF_TANKS, keypress, missile, MAX_MISSILES);
+					if(getTime() >= time_now)
+					{
+						
+					}
 /* 					DSconws("Player pressed ");
 					DSconout(keypress);
 					DSconws("\r\n\0"); */
