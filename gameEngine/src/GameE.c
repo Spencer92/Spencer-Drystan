@@ -46,6 +46,10 @@
 /*===================================================*/
 #define  BUFFER_SIZE  0x8400L
 
+Tank thePlayer;
+Tank gameArray[NUMBER_OF_TANKS];
+Missile missile[MAX_MISSILES];
+Stationary_Object landobjects[NUM_OBJECTS];
 
 
 void memCopy(char* screenChunk1 ,char* screenChunk2);
@@ -54,10 +58,7 @@ void waitForinput();
 
 int main() {
 
-	Tank thePlayer;
-	Tank gameArray[NUMBER_OF_TANKS];
-	Missile missile[MAX_MISSILES];
-	Stationary_Object landobjects[NUM_OBJECTS];
+	
 	
 	
 	BOOL playerInput = 0;
@@ -66,15 +67,14 @@ int main() {
 	UINT16 playerScore = 0;	
 	
 	UINT8 i = 0;
-	UINT8  lives = 0;
+	UINT8  lives = 1;
 	
-	char *mainScreen;
-	char *logMainscreen;
-	
+	char *mainScreen;		
 	char *gameScreen;
 	char *backGamescreen;
 	char *backdropScreen;
 	char *currentScreen;
+	char *altScreen;
 	
 
 	UINT8 screen1[BUFFER_SIZE];
@@ -85,7 +85,7 @@ int main() {
 
 	/*=========Will Change in next system=========================*/
 	mainScreen 		= (Physbase());
-	logMainscreen 	= (Logbase());
+	
 	
 	backdropScreen 	= (char *)welcomeScreen;
 	backdropScreen 	= (char*) ((UINT32) (backdropScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
@@ -133,7 +133,10 @@ int main() {
 		
 		gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
 		
-		/*copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);*/
+		copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
+		
+		thePlayer.x_posMask = thePlayer.x_coordinate;
+		thePlayer.y_posMask = thePlayer.y_coordinate;
 		
 		plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
 		
@@ -141,8 +144,15 @@ int main() {
 		
 		for(i = 0; i < NUMBER_OF_TANKS; i++)
 		{
-			/*copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);*/
+			copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
+			
+			gameArray[i].x_posMask = gameArray[i].x_coordinate;
+			gameArray[i].y_posMask = gameArray[i]r.y_coordinate;
+			
 			plotLargeSprite(gameScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
+		
+		
+		
 		}
 	
 
@@ -182,14 +192,9 @@ int main() {
 				{
 				
 					/*Spencer's model works on the players movement and we plot the player's movement */
-									
-					/*plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int size) wipe over the old backgnd*/
+					player_action_check(&thePlayer, gameArray, NUMBER_OF_TANKS, keypress, missile, MAX_MISSILES);
 					
-					/*copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);*/
-					
-					
-					
-					/*plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE); plot the player on the back  screen*/
+				
 					
 					
 				
@@ -207,24 +212,24 @@ int main() {
 			
 			
 			
-			/*model(&thePlayer,gameArray,missile, landobjects, 			
-				NUMBER_OF_TANKS,MAX_MISSILES, NUM_OBJECTS
-				  ,keypress,playerInput);
-			
-				
-
-			for(i = 0; i < NUMBER_OF_TANKS; i++) 
-			{
-				copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
-				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate, gameArray[i].y_coordinate, SPRITE_SIZE);
-
-
-			}*/
 			
 			if(lives > 0)
 			{
-			Vsync();
-			Setscreen(-1L, currentScreen, -1L);
+			
+				assess_situation(gameArray, &thePlayer, landobjects, missile, NUMBER_OF_TANKS, MAX_MISSILES);
+			
+			if(getTime() >= time_now+10)
+			{
+	
+			model(&thePlayer,gameArray,missile, landobjects, 			
+				NUMBER_OF_TANKS,MAX_MISSILES, NUM_OBJECTS
+				  ,keypress,playerInput); 
+				 time_now = getTime();
+			}
+			
+			
+			
+			
 			}
 			
 			
@@ -262,7 +267,7 @@ int main() {
 				
 				else
 				{
-				keypress = 'q'; /*Clean up and we are done*/
+				/*keypress = 'q'; Clean up and we are done*/
 				
 				
 				}
@@ -270,6 +275,55 @@ int main() {
 			
 			}
 			
+			if(currentScreen == gameScreen)
+			{
+			
+			currentScreen = backGamescreen;
+			altScreen = gameScreen;
+			
+			
+			}
+		
+			else
+			{
+			
+				currentScreen = gameScreen;
+				altScreen = backGamescreen;
+			
+			}
+			
+			
+			plotLargeSprite(currentScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
+			
+		for(i = 0; i < NUMBER_OF_TANKS; i++)
+			{
+			   
+				plotLargeSprite(currentScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
+			}
+		
+			Setscreen(-1L, currentScreen, -1L);	
+			
+			/*Restore the old background to the undisplayed screen*/
+			plotBackground(altScreen,thePlayer.backMask,thePlayer.x_posMask, thePlayer.y_posMask ,SPRITE_SIZE);
+			copyBackground(altScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
+			thePlayer.x_posMask = thePlayer.x_coordinate;
+		    thePlayer.y_posMask = thePlayer.y_coordinate;
+		
+			
+			/*Then copy the new postion backgound and update the old backgound postion */
+		for(i = 0; i < NUMBER_OF_TANKS; i++)
+			{
+			    plotBackground(altScreen,gameArray[i].backMask,gameArray[i]r.x_posMask, gameArray[i].y_posMask ,SPRITE_SIZE);
+				copyBackground(altScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
+				gameArray[i].x_posMask = gameArray[i].x_coordinate;
+		    	gameArray[i].y_posMask = gameArray[i].y_coordinate;
+			
+			}
+			
+			
+			
+			
+		
 		
 		
 		
@@ -295,7 +349,6 @@ int main() {
 }
 
 
-	
 void memCopy(char* screenChunk1 ,char* screenChunk2)
 {
 	register UINT32  copySize;
@@ -304,17 +357,22 @@ void memCopy(char* screenChunk1 ,char* screenChunk2)
 	register UINT32 i;
 	
 	copySize = SCREEN_SIZE >> 2;
-		
+	i = copySize>>3;
 	
-	for(i = 0 ;i < copySize;i++)
+	do
 	{
 	
-		*dstPtr = *srcPtr;
-		 dstPtr++;
-		 srcPtr++;
-			
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = *srcPtr++;
 		
-	}	
+		
+	}while(i--);
 	
 	
 }
