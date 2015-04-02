@@ -512,6 +512,7 @@ register UINT16    *lookupPtr = GameFontDescriptors;
 register UINT8     *refPtr;
 register UINT8 	   *arrayRd = theString;
 register UINT8     lookup;
+		 UINT8     width;
 
 
 	
@@ -526,24 +527,46 @@ register UINT8     lookup;
 		
 		while(length--)
 	{
-		lookup = *(arrayRd) - 32;
-		fonts += (lookupPtr[(lookup * 2) -1] );
-	    
+		lookup = (*(arrayRd) - 32);
+		fonts += (lookupPtr[(lookup * 2) + 1 ]);
+		width = (lookupPtr[lookup *2]);	
+			if(width > 8)
+			{
+			
 			
 			for(lookup = 0; lookup < FONT_SIZE; lookup++)
 			{
 			 *(trackPtr) |= *(fonts);
 			    fonts++;
 				trackPtr++;
-			 *(trackPtr) |= *(fonts);	
-				trackPtr +=80;
+			 *(trackPtr) |= *(fonts);			
 			    fonts++;
+			   trackPtr = refPtr;
+			   trackPtr +=(80 * lookup);
+			}	
+				refPtr +=2;
 			
+			}
+			
+			else
+			{
+			for(lookup = 0; lookup < FONT_SIZE; lookup++)
+			{
+			 *(trackPtr) |= *(fonts);
+			    fonts++;			
+			   trackPtr = refPtr;
+			   trackPtr +=(80 * lookup);
 			}	
 			
+				refPtr++;
+			
+			}
+	    
+			
+		
+			
 	fonts = GameFontBitmaps;	
-	arrayRd ++;
-	refPtr +=2;	
+	arrayRd ++;		
 	trackPtr = refPtr;
 		
 	}

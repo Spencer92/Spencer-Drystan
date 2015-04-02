@@ -500,39 +500,70 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 void plotString(char *fbstart, char *theString, int length, int xpos, int ypos)
 {
 
-register UINT16	   *trackPtr  = (UINT16*) fbstart;
-register UINT16    *fonts  	  = (UINT16*) GameFontBitmaps;
-register UINT16    *lookupPtr = (UINT16*) GameFontDescriptors;
-register UINT16    *refPtr;
+
+register UINT8	   *trackPtr  = fbstart;
+register UINT8     *fonts  	  = GameFontBitmaps;
+register UINT16    *lookupPtr = GameFontDescriptors;
+register UINT8     *refPtr;
 register UINT8 	   *arrayRd = theString;
 register UINT8     lookup;
+		 UINT8     width;
+
 
 	
 	
 	if((xpos + length < SCREEN_WIDTH) &&(ypos >= 0 && (ypos + 16 < SCREEN_HEIGHT)))
 	{
 		
-		trackPtr +=(40 *ypos);
-		trackPtr += (xpos  >> 4);
+		trackPtr +=(80 * ypos);
+		trackPtr += (xpos  >> 3);
 		refPtr 	  = trackPtr;
 	
 		
 		while(length--)
 	{
-		lookup = *(arrayRd) - 32;
-		fonts += (lookupPtr[lookup]);
-	    refPtr++;
+		lookup = (*(arrayRd) - 32);
+		fonts += (lookupPtr[(lookup * 2) + 1 ]);
+		width = (lookupPtr[lookup *2]);	
+			if(width > 8)
+			{
+			
 			
 			for(lookup = 0; lookup < FONT_SIZE; lookup++)
 			{
 			 *(trackPtr) |= *(fonts);
-			   trackPtr +=40;
-			   fonts++;
+			    fonts++;
+				trackPtr++;
+			 *(trackPtr) |= *(fonts);			
+			    fonts++;
+			   trackPtr = refPtr;
+			   trackPtr +=(80 * lookup);
+			}	
+				refPtr +=2;
 			
+			}
+			
+			else
+			{
+			for(lookup = 0; lookup < FONT_SIZE; lookup++)
+			{
+			 *(trackPtr) |= *(fonts);
+			    fonts++;			
+			   trackPtr = refPtr;
+			   trackPtr +=(80 * lookup);
 			}	
 			
-	fonts = (UINT16*) GameFontBitmaps;	
-	arrayRd ++;
+				refPtr++;
+			
+			}
+	    
+			
+		
+			
+	fonts = GameFontBitmaps;	
+	arrayRd ++;		
+	trackPtr = refPtr;
+		
 	}
 	
 	
@@ -540,11 +571,9 @@ register UINT8     lookup;
 	}
 	
 	
-
-
-}
-
-
+	}
+	
+	
 
 void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,int ypostoPlot, int size)
 
