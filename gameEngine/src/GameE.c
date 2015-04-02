@@ -199,7 +199,7 @@ int main() {
 					player_action_check(&thePlayer, gameArray, NUMBER_OF_TANKS, keypress, missile, MAX_MISSILES);
 					if(getTime() >= time_now)
 					{
-						
+						player_action(&thePlayer, missile);
 					}
 /* 					DSconws("Player pressed ");
 					DSconout(keypress);
@@ -237,7 +237,9 @@ int main() {
 			tank_five_action = gameArray[4].current_behaviour;
 			if(gameArray[0].current_behaviour == DO_NOTHING)
 			{
-				return 0;
+				DSconws("\n\rTank 0 is doing nothing\r\n\0");
+				while(getTime() <= time_now+210);
+				break;
 			}
 			
 			if(getTime() >= time_now+10)

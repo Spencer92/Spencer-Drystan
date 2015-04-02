@@ -43,16 +43,16 @@ typedef struct Tank
 	UINT8  current_speed;
 	BOOL is_moving;
 	BOOL is_firing;
-	UINT32 *sprite;
-	UINT32 backMask[64];
 	UINT16 x_posMask;
 	UINT16 y_posMask;
-	UINT8  *Missile;
 	H_DIRECTION h_facing;
 	V_DIRECTION v_facing;
 	BOOL is_visible;
 	BEHAVIOUR current_behaviour;
 	UINT8 missile_available;
+	UINT32 *sprite;
+	UINT8  *Missile;	
+	UINT32 backMask[64];	
 }Tank;
 
 typedef struct Missile
