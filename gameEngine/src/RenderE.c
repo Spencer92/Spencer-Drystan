@@ -539,7 +539,7 @@ register UINT8     lookup;
 			   trackPtr = refPtr;
 			   trackPtr +=(80 * lookup);
 			}	
-				refPtr +=2;
+			
 			
 			}
 			
@@ -553,13 +553,13 @@ register UINT8     lookup;
 			   trackPtr +=(80 * lookup);
 			}	
 			
-				refPtr++;
+				
 			
 			}
 	    
 			
 		
-			
+	refPtr +=2;		
 	fonts = GameFontBitmaps;	
 	arrayRd ++;		
 	trackPtr = refPtr;

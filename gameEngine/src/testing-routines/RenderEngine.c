@@ -544,7 +544,7 @@ register UINT8     lookup;
 			   trackPtr = refPtr;
 			   trackPtr +=(80 * lookup);
 			}	
-				refPtr +=2;
+				
 			
 			}
 			
@@ -553,18 +553,18 @@ register UINT8     lookup;
 			for(lookup = 0; lookup < FONT_SIZE; lookup++)
 			{
 			 *(trackPtr) |= *(fonts);
-			    fonts++;			
+			   fonts++;			
 			   trackPtr = refPtr;
 			   trackPtr +=(80 * lookup);
 			}	
 			
-				refPtr++;
+			
 			
 			}
 	    
 			
 		
-			
+	refPtr +=2;		
 	fonts = GameFontBitmaps;	
 	arrayRd ++;		
 	trackPtr = refPtr;
