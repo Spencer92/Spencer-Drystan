@@ -1,20 +1,20 @@
-TANK		equ	98
+TANK		equ	290
 X_COORD		equ	0
 Y_COORD		equ	2
 HITPOINT	equ	4
 SPEED		equ	8
 MOVING		equ	9
-FIRING		equ	10
-SPRITE		equ	12
-BACKMASK	equ	16
-X_POSMASK	equ	80
-Y_POSMASK	equ	82
-MISSILE		equ	84
-H_FACING	equ	88
-V_FACING	equ	90
-IS_VISIBLE	equ	92
-BEHAVIOUR	equ	94
-AVAILABLE	equ	96
+FIRING		equ	10                          	
+X_POSMASK	equ	12
+Y_POSMASK	equ	14             	
+H_FACING	equ	16
+V_FACING	equ	18
+IS_VISIBLE	equ	20
+BEHAVIOUR	equ	22
+AVAILABLE	equ	24
+SPRITE		equ	26
+MISSILE		equ	30
+BACKMASK	equ	34
 
 ;BEHAVIOURS
 SHOOT		equ	0
@@ -35,6 +35,8 @@ DO_NOTHING	equ	8
 	xref		_xMove
 	xref		_die_check
 	xref		_missile_fired
+	xref		_yfacing
+	xref		_xfacing
 	xdef		_tankBehav
 
 
@@ -117,6 +119,10 @@ y_move:		move.l	PLAY_TANK(a6),-(sp)
 		movea.l	ENEMY_TANK(a6),a3
 		moveq.w	#MOVE_Y,d3
 		move.w	d3,BEHAVIOUR(a3)
+		move.l	PLAY_TANK(a6),-(sp)
+		move.l	ENEMY_TANK(a6),-(sp)
+		jsr	_yfacing
+		addq.l	#8,sp
 		bra	end
 
 x_move:		move.l	PLAY_TANK(a6),-(sp)
@@ -128,6 +134,10 @@ x_move:		move.l	PLAY_TANK(a6),-(sp)
 		movea.l	ENEMY_TANK(a6),a3
 		moveq.w	#MOVE_X,d3
 		move.w	d3,BEHAVIOUR(a3)
+		move.l	PLAY_TANK(a6),-(sp)
+		move.l	ENEMY_TANK(a6),-(sp)
+		jsr	_xfacing
+		addq.l	#8,sp
 		bra	end
 
 die:		move.w	NUM_MISSILES(a6),-(sp)
@@ -143,7 +153,7 @@ die:		move.w	NUM_MISSILES(a6),-(sp)
 		bra	end
 
 nothing:	movea.l	ENEMY_TANK(a6),a3
-		moveq.w	#DO_NOTHING,d3
+		moveq.w	#SHOOT,d3
 		move.w	d3,BEHAVIOUR(a3)
 	
 	

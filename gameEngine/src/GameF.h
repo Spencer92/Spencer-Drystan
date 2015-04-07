@@ -13,6 +13,7 @@
 #define  MAXSPEED  5
 #define  TRUE 1
 #define  FALSE 0
+#define  SMALL_SPRITE_SIZE 8
 
 #include <stddef.h>
 #include "Behavior.h"

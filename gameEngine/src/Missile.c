@@ -57,18 +57,41 @@ MISSILE_BEHAVIOUR move_left_check(Missile *missile)
 
 
 
-MISSILE_BEHAVIOUR explode_check(Missile *missile, Tank *tank)
+void exploding_check(Missile *missile, Tank *tank)
 {
-	if(missile->x_coordinate == tank->x_coordinate && missile->y_coordinate == tank->y_coordinate)
+	if(missile->x_coordinate+8 >= tank->x_coordinate-32 && missile->y_coordinate+8 <= tank->y_coordinate-32
+		|| missile->x_coordinate-8 <= tank->x_coordinate+32 && missile->y_coordinate-8 >= tank->y_coordinate+32)
 	{
-		return EXPLODE;
-	}
-	else
-	{
-		return missile->current_behaviour;
+		missile->current_behaviour = EXPLODE;
+		tank->current_behaviour = DIE;
+		missile->is_visible = 0;
 	}
 }
 
+void move_missile(Missile *missile)
+{
+	if(missile->horizontal_movement == RIGHT)
+	{	
+		missile->x_coordinate++;
+	}
+	else if(missile->horizontal_movement == LEFT)
+	{
+		missile->x_coordinate--;
+	}
+	else if(missile->vertical_movement == UP)
+	{
+		missile->y_coordinate--;
+	}
+	else if(missile->vertical_movement == DOWN)
+	{
+		missile->y_coordinate++;
+	}
+	if(missile->x_coordinate > 640 || missile->x_coordinate < 0 || missile->y_coordinate < 0 || missile->y_coordinate > 400)
+	{
+		missile->is_visible = 0;
+		missile->sprite = 0;
+	}
+}
 
 
 

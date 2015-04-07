@@ -1,7 +1,8 @@
 #include "Behavior.h"
 #include "Model.h"
 #include "osbind.h"
-
+#include "gamef.h"
+#include "bitmaps.h"
 
 
 /***************************************************************************
@@ -84,7 +85,7 @@ void die(Tank *tank)
    Purpose:         To fire a missile to another tank
   
    Input Arguments: Tank - the tank that will be firing the missile
-					Missile - The missile to be fired
+					Missile - The mHissile to be fired
   
    Method Notes:    The tank checks the amount of missiles it has, and
 					if it has a missile to fire, the missile will become visible
@@ -99,16 +100,54 @@ void die(Tank *tank)
 
 void shoot(Tank *tank, Missile *missile)
 {
-	if(tank->missile_available > 0)
+	BOOL missile_available = 0;
+	UINT8 index;
+	for(index = 0; index < MAX_MISSILES && !missile_available; index++)
+	{
+		if(!missile[index].is_visible)
+		{
+			missile_available = 1;
+		}
+	}
+	if(tank->missile_available > 0 && missile_available)
 	{
 		tank->is_firing = 1;
 		tank->missile_available--;
 		missile->is_visible = 1;
+		if(tank->h_facing == RIGHT)
+		{
+			missile->x_coordinate = tank->x_coordinate+45;
+			missile->y_coordinate = tank->y_coordinate;
+			missile->horizontal_movement = RIGHT;
+			missile->vertical_movement = HORIZONTAL;
+		}
+		else if(tank->h_facing == LEFT)
+		{
+			missile->x_coordinate = tank->x_coordinate-45;
+			missile->y_coordinate = tank->y_coordinate;
+			missile->horizontal_movement = LEFT;
+			missile->vertical_movement = HORIZONTAL;
+		}
+		else if(tank->v_facing == UP)
+		{
+			missile->x_coordinate = tank->x_coordinate;
+			missile->y_coordinate = tank->y_coordinate-45;
+			missile->vertical_movement = UP;
+			missile->horizontal_movement = VERTICAL;
+		}
+		else if(tank->v_facing == DOWN)
+		{
+			missile->x_coordinate = tank->x_coordinate;
+			missile->y_coordinate = tank->y_coordinate+45;
+			missile->vertical_movement = DOWN;
+			missile->horizontal_movement = VERTICAL;
+		}
+		missile->sprite = player_missile;
 	}
 	else
 	{
 		tank->is_firing = 0;
-		Cconws("I cannot fire!\r\n\0");
+/* 		Cconws("I cannot fire!\r\n\0"); */
 	}
 }
 

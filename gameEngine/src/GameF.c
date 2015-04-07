@@ -2,8 +2,8 @@
 #include "Bitmaps.h"
 #include "Behavior.h"
 
-const int xPostions[] = {600,250,300,400,200};
-const int yPostions[] = {10,30,50,70,100};
+const int xPostions[] = {50,250,300,400,200};
+const int yPostions[] = {100,30,50,70,100};
 volatile void thing3(){}
 
 void gameStart(struct Tank gameArray[], Tank *player, Missile missile[], int numOfEnemy, int *score )

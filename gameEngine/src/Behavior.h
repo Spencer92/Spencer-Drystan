@@ -108,7 +108,8 @@ MISSILE_BEHAVIOUR move_up_check(Missile *missile);
 MISSILE_BEHAVIOUR move_down_check(Missile *missile);
 MISSILE_BEHAVIOUR move_right_check(Missile *missile);
 MISSILE_BEHAVIOUR move_left_check(Missile *missile);
-MISSILE_BEHAVIOUR explode_check(Missile *missile, Tank *tank);
+void exploding_check(Missile *missile, Tank *tank);
+void move_missile(Missile *missile);
 
 BOOL missile_exist_check(Tank *tank, Missile *missile, int offset);
 BOOL missiles_alive_y(Tank *enemy, Missile* missile, int num_missiles);

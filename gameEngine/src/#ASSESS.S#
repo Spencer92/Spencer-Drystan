@@ -35,6 +35,8 @@ DO_NOTHING	equ	8
 	xref		_xMove
 	xref		_die_check
 	xref		_missile_fired
+	xref		_yfacing
+	xref		_xfacing
 	xdef		_tankBehav
 
 
@@ -117,6 +119,10 @@ y_move:		move.l	PLAY_TANK(a6),-(sp)
 		movea.l	ENEMY_TANK(a6),a3
 		moveq.w	#MOVE_Y,d3
 		move.w	d3,BEHAVIOUR(a3)
+		move.l	PLAY_TANK(a6),-(sp)
+		move.l	ENEMY_TANK(a6),-(sp)
+		jsr	_yfacing
+		addq.l	#8,sp
 		bra	end
 
 x_move:		move.l	PLAY_TANK(a6),-(sp)
@@ -128,22 +134,25 @@ x_move:		move.l	PLAY_TANK(a6),-(sp)
 		movea.l	ENEMY_TANK(a6),a3
 		moveq.w	#MOVE_X,d3
 		move.w	d3,BEHAVIOUR(a3)
-		bra	end
-
-die:		move.w	NUM_MISSILES(a6),-(sp)
-		move.l	MISSILES(a6),-(sp)
+		move.l	PLAY_TANK(a6),-(sp)
 		move.l	ENEMY_TANK(a6),-(sp)
-		jsr	_die_check
-		add.l	#10,sp
-		tst.b	d0
-		beq	nothing
-		movea.l	ENEMY_TANK(a6),a3
-		moveq.w	#DIE,d3
-		move.w	d3,BEHAVIOUR(a3)
+		jsr	_xfacing
+		addq.l	#8,sp
 		bra	end
+	; die:		move.w	NUM_MISSILES(a6),-(sp)
+	;move.l	MISSILES(a6),-(sp)
+	;move.l	ENEMY_TANK(a6),-(sp)
+	;jsr	_die_check
+	;add.l	#10,sp
+	;tst.b	d0
+	;beq	nothing
+	;movea.l	ENEMY_TANK(a6),a3
+	;moveq.w	#DIE,d3
+	;move.w	d3,BEHAVIOUR(a3)
+	;bra	end
 
 nothing:	movea.l	ENEMY_TANK(a6),a3
-		moveq.w	#DO_NOTHING,d3
+		moveq.w	#SHOOT,d3
 		move.w	d3,BEHAVIOUR(a3)
 	
 	

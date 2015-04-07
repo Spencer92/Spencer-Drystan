@@ -5,6 +5,7 @@
 #include "System.h"
 #include "Keyboard.h"
 #include "assess.h"
+#include "bitmaps.h"
 
 BOOL playAlin(Tank* enemy, Tank* player);
 BOOL needTurn(Tank* enemy, Tank* player);
@@ -183,7 +184,7 @@ void player_action(Tank* player, Missile* missile)
 	}
 	else if(player->current_behaviour == SHOOT)
 	{
-		missile_check(player, missile, player->missile_available, 1);
+		shoot(player,missile);
 		player->is_firing = 0;
 	}
 	player->current_behaviour = DO_NOTHING;
@@ -283,7 +284,7 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 			if(!(notBehaviour(&enemy[index],SHOOT)))
 			{
 				missile_avail = enemy[index].missile_available;
-				missile_check(&enemy[index], missile, missile_avail, 1);
+				shoot(&enemy[index],missile);
 				enemy[index].is_firing = 0;
 			}
 			else if(!(notBehaviour(&enemy[index],DODGE_X)))
@@ -313,6 +314,7 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 			else if(!(notBehaviour(&enemy[index],DIE)))
 			{
 				enemy[index].is_visible = 0;
+				enemy[index].sprite = NULL;
 			}
 			else if(!(notBehaviour(&enemy[index],TURN)))
 			{
@@ -476,6 +478,22 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 	for(index = 0; index < num_enemies; index++)
 	{
 		tankBehav(&enemy[index], player, missile, num_missiles);
+		if(enemy[index].v_facing == DOWN)
+		{
+			enemy[index].sprite = playerTankSouth;
+		}
+		else if(enemy[index].v_facing == UP)
+		{
+			enemy[index].sprite = playerTankNorth;
+		}
+		else if(enemy[index].h_facing == RIGHT)
+		{
+			enemy[index].sprite = playerTankEast;
+		}
+		else if(enemy[index].h_facing == LEFT)
+		{
+			enemy[index].sprite == playerTankWest;
+		}
 		
 /*		if(player->is_firing) /* Case One */
 /*		{
@@ -542,11 +560,11 @@ void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Mis
 			enemy[index].current_behaviour = DO_NOTHING;
 		}*/
 	}
-	tank_one_value = enemy[0].current_behaviour;
+/* 	tank_one_value = enemy[0].current_behaviour;
 	tank_two_value = enemy[1].current_behaviour;
 	tank_three_value = enemy[2].current_behaviour;
 	tank_four_value = enemy[3].current_behaviour;
-	tank_five_value = enemy[4].current_behaviour;
+	tank_five_value = enemy[4].current_behaviour; */
 	
 }
 
@@ -624,10 +642,28 @@ BOOL yMove(Tank* enemy, Tank* player)
 	BOOL check2 = (enemy->y_coordinate - player->y_coordinate > 32);
 	BOOL check3 = (enemy->y_coordinate - player->y_coordinate) > ((enemy->x_coordinate - player->x_coordinate)+32);
 	BOOL check4 = (enemy->y_coordinate - player->y_coordinate < -32);
+	BOOL check5;
+	BOOL check6;
+	if(enemy->x_coordinate-32 > 0 && enemy->x_coordinate+32 < 640 && enemy->x_coordinate > 0 && enemy->x_coordinate < 640)
+	{
+		check5 = 1;
+	}
+	else
+	{
+		check5 = 0;
+	}
+	if(enemy->y_coordinate-32 > 0 && enemy->y_coordinate+32 < 400 && enemy->y_coordinate > 0 && enemy->x_coordinate < 640)
+	{
+		check6 = 1;
+	}
+	else
+	{
+		check6 = 0;
+	}
 	
 	return ((check1 && check2)
 		||
-		(check3	&& check4));
+		(check3	&& check4)) && (check5 && check6);
 }
 
 
@@ -637,10 +673,30 @@ BOOL xMove(Tank* enemy, Tank* player)
 	BOOL check2 = (enemy->x_coordinate - player->x_coordinate > 32);
 	BOOL check3 = (enemy->x_coordinate - player->x_coordinate) > ((enemy->y_coordinate - player->y_coordinate)+32);
 	BOOL check4 = (enemy->x_coordinate - player->x_coordinate < -32);
+	BOOL check5;
+	BOOL check6;
+	if(enemy->x_coordinate-32 > 0 && enemy->x_coordinate-32 < 640 && enemy->x_coordinate > 0 && enemy->x_coordinate < 640)
+	{
+		check5 = 1;
+	}
+	else
+	{
+		check5 = 0;
+	}
+	if(enemy->y_coordinate-32 > 0 && enemy->y_coordinate-32 < 640 && enemy->y_coordinate > 0 && enemy->y_coordinate < 400)
+	{
+		check5 = 1;
+	}
+	else
+	{
+		check5 = 0;
+	}
+	
+	
 
 	return ((check1 && check2)
 		||
-		(check3 && check4));
+		(check3 && check4)) && (check5 && check6);
 }
 
 	

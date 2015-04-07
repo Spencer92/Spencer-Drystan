@@ -5,22 +5,22 @@ _model:
 	link	a6,#-10
 	move.l	a3,-(a7)
 	move.l	12(a6),a3
-	;line	51
+	;line	52
 	move.w	22(a3),-2(a6)
 	move.w	312(a3),-4(a6)
 	move.w	602(a3),-6(a6)
 	move.w	892(a3),-8(a6)
 	move.w	1182(a3),-10(a6)
-	;line	51
+	;line	52
 	tst.b	33(a6)
 	beq	L1
-	;line	53
+	;line	54
 	move.l	16(a6),-(a7)
 	move.l	8(a6),-(a7)
 	jsr	_player_action
 	addq.l	#8,a7
 L1:
-	;line	55
+	;line	56
 	move.w	28(a6),-(a7)
 	move.l	20(a6),-(a7)
 	move.w	24(a6),-(a7)
@@ -34,9 +34,9 @@ L1:
 _thing:
 	link	a6,#-2
 	move.l	d3,-(a7)
-	;line	66
+	;line	67
 	moveq	#3,d3
-	;line	66
+	;line	67
 	move.w	d3,d0
 L2:
 	move.l	(a7)+,d3
@@ -44,7 +44,7 @@ L2:
 	rts
 _thing9:
 	link	a6,#0
-	;line	95
+	;line	96
 	unlk	a6
 	rts
 _player_action_check:
@@ -53,9 +53,9 @@ _player_action_check:
 	move.l	8(a6),a3
 	move.b	19(a6),d3
 	moveq	#22,d4
-	;line	98
-	jsr	_thing9
 	;line	99
+	jsr	_thing9
+	;line	100
 	cmp.b	#100,d3
 	beq	L4
 	cmp.b	#97,d3
@@ -68,23 +68,23 @@ L4:
 	lea	10(a7),a7
 	tst.b	d0
 	bne	L3
-	;line	101
-	move.w	#3,0(a3,d4.l)
 	;line	102
+	move.w	#3,0(a3,d4.l)
+	;line	103
 	cmp.b	#97,d3
 	bne	L5
-	;line	104
+	;line	105
 	move.w	#-1,16(a3)
 	bra	L6
 L5:
-	;line	108
+	;line	109
 	move.w	#1,16(a3)
 L6:
-	;line	110
+	;line	111
 	clr.w	18(a3)
 	bra	L7
 L3:
-	;line	112
+	;line	113
 	cmp.b	#119,d3
 	beq	L9
 	cmp.b	#115,d3
@@ -97,32 +97,32 @@ L9:
 	lea	10(a7),a7
 	tst.b	d0
 	bne	L8
-	;line	114
-	move.w	#4,0(a3,d4.l)
 	;line	115
+	move.w	#4,0(a3,d4.l)
+	;line	116
 	cmp.b	#119,d3
 	bne	L10
-	;line	117
+	;line	118
 	move.w	#-1,18(a3)
 	bra	L11
 L10:
-	;line	121
+	;line	122
 	move.w	#1,18(a3)
 L11:
-	;line	123
+	;line	124
 	clr.w	16(a3)
 	bra	L12
 L8:
-	;line	125
+	;line	126
 	cmp.b	#32,d3
 	bne	L13
-	;line	127
-	clr.w	0(a3,d4.l)
 	;line	128
+	clr.w	0(a3,d4.l)
+	;line	129
 	move.b	#1,10(a3)
 	bra	L14
 L13:
-	;line	130
+	;line	131
 	move.w	24(a6),-(a7)
 	move.l	20(a6),-(a7)
 	move.l	a3,-(a7)
@@ -130,11 +130,11 @@ L13:
 	lea	10(a7),a7
 	tst.b	d0
 	beq	L15
-	;line	132
+	;line	133
 	move.w	#5,0(a3,d4.l)
 	bra	L16
 L15:
-	;line	136
+	;line	137
 	move.w	#8,0(a3,d4.l)
 L16:
 L14:
@@ -145,7 +145,7 @@ L7:
 	rts
 _thing8:
 	link	a6,#0
-	;line	164
+	;line	165
 	unlk	a6
 	rts
 _player_action:
@@ -153,89 +153,85 @@ _player_action:
 	movem.l	d3/a3,-(a7)
 	move.l	8(a6),a3
 	moveq	#22,d3
-	;line	167
-	jsr	_thing8
 	;line	168
+	jsr	_thing8
+	;line	169
 	cmp.w	#3,0(a3,d3.l)
 	bne	L17
 	cmp.w	#1,16(a3)
 	bne	L17
-	;line	170
+	;line	171
 	addq.w	#1,(a3)
 	bra	L18
 L17:
-	;line	172
+	;line	173
 	cmp.w	#3,0(a3,d3.l)
 	bne	L19
 	cmp.w	#-1,16(a3)
 	bne	L19
-	;line	174
+	;line	175
 	subq.w	#1,(a3)
 	bra	L20
 L19:
-	;line	176
+	;line	177
 	cmp.w	#4,0(a3,d3.l)
 	bne	L21
 	cmp.w	#-1,18(a3)
 	bne	L21
-	;line	178
+	;line	179
 	subq.w	#1,2(a3)
 	bra	L22
 L21:
-	;line	180
+	;line	181
 	cmp.w	#4,0(a3,d3.l)
 	bne	L23
 	cmp.w	#1,18(a3)
 	bne	L23
-	;line	182
+	;line	183
 	addq.w	#1,2(a3)
 	bra	L24
 L23:
-	;line	184
+	;line	185
 	tst.w	0(a3,d3.l)
 	bne	L25
-	;line	186
-	move.w	#1,-(a7)
-	clr.w	d0
-	move.b	24(a3),d0
-	move.w	d0,-(a7)
+	;line	187
 	move.l	12(a6),-(a7)
 	move.l	a3,-(a7)
-	jsr	_missile_check
-	;line	187
+	jsr	_shoot
+	;line	188
 	clr.b	10(a3)
 L25:
 L24:
 L22:
 L20:
 L18:
-	;line	189
+	;line	190
 	move.w	#8,0(a3,d3.l)
 	movem.l	-8(a6),d3/a3
 	unlk	a6
 	rts
 _thin10:
 	link	a6,#0
-	;line	210
+	;line	211
 	unlk	a6
 	rts
 _tanks_at:
 	link	a6,#-4
 	movem.l	d3/d4,-(a7)
-	;line	215
-	moveq	#0,d3
 	;line	216
+	moveq	#0,d3
+	;line	217
 	moveq	#0,d4
 	bra	L27
 L26:
-	;line	221
+	;line	222
 	move.l	8(a6),-(a7)
 	move.l	12(a6),-(a7)
 	jsr	_there
 	addq.l	#8,a7
 	tst.b	d0
 	bne	L30
-	;line	223
+	;line	224
 	moveq	#1,d3
 L30:
 L29:
@@ -247,7 +243,7 @@ L27:
 	beq	L26
 L31:
 L28:
-	;line	226
+	;line	227
 	move.b	d3,d0
 L32:
 	movem.l	-12(a6),d3/d4
@@ -259,7 +255,7 @@ _there:
 	moveq	#16,d3
 	move.l	8(a6),a3
 	move.l	12(a6),a4
-	;line	235
+	;line	236
 	move.w	(a3),d0
 	sub.w	d3,d0
 	move.w	(a4),d1
@@ -292,7 +288,7 @@ _there:
 	shi	d0
 	and.w	#1,d0
 	move.b	d0,-4(a6)
-	;line	235
+	;line	236
 	tst.b	-1(a6)
 	bne	L35
 	tst.b	-2(a6)
@@ -314,7 +310,7 @@ L37:
 	rts
 _thing4:
 	link	a6,#0
-	;line	271
+	;line	272
 	unlk	a6
 	rts
 _tank_respond:
@@ -325,11 +321,11 @@ _tank_respond:
 	move.l	20(a6),d6
 	move.w	24(a6),d7
 	lea	_notBehaviour,a4
-	;line	279
+	;line	280
 	moveq	#0,d3
 	bra	L39
 L38:
-	;line	281
+	;line	282
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
@@ -340,7 +336,7 @@ L38:
 	addq.l	#4,a7
 	tst.b	d0
 	bne	L42
-	;line	283
+	;line	284
 	clr.w	-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -352,7 +348,7 @@ L38:
 	addq.l	#6,a7
 	tst.b	d0
 	bne	L43
-	;line	285
+	;line	286
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
@@ -360,11 +356,7 @@ L38:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.b	24(a0),-3(a6)
-	;line	286
-	move.w	#1,-(a7)
-	clr.w	d0
-	move.b	-3(a6),d0
-	move.w	d0,-(a7)
+	;line	287
 	move.l	12(a6),-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -372,9 +364,9 @@ L38:
 	jsr	.Xlmul
 	add.l	a3,d0
 	move.l	d0,-(a7)
-	jsr	_missile_check
-	lea	12(a7),a7
-	;line	287
+	jsr	_shoot
+	addq.l	#8,a7
+	;line	288
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
@@ -384,7 +376,7 @@ L38:
 	clr.b	10(a0)
 	bra	L44
 L43:
-	;line	289
+	;line	290
 	move.w	#1,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -396,7 +388,7 @@ L43:
 	addq.l	#6,a7
 	tst.b	d0
 	bne	L45
-	;line	291
+	;line	292
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
@@ -404,7 +396,7 @@ L43:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.w	16(a0),a5
-	;line	292
+	;line	293
 	move.w	d7,-(a7)
 	move.w	a5,-(a7)
 	move.l	d6,-(a7)
@@ -418,7 +410,7 @@ L43:
 	lea	12(a7),a7
 	bra	L46
 L45:
-	;line	294
+	;line	295
 	move.w	#2,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -430,7 +422,7 @@ L45:
 	addq.l	#6,a7
 	tst.b	d0
 	bne	L47
-	;line	296
+	;line	297
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
@@ -438,7 +430,7 @@ L45:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.w	18(a0),a5
-	;line	297
+	;line	298
 	move.w	d7,-(a7)
 	move.w	a5,-(a7)
 	move.l	d6,-(a7)
@@ -452,7 +444,7 @@ L45:
 	lea	12(a7),a7
 	bra	L48
 L47:
-	;line	300
+	;line	301
 	move.w	#3,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -464,7 +456,7 @@ L47:
 	addq.l	#6,a7
 	tst.b	d0
 	bne	L49
-	;line	302
+	;line	303
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
@@ -472,7 +464,7 @@ L47:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.w	16(a0),d5
-	;line	303
+	;line	304
 	move.w	d7,-(a7)
 	move.w	d5,-(a7)
 	move.l	d6,-(a7)
@@ -486,7 +478,7 @@ L47:
 	lea	12(a7),a7
 	bra	L50
 L49:
-	;line	307
+	;line	308
 	move.w	#4,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -498,9 +490,9 @@ L49:
 	addq.l	#6,a7
 	tst.b	d0
 	bne	L51
-	;line	309
-	jsr	_thing4
 	;line	310
+	jsr	_thing4
+	;line	311
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
@@ -508,7 +500,7 @@ L49:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.w	18(a0),d5
-	;line	311
+	;line	312
 	move.w	d7,-(a7)
 	move.w	d5,-(a7)
 	move.l	d6,-(a7)
@@ -522,7 +514,7 @@ L49:
 	lea	12(a7),a7
 	bra	L52
 L51:
-	;line	313
+	;line	314
 	move.w	#5,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -534,7 +526,7 @@ L51:
 	addq.l	#6,a7
 	tst.b	d0
 	bne	L53
-	;line	315
+	;line	316
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
@@ -542,9 +534,17 @@ L51:
 	move.l	d0,a0
 	add.l	a3,a0
 	clr.b	20(a0)
+	;line	317
+	ext.l	d3
+	move.l	d3,-(a7)
+	move.l	d4,-(a7)
+	jsr	.Xlmul
+	move.l	d0,a0
+	add.l	a3,a0
+	clr.l	26(a0)
 	bra	L54
 L53:
-	;line	317
+	;line	319
 	move.w	#7,-(a7)
 	ext.l	d3
 	move.l	d3,-(a7)
@@ -556,7 +556,7 @@ L53:
 	addq.l	#6,a7
 	tst.b	d0
 	bne	L55
-	;line	319
+	;line	321
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
@@ -573,7 +573,7 @@ L48:
 L46:
 L44:
 L42:
-	;line	322
+	;line	324
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
@@ -592,7 +592,7 @@ L40:
 	rts
 _notBehaviour:
 	link	a6,#0
-	;line	329
+	;line	331
 	move.l	8(a6),a0
 	move.w	22(a0),d0
 	cmp.w	12(a6),d0
@@ -605,9 +605,9 @@ _wrong:
 	link	a6,#-2
 	move.l	a3,-(a7)
 	move.l	8(a6),a3
-	;line	336
+	;line	338
 	move.w	22(a3),-2(a6)
-	;line	336
+	;line	338
 	tst.b	20(a3)
 	beq	L57
 	cmp.w	#8,22(a3)
@@ -631,19 +631,19 @@ _missile_check:
 	move.l	8(a6),a4
 	moveq	#18,d5
 	move.l	#290,d7
-	;line	373
+	;line	375
 	moveq	#0,d6
-	;line	373
+	;line	375
 	moveq	#0,d4
 	bra	L61
 L60:
-	;line	375
+	;line	377
 	moveq	#0,d6
-	;line	376
+	;line	378
 	moveq	#0,d3
 	bra	L65
 L64:
-	;line	378
+	;line	380
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -660,7 +660,7 @@ L64:
 	add.l	a3,a0
 	tst.b	10(a0)
 	bne	L68
-	;line	380
+	;line	382
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -669,7 +669,7 @@ L64:
 	add.l	a4,a0
 	cmp.w	#-1,0(a0,d5.l)
 	bne	L69
-	;line	382
+	;line	384
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -687,7 +687,7 @@ L64:
 	add.l	a3,a0
 	move.l	(a7)+,d0
 	move.w	d0,2(a0)
-	;line	383
+	;line	385
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -700,7 +700,7 @@ L64:
 	move.l	d0,d1
 	move.l	(a7)+,d0
 	move.w	0(a4,d0.l),0(a3,d1.l)
-	;line	384
+	;line	386
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
@@ -708,7 +708,7 @@ L64:
 	move.l	d0,a0
 	add.l	a3,a0
 	clr.w	12(a0)
-	;line	385
+	;line	387
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
@@ -716,11 +716,11 @@ L64:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.b	#1,10(a0)
-	;line	386
+	;line	388
 	moveq	#1,d6
 	bra	L70
 L69:
-	;line	388
+	;line	390
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -729,7 +729,7 @@ L69:
 	add.l	a4,a0
 	cmp.w	#-1,16(a0)
 	bne	L71
-	;line	390
+	;line	392
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -744,7 +744,7 @@ L69:
 	move.l	d0,d1
 	move.l	(a7)+,d0
 	move.w	d0,0(a3,d1.l)
-	;line	391
+	;line	393
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -760,7 +760,7 @@ L69:
 	add.l	a3,a1
 	move.l	(a7)+,a0
 	move.w	2(a0),2(a1)
-	;line	392
+	;line	394
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
@@ -768,7 +768,7 @@ L69:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.w	#2,12(a0)
-	;line	393
+	;line	395
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
@@ -776,11 +776,11 @@ L69:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.b	#1,10(a0)
-	;line	394
+	;line	396
 	moveq	#1,d6
 	bra	L72
 L71:
-	;line	396
+	;line	398
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -790,7 +790,7 @@ L71:
 	move.w	#1,0(a0,d5.l)
 	moveq	#1,d0
 	beq	L73
-	;line	398
+	;line	400
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -803,7 +803,7 @@ L71:
 	move.l	d0,d1
 	move.l	(a7)+,d0
 	move.w	0(a4,d0.l),0(a3,d1.l)
-	;line	399
+	;line	401
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -821,7 +821,7 @@ L71:
 	add.l	a3,a0
 	move.l	(a7)+,d0
 	move.w	d0,2(a0)
-	;line	400
+	;line	402
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
@@ -829,7 +829,7 @@ L71:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.w	#1,12(a0)
-	;line	401
+	;line	403
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
@@ -837,11 +837,11 @@ L71:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.b	#1,10(a0)
-	;line	402
+	;line	404
 	moveq	#1,d6
 	bra	L74
 L73:
-	;line	404
+	;line	406
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -851,7 +851,7 @@ L73:
 	move.w	#1,16(a0)
 	moveq	#1,d0
 	beq	L75
-	;line	406
+	;line	408
 	moveq	#16,d0
 	move.l	d0,-(a7)
 	ext.l	d4
@@ -869,7 +869,7 @@ L73:
 	move.l	d0,d1
 	move.l	(a7)+,d0
 	move.w	d0,0(a3,d1.l)
-	;line	407
+	;line	409
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -885,7 +885,7 @@ L73:
 	add.l	a3,a1
 	move.l	(a7)+,a0
 	move.w	2(a0),2(a1)
-	;line	408
+	;line	410
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
@@ -893,7 +893,7 @@ L73:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.w	#3,12(a0)
-	;line	409
+	;line	411
 	ext.l	d3
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
@@ -901,7 +901,7 @@ L73:
 	move.l	d0,a0
 	add.l	a3,a0
 	move.b	#1,10(a0)
-	;line	410
+	;line	412
 	moveq	#1,d6
 L75:
 L74:
@@ -909,7 +909,7 @@ L72:
 L70:
 	bra	L76
 L68:
-	;line	414
+	;line	416
 	ext.l	d4
 	move.l	d4,-(a7)
 	move.l	d7,-(a7)
@@ -918,7 +918,7 @@ L68:
 	add.l	a4,a0
 	tst.b	10(a0)
 	bne	L77
-	;line	416
+	;line	418
 	moveq	#1,d6
 L77:
 L76:
@@ -942,69 +942,144 @@ L62:
 	rts
 _thing5:
 	link	a6,#0
-	;line	465
+	;line	467
 	unlk	a6
 	rts
 _assess_situation:
 	link	a6,#-12
-	movem.l	d3/a3,-(a7)
+	movem.l	d3/d4/d5/a3,-(a7)
 	move.l	8(a6),a3
-	;line	474
-	jsr	_thing5
+	move.l	#290,d4
+	moveq	#26,d5
 	;line	476
+	jsr	_thing5
+	;line	478
 	moveq	#0,d3
 	bra	L80
 L79:
-	;line	478
+	;line	480
 	move.w	26(a6),-(a7)
 	move.l	20(a6),-(a7)
 	move.l	12(a6),-(a7)
-	move.w	d3,d0
-	muls	#290,d0
+	ext.l	d3
+	move.l	d3,-(a7)
+	move.l	d4,-(a7)
+	jsr	.Xlmul
 	add.l	a3,d0
 	move.l	d0,-(a7)
 	jsr	_tankBehav
 	lea	14(a7),a7
+	;line	481
+	ext.l	d3
+	move.l	d3,-(a7)
+	move.l	d4,-(a7)
+	jsr	.Xlmul
+	move.l	d0,a0
+	add.l	a3,a0
+	cmp.w	#1,18(a0)
+	bne	L83
+	;line	483
+	ext.l	d3
+	move.l	d3,-(a7)
+	move.l	d4,-(a7)
+	jsr	.Xlmul
+	move.l	d0,a0
+	add.l	a3,a0
+	move.l	#_playerTankSouth,0(a0,d5.l)
+	bra	L84
+L83:
+	;line	485
+	ext.l	d3
+	move.l	d3,-(a7)
+	move.l	d4,-(a7)
+	jsr	.Xlmul
+	move.l	d0,a0
+	add.l	a3,a0
+	cmp.w	#-1,18(a0)
+	bne	L85
+	;line	487
+	ext.l	d3
+	move.l	d3,-(a7)
+	move.l	d4,-(a7)
+	jsr	.Xlmul
+	move.l	d0,a0
+	add.l	a3,a0
+	move.l	#_playerTankNorth,0(a0,d5.l)
+	bra	L86
+L85:
+	;line	489
+	ext.l	d3
+	move.l	d3,-(a7)
+	move.l	d4,-(a7)
+	jsr	.Xlmul
+	move.l	d0,a0
+	add.l	a3,a0
+	cmp.w	#1,16(a0)
+	bne	L87
+	;line	491
+	ext.l	d3
+	move.l	d3,-(a7)
+	move.l	d4,-(a7)
+	jsr	.Xlmul
+	move.l	d0,a0
+	add.l	a3,a0
+	move.l	#_playerTankEast,0(a0,d5.l)
+	bra	L88
+L87:
+	;line	493
+	ext.l	d3
+	move.l	d3,-(a7)
+	move.l	d4,-(a7)
+	jsr	.Xlmul
+	move.l	d0,a0
+	add.l	a3,a0
+	cmp.w	#-1,16(a0)
+	bne	L89
+	;line	495
+	ext.l	d3
+	move.l	d3,-(a7)
+	move.l	d4,-(a7)
+	jsr	.Xlmul
+	move.l	d0,a0
+	add.l	a3,a0
+	move.l	#_playerTankWest,d0
+	cmp.l	0(a0,d5.l),d0
+	seq	d0
+	and.w	#1,d0
+L89:
+L88:
+L86:
+L84:
 L82:
 	addq.w	#1,d3
 L80:
 	cmp.w	24(a6),d3
 	blt	L79
 L81:
-	;line	545
-	move.w	22(a3),-4(a6)
-	;line	546
-	move.w	312(a3),-6(a6)
-	;line	547
-	move.w	602(a3),-8(a6)
-	;line	548
-	move.w	892(a3),-10(a6)
-	;line	549
-	move.w	1182(a3),-12(a6)
-	movem.l	-20(a6),d3/a3
+	movem.l	-28(a6),d3/d4/d5/a3
 	unlk	a6
 	rts
 _yfacing:
 	link	a6,#-4
 	movem.l	d3/d4/a3,-(a7)
 	move.l	8(a6),a3
-	;line	558
+	;line	576
 	move.w	2(a3),d3
 	move.l	12(a6),a0
 	move.w	2(a0),d4
-	;line	558
+	;line	576
 	move.w	d3,d0
 	sub.w	d4,d0
 	tst.w	d0
-	bge	L83
-	;line	560
+	bge	L90
+	;line	578
 	move.w	#1,18(a3)
-	bra	L84
-L83:
-	;line	564
+	bra	L91
+L90:
+	;line	582
 	move.w	#-1,18(a3)
-L84:
-	;line	566
+L91:
+	;line	584
 	clr.w	16(a3)
 	movem.l	(a7)+,d3/d4/a3
 	unlk	a6
@@ -1013,23 +1088,23 @@ _xfacing:
 	link	a6,#-4
 	movem.l	d3/d4/a3,-(a7)
 	move.l	8(a6),a3
-	;line	573
+	;line	591
 	move.w	(a3),d3
 	move.l	12(a6),a0
 	move.w	(a0),d4
-	;line	573
+	;line	591
 	move.w	d3,d0
 	sub.w	d4,d0
 	tst.w	d0
-	bge	L85
-	;line	575
+	bge	L92
+	;line	593
 	move.w	#1,16(a3)
-	bra	L86
-L85:
-	;line	579
+	bra	L93
+L92:
+	;line	597
 	move.w	#-1,16(a3)
-L86:
-	;line	581
+L93:
+	;line	599
 	clr.w	18(a3)
 	movem.l	(a7)+,d3/d4/a3
 	unlk	a6
@@ -1040,7 +1115,7 @@ _playAlin:
 	move.l	12(a6),a3
 	move.l	8(a6),a4
 	moveq	#16,d5
-	;line	593
+	;line	611
 	move.w	(a4),d0
 	sub.w	(a3),d0
 	move.w	d0,d4
@@ -1075,35 +1150,35 @@ _playAlin:
 	sls	d0
 	and.w	#1,d0
 	move.b	d0,-8(a6)
-	;line	593
+	;line	611
 	tst.w	d4
-	bge	L87
-	;line	595
+	bge	L94
+	;line	613
 	muls	#-1,d4
-L87:
-	;line	597
+L94:
+	;line	615
 	tst.w	d3
-	bge	L88
-	;line	599
+	bge	L95
+	;line	617
 	muls	#-1,d3
-L88:
-	;line	602
+L95:
+	;line	620
 	tst.b	-5(a6)
-	beq	L92
+	beq	L99
 	tst.b	-6(a6)
-	bne	L91
-L92:
+	bne	L98
+L99:
 	tst.b	-7(a6)
-	beq	L89
+	beq	L96
 	tst.b	-8(a6)
-	beq	L89
-L91:
+	beq	L96
+L98:
 	moveq	#1,d0
-	bra	L90
-L89:
+	bra	L97
+L96:
 	moveq	#0,d0
-L90:
-L93:
+L97:
+L100:
 	movem.l	(a7)+,d3/d4/d5/a3/a4
 	unlk	a6
 	rts
@@ -1113,7 +1188,7 @@ _needTurn:
 	move.l	8(a6),a3
 	move.l	12(a6),a4
 	moveq	#32,d3
-	;line	616
+	;line	634
 	move.w	(a4),d0
 	sub.w	d3,d0
 	move.w	(a3),d1
@@ -1150,153 +1225,241 @@ _needTurn:
 	seq	d0
 	and.w	#1,d0
 	move.b	d0,-6(a6)
-	;line	616
+	;line	634
 	tst.b	-1(a6)
-	beq	L97
+	beq	L104
 	tst.b	-2(a6)
-	beq	L97
+	beq	L104
 	tst.b	-3(a6)
-	bne	L96
-L97:
+	bne	L103
+L104:
 	tst.b	-4(a6)
-	beq	L94
+	beq	L101
 	tst.b	-5(a6)
-	beq	L94
+	beq	L101
 	tst.b	-6(a6)
-	beq	L94
-L96:
+	beq	L101
+L103:
 	moveq	#1,d0
-	bra	L95
-L94:
+	bra	L102
+L101:
 	moveq	#0,d0
-L95:
-L98:
+L102:
+L105:
 	movem.l	(a7)+,d3/a3/a4
 	unlk	a6
 	rts
 _yMove:
-	link	a6,#-4
-	movem.l	a3/a4,-(a7)
-	move.l	12(a6),a3
-	move.l	8(a6),a4
-	;line	628
-	moveq	#32,d0
-	move.w	(a4),d1
-	sub.w	(a3),d1
-	add.w	d1,d0
-	move.w	2(a4),d1
-	sub.w	2(a3),d1
+	link	a6,#-6
+	movem.l	d3/d4/d5/a3/a4,-(a7)
+	move.l	8(a6),a3
+	move.l	12(a6),a4
+	moveq	#32,d3
+	;line	647
+	move.w	(a3),d0
+	sub.w	(a4),d0
+	add.w	d3,d0
+	move.w	2(a3),d1
+	sub.w	2(a4),d1
 	cmp.w	d0,d1
 	scs	d0
 	and.w	#1,d0
 	move.b	d0,-1(a6)
-	move.w	2(a4),d0
-	sub.w	2(a3),d0
-	cmp.w	#32,d0
+	move.w	2(a3),d0
+	sub.w	2(a4),d0
+	cmp.w	d3,d0
 	shi	d0
 	and.w	#1,d0
 	move.b	d0,-2(a6)
-	moveq	#32,d0
-	move.w	(a4),d1
-	sub.w	(a3),d1
-	add.w	d1,d0
-	move.w	2(a4),d1
-	sub.w	2(a3),d1
+	move.w	(a3),d0
+	sub.w	(a4),d0
+	add.w	d3,d0
+	move.w	2(a3),d1
+	sub.w	2(a4),d1
 	cmp.w	d0,d1
 	shi	d0
 	and.w	#1,d0
 	move.b	d0,-3(a6)
-	move.w	2(a4),d0
-	sub.w	2(a3),d0
+	move.w	2(a3),d0
+	sub.w	2(a4),d0
 	cmp.w	#65504,d0
 	scs	d0
 	and.w	#1,d0
 	move.b	d0,-4(a6)
-	;line	628
+	;line	647
+	move.w	(a3),d0
+	sub.w	d3,d0
+	tst.w	d0
+	bls	L106
+	move.w	(a3),d0
+	add.w	d3,d0
+	cmp.w	#640,d0
+	bcc	L106
+	tst.w	(a3)
+	bls	L106
+	cmp.w	#640,(a3)
+	bcc	L106
+	;line	649
+	moveq	#1,d5
+	bra	L107
+L106:
+	;line	653
+	moveq	#0,d5
+L107:
+	;line	655
+	move.w	2(a3),d0
+	sub.w	d3,d0
+	tst.w	d0
+	bls	L108
+	move.w	2(a3),d0
+	add.w	d3,d0
+	cmp.w	#400,d0
+	bcc	L108
+	tst.w	2(a3)
+	bls	L108
+	cmp.w	#640,(a3)
+	bcc	L108
+	;line	657
+	moveq	#1,d4
+	bra	L109
+L108:
+	;line	661
+	moveq	#0,d4
+L109:
+	;line	664
 	tst.b	-1(a6)
-	beq	L102
+	beq	L113
 	tst.b	-2(a6)
-	bne	L101
-L102:
+	bne	L112
+L113:
 	tst.b	-3(a6)
-	beq	L99
+	beq	L110
 	tst.b	-4(a6)
-	beq	L99
-L101:
+	beq	L110
+L112:
+	tst.b	d5
+	beq	L110
+	tst.b	d4
+	beq	L110
 	moveq	#1,d0
-	bra	L100
-L99:
+	bra	L111
+L110:
 	moveq	#0,d0
-L100:
-L103:
-	movem.l	(a7)+,a3/a4
+L111:
+L114:
+	movem.l	(a7)+,d3/d4/d5/a3/a4
 	unlk	a6
 	rts
 _xMove:
-	link	a6,#-4
-	movem.l	a3/a4,-(a7)
-	move.l	12(a6),a3
-	move.l	8(a6),a4
-	;line	641
-	move.w	2(a4),d0
-	sub.w	2(a3),d0
-	sub.w	#32,d0
-	move.w	(a4),d1
-	sub.w	(a3),d1
+	link	a6,#-6
+	movem.l	d3/d4/a3/a4,-(a7)
+	move.l	8(a6),a3
+	move.l	12(a6),a4
+	moveq	#32,d4
+	;line	678
+	move.w	2(a3),d0
+	sub.w	2(a4),d0
+	sub.w	d4,d0
+	move.w	(a3),d1
+	sub.w	(a4),d1
 	cmp.w	d0,d1
 	scs	d0
 	and.w	#1,d0
 	move.b	d0,-1(a6)
-	move.w	(a4),d0
-	sub.w	(a3),d0
-	cmp.w	#32,d0
+	move.w	(a3),d0
+	sub.w	(a4),d0
+	cmp.w	d4,d0
 	shi	d0
 	and.w	#1,d0
 	move.b	d0,-2(a6)
-	move.w	2(a4),d0
-	sub.w	2(a3),d0
-	add.w	#32,d0
-	move.w	(a4),d1
-	sub.w	(a3),d1
+	move.w	2(a3),d0
+	sub.w	2(a4),d0
+	add.w	d4,d0
+	move.w	(a3),d1
+	sub.w	(a4),d1
 	cmp.w	d0,d1
 	shi	d0
 	and.w	#1,d0
 	move.b	d0,-3(a6)
-	move.w	(a4),d0
-	sub.w	(a3),d0
+	move.w	(a3),d0
+	sub.w	(a4),d0
 	cmp.w	#65504,d0
 	scs	d0
 	and.w	#1,d0
 	move.b	d0,-4(a6)
-	;line	641
+	;line	678
+	move.w	(a3),d0
+	sub.w	d4,d0
+	tst.w	d0
+	bls	L115
+	move.w	(a3),d0
+	sub.w	d4,d0
+	cmp.w	#640,d0
+	bcc	L115
+	tst.w	(a3)
+	bls	L115
+	cmp.w	#640,(a3)
+	bcc	L115
+	;line	680
+	moveq	#1,d3
+	bra	L116
+L115:
+	;line	684
+	moveq	#0,d3
+L116:
+	;line	686
+	move.w	2(a3),d0
+	sub.w	d4,d0
+	tst.w	d0
+	bls	L117
+	move.w	2(a3),d0
+	sub.w	d4,d0
+	cmp.w	#640,d0
+	bcc	L117
+	tst.w	2(a3)
+	bls	L117
+	cmp.w	#400,2(a3)
+	bcc	L117
+	;line	688
+	moveq	#1,d3
+	bra	L118
+L117:
+	;line	692
+	moveq	#0,d3
+L118:
+	;line	697
 	tst.b	-1(a6)
-	beq	L107
+	beq	L122
 	tst.b	-2(a6)
-	bne	L106
-L107:
+	bne	L121
+L122:
 	tst.b	-3(a6)
-	beq	L104
+	beq	L119
 	tst.b	-4(a6)
-	beq	L104
-L106:
+	beq	L119
+L121:
+	tst.b	d3
+	beq	L119
+	tst.b	-6(a6)
+	beq	L119
 	moveq	#1,d0
-	bra	L105
-L104:
+	bra	L120
+L119:
 	moveq	#0,d0
-L105:
-L108:
-	movem.l	(a7)+,a3/a4
+L120:
+L123:
+	movem.l	(a7)+,d3/d4/a3/a4
 	unlk	a6
 	rts
 _missiles_alive_x:
 	link	a6,#-2
 	movem.l	d3/a3,-(a7)
 	move.l	8(a6),a3
-	;line	673
+	;line	729
 	moveq	#0,d3
-	bra	L110
-L109:
-	;line	675
+	bra	L125
+L124:
+	;line	731
 	move.w	d3,d0
 	muls	#18,d0
 	add.l	12(a6),d0
@@ -1305,27 +1468,27 @@ L109:
 	jsr	_dodge_x_check
 	addq.l	#8,a7
 	move.w	d0,22(a3)
-L112:
+L127:
 	addq.w	#1,d3
-L110:
+L125:
 	cmp.w	16(a6),d3
-	bge	L113
+	bge	L128
 	cmp.w	#1,22(a3)
-	bne	L109
-L113:
-L111:
-	;line	677
+	bne	L124
+L128:
+L126:
+	;line	733
 	cmp.w	#1,22(a3)
-	bne	L114
-	;line	679
+	bne	L129
+	;line	735
 	moveq	#1,d0
-	bra	L115
-	bra	L116
-L114:
-	;line	683
+	bra	L130
+	bra	L131
+L129:
+	;line	739
 	moveq	#0,d0
-L116:
-L115:
+L131:
+L130:
 	movem.l	-10(a6),d3/a3
 	unlk	a6
 	rts
@@ -1333,11 +1496,11 @@ _missiles_alive_y:
 	link	a6,#-2
 	movem.l	d3/a3,-(a7)
 	move.l	8(a6),a3
-	;line	711
+	;line	767
 	moveq	#0,d3
-	bra	L118
-L117:
-	;line	713
+	bra	L133
+L132:
+	;line	769
 	move.w	d3,d0
 	muls	#18,d0
 	add.l	12(a6),d0
@@ -1346,27 +1509,27 @@ L117:
 	jsr	_dodge_y_check
 	addq.l	#8,a7
 	move.w	d0,22(a3)
-L120:
+L135:
 	addq.w	#1,d3
-L118:
+L133:
 	cmp.w	16(a6),d3
-	bge	L121
+	bge	L136
 	cmp.w	#2,22(a3)
-	bne	L117
-L121:
-L119:
-	;line	715
+	bne	L132
+L136:
+L134:
+	;line	771
 	cmp.w	#2,22(a3)
-	bne	L122
-	;line	717
+	bne	L137
+	;line	773
 	moveq	#1,d0
-	bra	L123
-	bra	L124
-L122:
-	;line	721
+	bra	L138
+	bra	L139
+L137:
+	;line	777
 	moveq	#0,d0
-L124:
-L123:
+L139:
+L138:
 	movem.l	-10(a6),d3/a3
 	unlk	a6
 	rts

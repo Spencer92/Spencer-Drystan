@@ -59,6 +59,8 @@ int main() {
 	Tank gameArray[NUMBER_OF_TANKS];
 	Missile missile[MAX_MISSILES];
 	Stationary_Object landobjects[NUM_OBJECTS];
+	long missile_time;
+	BOOL stuff_happened = 0;
 	
 	
 	BOOL playerInput = 0;
@@ -68,6 +70,11 @@ int main() {
 	
 	UINT8 i = 0;
 	UINT8  lives = 3;
+	UINT8 j = 0;
+	UINT8 k = 0;
+	UINT8 l = 0;
+	long tank_reset_timer[NUMBER_OF_TANKS];
+	long player_reset_timer;
 	
 	char *mainScreen;
 	char *logMainscreen;
@@ -154,9 +161,14 @@ int main() {
 		Vsync();
 		Setscreen(plottingScreen, plottingScreen, -1L);
 
-			
+	
 	/*=====================here is main game loop==================*/	
-		time_now = getTime();
+		time_now = missile_time = player_reset_timer = getTime();
+		for(i = 0; i < NUMBER_OF_TANKS; i++)
+		{
+			tank_reset_timer[i] = time_now;
+		}
+		i = 0;
 		do {
 	
 /* 			if(plottingScreen != gameScreen)
@@ -229,17 +241,33 @@ int main() {
 			
 			
 			thing2();		
-			assess_situation(gameArray, &thePlayer, landobjects, missile, NUMBER_OF_TANKS, MAX_MISSILES);
+			assess_situation(&gameArray[j], &thePlayer, landobjects, missile, 1/*NUMBER_OF_TANKS*/, MAX_MISSILES);
+			
 			tank_one_action = gameArray[0].current_behaviour;
-			tank_two_action = gameArray[1].current_behaviour;
+/* 			tank_two_action = gameArray[1].current_behaviour;
 			tank_three_action = gameArray[2].current_behaviour;
 			tank_four_action = gameArray[3].current_behaviour;
-			tank_five_action = gameArray[4].current_behaviour;
-			if(gameArray[0].current_behaviour == DO_NOTHING)
+			tank_five_action = gameArray[4].current_behaviour; */
+/* 			if(gameArray[0].current_behaviour == DO_NOTHING)
 			{
 				DSconws("\n\rTank 0 is doing nothing\r\n\0");
+/* 				if(gameArray[1].current_behaviour == DO_NOTHING)
+					DSconws("Tank 1 is doing nothing\r\n\0");
+				if(gameArray[2].current_behaviour == DO_NOTHING)
+					DSconws("Tank 2 is doing nothing\r\n\0");
+				if(gameArray[3].current_behaviour == DO_NOTHING)
+					DSconws("Tank 3 is doing nothing\r\n\0");
+				if(gameArray[4].current_behaviour == DO_NOTHING)
+					DSconws("Tank 4 is doing nothing\r\n\0"); */
+/* 				DSconws("\n\r\DOING NOTHING\n\r");
 				while(getTime() <= time_now+210);
 				break;
+			} */
+			exploding_check(&thePlayer,&missile[k]);
+			exploding_check(&gameArray[j],&missile[k]);
+			if(missile[k].current_behaviour != EXPLODE && getTime() <= missile_time+2)
+			{
+				move_missile(&missile[k]);
 			}
 			
 			if(getTime() >= time_now+10)
@@ -250,15 +278,16 @@ int main() {
 				  ,keypress,playerInput); 
 				 time_now = getTime();
 			}
+
 				
 
-			for(i = 0; i < NUMBER_OF_TANKS; i++) 
+/* 			for(i = 0; i < NUMBER_OF_TANKS; i++) 
 			{
 				copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
 				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate, gameArray[i].y_coordinate, SPRITE_SIZE);
 
 
-			}
+			} */
 			
 			if(lives > 0)
 			{
@@ -331,11 +360,48 @@ int main() {
 			    copyBackground(plottingScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
 				plotLargeSprite(plottingScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
 				}
+								
+				for(l = 0; l < MAX_MISSILES; l++)
+				{
+					if(missile[k].is_visible)
+					{
+						plotSprite(plottingScreen, missile[k].sprite, missile[k].x_coordinate ,
+						missile[k].y_coordinate, SMALL_SPRITE_SIZE);
+					}
+				
+				/* 				stuff_happened = 1;
+					while(getTime() <= time_now+700);
+					break; */
+				}
 				
 				Vsync();
 		        Setscreen(-1L, plottingScreen, -1L);	
 				memCopy(grass,plottingTankScreen);
-				
+				if(getTime() <= tank_reset_timer[j]+210)
+				{
+					gameArray[j].missile_available = START_PLAYER_MISSILES;
+				}
+				if(getTime() <= player_reset_timer+210)
+				{
+					thePlayer.missile_available = START_PLAYER_MISSILES;
+				}
+
+				if(j < NUMBER_OF_TANKS-1)
+				{
+					j++;
+				}
+				else
+				{
+					j = 0;
+				}
+				if(k  < MAX_MISSILES-1)
+				{
+					k++;
+				}
+				else
+				{
+					k = 0;
+				}
 		
 		} while (keypress != 'q');
 
@@ -353,7 +419,6 @@ int main() {
 	
 	Vsync();
 	Setscreen(mainScreen ,mainScreen ,-1L);
-
 	return 0;
 
 }
