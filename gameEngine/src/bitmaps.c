@@ -1,7 +1,9 @@
 #include "types.h"
-#include "bitmaps.h"
+#include "RenderE.h"
+#include  "Bitmaps.h"
 
-const UINT32 playerTankEast[] = {
+
+const UINT32 playerTankEast[SPRITE_SIZE] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -36,7 +38,7 @@ const UINT32 playerTankEast[] = {
 	0xFFFFFFFFL
 };
 
-const UINT32 playerTankNorth[] = {
+ const UINT32 playerTankNorth[SPRITE_SIZE] = {
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
@@ -71,7 +73,7 @@ const UINT32 playerTankNorth[] = {
 	0xFF0000FFL
 };
 
-const UINT32 playerTankSouth[] = {
+const UINT32 playerTankSouth[SPRITE_SIZE] = {
 	0xFF0000FFL, 
 	0xFF0000FFL, 
 	0xFF0000FFL, 
@@ -106,7 +108,7 @@ const UINT32 playerTankSouth[] = {
 	0xFF03C0FFL
 };
 
-const UINT32 playerTankWest[] = {
+const UINT32 playerTankWest[SPRITE_SIZE] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -141,7 +143,7 @@ const UINT32 playerTankWest[] = {
 	0xFFFFFFFFL,
 };
 
-const UINT32 enemyTankEast[] = {
+const UINT32 playerTankTwoEast[SPRITE_SIZE] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -176,7 +178,7 @@ const UINT32 enemyTankEast[] = {
 	0xFFFFFFFFL
 };
 
-const UINT32 enemyTankNorth[] = {
+const UINT32 playerTankTwoNorth[SPRITE_SIZE] = {
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
 	0xFF03C0FFL, 
@@ -211,7 +213,7 @@ const UINT32 enemyTankNorth[] = {
 	0xFF0000FFL
 };
 
-const UINT32 enemyTankSouth[] = {
+const UINT32 playerTankTwoSouth[SPRITE_SIZE] = {
 	0xFF0000FFL, 
 	0xFF0000FFL, 
 	0xFF0000FFL, 
@@ -246,7 +248,7 @@ const UINT32 enemyTankSouth[] = {
 	0xFF03C0FFL
 };
 
-const UINT32 enemyTankWest[] = {
+const UINT32 playerTankTwoWest[SPRITE_SIZE] = {
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
 	0xFFFFFFFFL, 
@@ -281,7 +283,7 @@ const UINT32 enemyTankWest[] = {
 	0xFFFFFFFFL
 };
 
-const UINT32 Rock401[] = {
+const UINT32 Rock401[SPRITE_SIZE] = {
 	0x00049000L, 
 	0x000FF800L, 
 	0x00049000L, 
@@ -316,7 +318,7 @@ const UINT32 Rock401[] = {
 	0x0000105DL
 };
 
-const UINT32 explosion[] = {
+const UINT32 explosion[SPRITE_SIZE] = {
 	0x01249000L, 
 	0x0BFFFA00L, 
 	0x01249000L, 
@@ -351,7 +353,7 @@ const UINT32 explosion[] = {
 	0x0001D000L
 };
 
-const UINT32 lake[] = {
+const UINT32 lake[SPRITE_SIZE] = {
 	0x09241248L, 
 	0x5FFEBFFDL, 
 	0x09241248L, 
@@ -386,7 +388,7 @@ const UINT32 lake[] = {
 	0xFFFFFFFFL
 };
 
-const UINT32 tree2[] = {
+const UINT32 tree2[SPRITE_SIZE] = {
 	0x09249200L, 
 	0x5FFFFF40L, 
 	0x09249200L, 
@@ -421,8 +423,7 @@ const UINT32 tree2[] = {
 	0x4BFFFFE8L
 };
 
-const UINT8 player_missile[] =
-{
+const UINT8 player_missile[SMALL_SPRITE_SIZE] = {
 	0xFF,
 	0xFF,
 	0xFF,
@@ -433,8 +434,7 @@ const UINT8 player_missile[] =
 	0xFF
 };
 
-const UINT8 enemy_missile[] =
-{
+const UINT8 enemy_missile[SMALL_SPRITE_SIZE] = {
 	0x81,
 	0x81,
 	0x81,
@@ -444,26 +444,4 @@ const UINT8 enemy_missile[] =
 	0x81,
 	0x81
 };
-
-
-
-void getBitmap32(const UINT32* bitmap, UINT32* new_bitmap)
-{
-	int index;
-	for(index = 0; index < 32; index++)
-	{
-		new_bitmap[index] = bitmap[index];
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
 

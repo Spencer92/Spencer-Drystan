@@ -1,12 +1,7 @@
 #ifndef BEHAVIOUR_H
 #define BEHAVIOUR_H
 #include "types.h"
-#include "missile.h"
-#include "model.h"
-
-
-
-#define BOOL UINT8
+#include "Missile.h"
 
 typedef enum H_DIRECTION
 {
@@ -39,26 +34,25 @@ typedef enum BEHAVIOUR
 }BEHAVIOUR;
 
 
-
-
 typedef struct Tank
 {
-	UINT16 x_coordinate;
+
+	UINT16 x_coordinate;	
 	UINT16 y_coordinate;
 	UINT32 hitpoints;
 	UINT8  current_speed;
 	BOOL is_moving;
 	BOOL is_firing;
-	UINT32 sprite[32];
-	UINT32 backMask[32];
 	UINT16 x_posMask;
 	UINT16 y_posMask;
-	UINT8  *Missile;
 	H_DIRECTION h_facing;
 	V_DIRECTION v_facing;
 	BOOL is_visible;
 	BEHAVIOUR current_behaviour;
 	UINT8 missile_available;
+	UINT32 *sprite;
+	UINT8  *Missile;	
+	UINT32 backMask[64];	
 }Tank;
 
 typedef struct Missile
@@ -84,13 +78,14 @@ typedef struct Stationary_Object
 
 
 void turn(Tank *tank);
-void dodge_y(Tank *tank, Stationary_Object *object, int *direction, int num_objects);
-void dodge_x(Tank *tank, Stationary_Object *object, int *direction, int num_objects);
+void dodge_y(Tank *tank, Stationary_Object *object, int direction, int num_objects);
+void dodge_x(Tank *tank, Stationary_Object *object, int direction, int num_objects);
 void move_y(Tank *tank, Stationary_Object *object, int offset, int num_objects);
 void move_x(Tank *tank, Stationary_Object *object, int offset, int num_objects);
 void shoot(Tank *tank, Missile *missile);
 void die(Tank *tank);
 void respawn(Tank *tank);
+
 BOOL flip(int position);
 BOOL die_check(Tank *enemy, Missile *missile, int num_missiles);
 
@@ -113,35 +108,35 @@ MISSILE_BEHAVIOUR move_up_check(Missile *missile);
 MISSILE_BEHAVIOUR move_down_check(Missile *missile);
 MISSILE_BEHAVIOUR move_right_check(Missile *missile);
 MISSILE_BEHAVIOUR move_left_check(Missile *missile);
-MISSILE_BEHAVIOUR explode_check(Missile *missile, Tank *tank);
+void exploding_check(Missile *missile, Tank *tank);
+void move_missile(Missile *missile);
+
 BOOL missile_exist_check(Tank *tank, Missile *missile, int offset);
+BOOL missiles_alive_y(Tank *enemy, Missile* missile, int num_missiles);
+BOOL missiles_alive_x(Tank *enemy, Missile* missile, int num_missiles);
+BOOL tanks_at(Tank* player, Tank* enemy, int num_tanks);
+BOOL DSconis();
+
 void move_up(Missile *missile, int offset);
 void move_down(Missile *missile, int offset);
 void move_right(Missile *missile, int offset);
 void move_left(Missile *missile, int offset);
 void offscreen(Missile *missile);
 void explode(Missile *missile, Tank *tank);
-
-
-
-
-BOOL missiles_alive_y(Tank *enemy, Missile* missile, int num_missiles);
-BOOL missiles_alive_x(Tank *enemy, Missile* missile, int num_missiles);
 void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input, Missile* missile, int num_missiles);
-void player_action(Tank* player, Missile* missile, char input);
-BOOL tanks_at(Tank* player, Tank* enemy, int num_tanks);
-BOOL DSconis();
+void player_action(Tank* player, Missile* missile);
+
 char DSnecin();
 void DSconws(String output);
 void missile_check(Tank *tank, Missile *missile, int num_missiles, int num_tanks);
 void DSconout(char output);
-long getTime();
 int thing();
 void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles);
 void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks, Stationary_Object *object, int num_objects);
 
-void model(Tank* player, Tank* enemy, Missile *missile, Stationary_Object *object, 
-			int num_enemies, int num_missiles, int num_objects, char input, BOOL input_valid);
+
+
+
 
 
 #endif

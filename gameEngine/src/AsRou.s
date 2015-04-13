@@ -20,15 +20,15 @@ clr:	    move.l	d1,(a0)
 			addq.l  #4,a0
 			move.l  d1,(a0)
 			addq.l  #4,a0
-			move.l	d1,(a0)
+			move.l d1,(a0)
 			addq.l  #4,a0
 			move.l  d1,(a0)
 			addq.l  #4,a0
-			move.l	d1,(a0)
+			move.l d1,(a0)
 			addq.l  #4,a0
 			move.l  d1,(a0)
 			addq.l  #4,a0
-			move.l	d1,(a0)
+			move.l d1,(a0)
 			addq.l  #4,a0
 			move.l  d1,(a0)		
 			addq.l  #4,a0				
