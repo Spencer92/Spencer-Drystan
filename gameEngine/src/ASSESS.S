@@ -155,6 +155,8 @@ die:		move.w	NUM_MISSILES(a6),-(sp)
 nothing:	movea.l	ENEMY_TANK(a6),a3
 		moveq.w	#SHOOT,d3
 		move.w	d3,BEHAVIOUR(a3)
+		moveq.w	#1,d3
+		move.w	d3,FIRING(a3)
 	
 	
 end:		movem.l	(sp)+,d3-d5/a3-a5

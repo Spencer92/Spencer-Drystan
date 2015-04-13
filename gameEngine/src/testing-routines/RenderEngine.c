@@ -1,9 +1,17 @@
-
-#include "RenderE.h"
-
+/*Define screen dimensions  */
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 400
+#define POSTIVE_X_LIMIT 664
+#define NEGTIVE_X_LIMIT -24
+#define POSTIVE_Y_LIMIT 504
+#define NEGTIVE_Y_LIMIT -24
+#define FONT_SIZE 15
+#define COPY_MASK 0x00000000
+#include "RenderEngine.h"
 #include <stdlib.h>
-#include <stdio.h>
-#include <osbind.h>
+#include  <stdio.h>
+#include "types.h"
+#include "fonts.h"
 
 
 
@@ -38,7 +46,6 @@ void plotPixel(char *fbstart, int x, int y) {
 	}
 
 }
-
 
 /*
  =============================================================================
@@ -338,15 +345,14 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
     register UINT32 bufferleft;
 	register UINT32 bufferright;
-	register UINT32 *ptr = spriteLocation;
 
-	UINT32 *writePtrLH = (UINT32*)fbstart;
+	UINT32 *writePtrLH = fbstart;
 	UINT32 *writePtrRH = NULL;
 	UINT8 *arrayRd1;
 	UINT8 *arrayRd2;
 
-	UINT16 *trackPtr = (UINT16*)fbstart;
-	UINT8  *track8Ptr = (UINT8*)fbstart;
+	UINT16 *trackPtr = fbstart;
+	UINT8 *track8Ptr = fbstart;
 
 	UINT8 offset = size >> 1;
 
@@ -396,9 +402,9 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 			shiftright = (SCREEN_WIDTH + xposoffset) - SCREEN_WIDTH;
 
-			track8Ptr =(UINT8*) writePtrLH; 
+			track8Ptr = writePtrLH; 
 
-			arrayRd1 = (UINT8*)spriteLocation;
+			arrayRd1 = spriteLocation;
 
 			offset = 0;
 
@@ -458,10 +464,10 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 		else { /*No x clipping is taking place*/
 
-			writePtrLH 	+= ((xpostoPlot - offset) >> 5);
-			trackPtr	 = (UINT16*)writePtrLH;
+			writePtrLH += ((xpostoPlot - offset) >> 5);
+			trackPtr = writePtrLH;
 			trackPtr++;
-			writePtrRH	 = (UINT32*)trackPtr;
+			writePtrRH = trackPtr;
 
 			shiftleft = ((xpostoPlot - offset) & 15);
 			shiftright = (16 - shiftleft);
@@ -499,7 +505,6 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
  * */
 void plotString(char *fbstart, char *theString, int length, int xpos, int ypos)
 {
-
 
 register UINT8	   *trackPtr  = fbstart;
 register UINT8     *fonts  	  = GameFontBitmaps;
@@ -539,7 +544,7 @@ register UINT8     lookup;
 			   trackPtr = refPtr;
 			   trackPtr +=(80 * lookup);
 			}	
-			
+				
 			
 			}
 			
@@ -548,12 +553,12 @@ register UINT8     lookup;
 			for(lookup = 0; lookup < FONT_SIZE; lookup++)
 			{
 			 *(trackPtr) |= *(fonts);
-			    fonts++;			
+			   fonts++;			
 			   trackPtr = refPtr;
 			   trackPtr +=(80 * lookup);
 			}	
 			
-				
+			
 			
 			}
 	    
@@ -571,16 +576,18 @@ register UINT8     lookup;
 	}
 	
 	
-	}
-	
-	
+
+
+}
+
+
 
 void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,int ypostoPlot, int size)
 
 {
 	register UINT32 mask = COPY_MASK;
-	register UINT32 *cpyPtrLH =  (UINT32*)fbstart;
-	register UINT32 *cpyPtrRH =  (UINT32*)fbstart;
+	register UINT32 *cpyPtrLH =  fbstart;
+	register UINT32 *cpyPtrRH =  fbstart;
 	UINT8  offset = size >>1;
 	int xnegBound = xpostoPlot - offset;
 	int xposBound = xpostoPlot + offset;
@@ -675,8 +682,8 @@ void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,in
 void plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int size)
 	{
 	
-	UINT32 *cpyPtrLH =  (UINT32*)fbstart;
-	UINT32 *cpyPtrRH =  (UINT32*)fbstart;
+	UINT32 *cpyPtrLH =  fbstart;
+	UINT32 *cpyPtrRH =  fbstart;
 	UINT8  offset = size >>1;
 	int xnegBound = xpos - offset;
 	int xposBound = xpos + offset;
@@ -739,43 +746,9 @@ void plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int siz
 
 
 
-void setScreen(char *newScreen, char *oldScreen)
-{
 
 
 
-}
-
-BOOL findRez()
-{
-
-	BOOL i;
-	UINT8 *infoPtr = NULL;
-	UINT8  value = 0x02;
-	
-	
-	
-	long *oldssp;
-	oldssp = Super(0);
-	
-	infoPtr += 0xff8260;
-	value &= (*infoPtr);
-	
-	Super(oldssp);	
-	
-	if(value == 2)
-	{
-	 i = 1;
-	}
-	else 
-	{
-	i = 0;
-	}
-	
-	
-	return i;
-
-}
 
 
 

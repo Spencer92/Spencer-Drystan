@@ -99,13 +99,13 @@ int main() {
 	mainScreen 		= (Physbase());
 	logMainscreen 	= (Logbase());
 	
-	backdropScreen 	= welcomeScreen;
+	backdropScreen 	= (char*) welcomeScreen;
 	backdropScreen 	= (char*) ((UINT32) (backdropScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 	
-	gameScreen = screen1;
+	gameScreen = (char*) screen1;
 	gameScreen = (char*) ((UINT32) (gameScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 	
-	backGamescreen = screen2;
+	backGamescreen = (char*) screen2;
 	backGamescreen = (char*) ((UINT32) (backGamescreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
 
 	
@@ -114,8 +114,8 @@ int main() {
 	if(findRez() ) /*If we are in High rez mode*/
 	{
 	 	
-	 memCopy(backdrop, backdropScreen);
-	 memCopy(grass,gameScreen);
+	 memCopy((char*)backdrop, backdropScreen);
+	 memCopy((char*)grass,gameScreen);
 	 memCopy(gameScreen,backGamescreen);
 	
 		
@@ -143,7 +143,7 @@ int main() {
 
 
 		
-		gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
+		gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, (int*)&playerScore);
 		
 		copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
 		
@@ -171,17 +171,7 @@ int main() {
 		i = 0;
 		do {
 	
-/* 			if(plottingScreen != gameScreen)
-			{
-				plottingScreen = gameScreen;
-			}
-			else
-			{
-				plottingScreen = backGamescreen;
-			}
- */			
-/* 			DSconws("Got in do-while\r\n\0"); */
-			
+		
 			if(DSconis())
 			{
 				keypress = DSnecin();
@@ -213,19 +203,7 @@ int main() {
 					{
 						player_action(&thePlayer, missile);
 					}
-/* 					DSconws("Player pressed ");
-					DSconout(keypress);
-					DSconws("\r\n\0"); */
-					/*Spencer's model works on the players movement and we plot the player's movement */
-					
-					/*plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int size) wipe over the old backgnd*/
-					
-					/*copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);*/
-					
-					
-					
-					/*plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE); plot the player*/
-					
+
 					
 				
 				}
@@ -242,29 +220,11 @@ int main() {
 			
 			thing2();		
 			assess_situation(&gameArray[j], &thePlayer, landobjects, missile, 1/*NUMBER_OF_TANKS*/, MAX_MISSILES);
-			
-			tank_one_action = gameArray[0].current_behaviour;
-/* 			tank_two_action = gameArray[1].current_behaviour;
-			tank_three_action = gameArray[2].current_behaviour;
-			tank_four_action = gameArray[3].current_behaviour;
-			tank_five_action = gameArray[4].current_behaviour; */
-/* 			if(gameArray[0].current_behaviour == DO_NOTHING)
-			{
-				DSconws("\n\rTank 0 is doing nothing\r\n\0");
-/* 				if(gameArray[1].current_behaviour == DO_NOTHING)
-					DSconws("Tank 1 is doing nothing\r\n\0");
-				if(gameArray[2].current_behaviour == DO_NOTHING)
-					DSconws("Tank 2 is doing nothing\r\n\0");
-				if(gameArray[3].current_behaviour == DO_NOTHING)
-					DSconws("Tank 3 is doing nothing\r\n\0");
-				if(gameArray[4].current_behaviour == DO_NOTHING)
-					DSconws("Tank 4 is doing nothing\r\n\0"); */
-/* 				DSconws("\n\r\DOING NOTHING\n\r");
-				while(getTime() <= time_now+210);
-				break;
-			} */
-			exploding_check(&thePlayer,&missile[k]);
-			exploding_check(&gameArray[j],&missile[k]);
+		
+
+			exploding_check(&missile[k],&thePlayer);
+			exploding_check(&missile[k],&gameArray[j]);
+
 			if(missile[k].current_behaviour != EXPLODE && getTime() <= missile_time+2)
 			{
 				move_missile(&missile[k]);
@@ -279,15 +239,7 @@ int main() {
 				 time_now = getTime();
 			}
 
-				
-
-/* 			for(i = 0; i < NUMBER_OF_TANKS; i++) 
-			{
-				copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
-				plotLargeSprite(gameScreen, gameArray[i].sprite, gameArray[i].x_coordinate, gameArray[i].y_coordinate, SPRITE_SIZE);
-
-
-			} */
+			
 			
 			if(lives > 0)
 			{
@@ -302,38 +254,13 @@ int main() {
 				/*ask player if he/she would wish to play again*/
 				if(keypress == 'y')
 				{
-				gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, &playerScore);
-				
-/* 				memCopy(grass,plottingScreen); */
-/* 	 			memCopy(plottingScreen,backGamescreen);
- */					
-/* 				copyBackground(plottingScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
-		
-				plotLargeSprite(plottingScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
-						
-				for(i = 0; i < NUMBER_OF_TANKS; i++)
-				{
-			    copyBackground(plottingScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
-				plotLargeSprite(plottingScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
-				}
- */				
-				
-				
-				
-				
-
+				gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, (int*)&playerScore);
 				
 				
 				
 				}
 			
-/*				else
-				{
-				keypress = 'q'; /*Clean up and we are done*/
-				
-/*				
-				}
-*/
+
 			
 			}
 			
@@ -369,14 +296,11 @@ int main() {
 						missile[k].y_coordinate, SMALL_SPRITE_SIZE);
 					}
 				
-				/* 				stuff_happened = 1;
-					while(getTime() <= time_now+700);
-					break; */
 				}
 				
 				Vsync();
 		        Setscreen(-1L, plottingScreen, -1L);	
-				memCopy(grass,plottingTankScreen);
+				memCopy((char*)grass,plottingTankScreen);
 				if(getTime() <= tank_reset_timer[j]+210)
 				{
 					gameArray[j].missile_available = START_PLAYER_MISSILES;
@@ -402,7 +326,8 @@ int main() {
 				{
 					k = 0;
 				}
-		
+            DSconws("Testing\r\n\0");
+        
 		} while (keypress != 'q');
 
 	}
@@ -419,6 +344,10 @@ int main() {
 	
 	Vsync();
 	Setscreen(mainScreen ,mainScreen ,-1L);
+	printf("about to print missiles info\n");
+	printf("%i,%i\n",missile[k].x_coordinate,missile[k].y_coordinate);
+	printf("after printing missile info\n");
+	printf("%i,%i\n",gameArray[j].x_coordinate,gameArray[j].y_coordinate);
 	return 0;
 
 }
@@ -439,7 +368,7 @@ void memCopy(char* screenChunk1 ,char* screenChunk2)
 	copySize = SCREEN_SIZE >> 2;
 	i = copySize>>3;
 	
-	do/*for(i = 0 ;i < copySize;i++)*/
+	do
 	{
 	
 		*dstPtr++ = *srcPtr++;

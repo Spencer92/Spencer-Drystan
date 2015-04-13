@@ -4,6 +4,11 @@
 #include "gamef.h"
 #include "bitmaps.h"
 
+BOOL event()
+{
+	return 0;
+}
+
 
 /***************************************************************************
    Function Name:   die_check
@@ -97,11 +102,12 @@ void die(Tank *tank)
 					
 ***************************************************************************/
 
-
+volatile void thin11() {}
 void shoot(Tank *tank, Missile *missile)
 {
 	BOOL missile_available = 0;
 	UINT8 index;
+	thin11();
 	for(index = 0; index < MAX_MISSILES && !missile_available; index++)
 	{
 		if(!missile[index].is_visible)
@@ -114,6 +120,7 @@ void shoot(Tank *tank, Missile *missile)
 		tank->is_firing = 1;
 		tank->missile_available--;
 		missile->is_visible = 1;
+		thin11();
 		if(tank->h_facing == RIGHT)
 		{
 			missile->x_coordinate = tank->x_coordinate+45;
@@ -611,10 +618,6 @@ BEHAVIOUR dodge_x_check(Tank *enemy, Missile *missile)
 	}
 }
 
-
-
-
-BOOL event() {return 0;}
 
 
 

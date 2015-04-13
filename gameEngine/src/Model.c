@@ -92,12 +92,35 @@ int thing()
    
 ***************************************************************************/
 
+playerCanMoveY(Tank* player, Tank* enemies, int num_enemies)
+{
+	UINT8 index;
+	BOOL canMove = 1;
+	for(index = 0; index < num_enemies && canMove; index++)
+	{
+		canMove = yMove(player,&enemies[index]);
+/*		if((enemies[index].x_coordinate - player->x_coordinate < 0
+			&& enemies[index].y_coordinate - player->y_coordinate < 0)*/
+	}
+}
+
+playerCanMoveX(Tank* player,Tank* enemies, int num_enemies)
+{
+	UINT8 index;
+	BOOL canMove = 1;
+	for(index = 0; index < num_enemies && canMove; index++)
+	{
+		canMove = xMove(player,&enemies[index]);
+
+	}
+}
+
 
 volatile void thing9(){}
 void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input, Missile* missile, int num_missiles)
 {
 	thing9();
-	if((input == 'd' || input == 'a') && !tanks_at(player, enemy, num_enemies))
+	if((input == 'd' || input == 'a') && playerCanMoveX(player,enemy,num_enemies))
 	{
 		player->current_behaviour = MOVE_X;
 		if(input == 'a')
@@ -110,7 +133,7 @@ void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input,
 		}
 		player->v_facing = HORIZONTAL;
 	}
-	else if((input == 'w' || input == 's') && !tanks_at(player,enemy, num_enemies))
+	else if((input == 'w' || input == 's') && playerCanMoveY(player,enemy,num_enemies))
 	{
 		player->current_behaviour = MOVE_Y;
 		if(input == 'w')
@@ -168,19 +191,23 @@ void player_action(Tank* player, Missile* missile)
 	thing8();
 	if(player->current_behaviour == MOVE_X && player->h_facing == RIGHT)
 	{
-		player->x_coordinate++;
+		player->x_coordinate += 6;
+		player->sprite = playerTankEast;
 	}
 	else if(player->current_behaviour == MOVE_X && player->h_facing == LEFT)
 	{
-		player->x_coordinate--;
+		player->x_coordinate -= 6;
+		player->sprite = playerTankWest;
 	}
 	else if(player->current_behaviour == MOVE_Y && player->v_facing == UP)
 	{
-		player->y_coordinate--;
+		player->y_coordinate -= 6;
+		player->sprite = playerTankNorth;
 	}
 	else if(player->current_behaviour == MOVE_Y && player->v_facing == DOWN)
 	{
-		player->y_coordinate++;
+		player->y_coordinate += 6;
+		player->sprite = playerTankSouth;
 	}
 	else if(player->current_behaviour == SHOOT)
 	{
@@ -222,6 +249,7 @@ BOOL tanks_at(Tank* player, Tank* enemy, int num_tanks)
 			player->y_coordinate + 16 > enemy[index].y_coordinate - 16)) )*/
 			{
 				something_there = 1;
+				DSconws("Something\r\0");
 			}
 	}
 	return something_there;
@@ -229,10 +257,10 @@ BOOL tanks_at(Tank* player, Tank* enemy, int num_tanks)
 
 BOOL there(Tank* enemy, Tank* player)
 {
-	BOOL check1 = player->x_coordinate + 16 < enemy->x_coordinate - 16;
-	BOOL check2 = player->x_coordinate - 16 > enemy->x_coordinate + 16;
-	BOOL check3 = player->y_coordinate - 16 < enemy->y_coordinate + 16;
-	BOOL check4 = player->y_coordinate + 16 > enemy->y_coordinate - 16;
+	BOOL check1 = player->x_coordinate + 32 < enemy->x_coordinate - 32;
+	BOOL check2 = player->x_coordinate - 32 > enemy->x_coordinate + 32;
+	BOOL check3 = player->y_coordinate - 32 < enemy->y_coordinate + 32;
+	BOOL check4 = player->y_coordinate + 32 > enemy->y_coordinate - 32;
 	return (check1 || check2) && (check3 || check4);
 }
 
@@ -285,7 +313,6 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 			{
 				missile_avail = enemy[index].missile_available;
 				shoot(&enemy[index],missile);
-				enemy[index].is_firing = 0;
 			}
 			else if(!(notBehaviour(&enemy[index],DODGE_X)))
 			{
@@ -301,7 +328,7 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 			else if(!(notBehaviour(&enemy[index],MOVE_X)))
 			{
 				move_loc = enemy[index].h_facing;
-				move_x(&enemy[index], object,move_loc, 
+				move_x(&enemy[index], object,move_loc*4, 
 					   num_objects);
 
 			}
@@ -309,7 +336,7 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 			{
 				thing4();
 				move_loc = enemy[index].v_facing;
-				move_y(&enemy[index], object, move_loc, num_objects);
+				move_y(&enemy[index], object, move_loc*4, num_objects);
 			}
 			else if(!(notBehaviour(&enemy[index],DIE)))
 			{
