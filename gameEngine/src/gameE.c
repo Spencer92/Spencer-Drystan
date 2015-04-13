@@ -243,9 +243,9 @@ int main() {
 			
 			if(lives > 0)
 			{
-/* 			Vsync();
+ 			Vsync();
 			Setscreen(-1L, plottingScreen, -1L);
- */			}
+ 			}
 			
 			
 			else
@@ -326,6 +326,9 @@ int main() {
 				{
 					k = 0;
 				}
+                
+                printf("[%i][%i]: Enemy\n", gameArray[i].x_coordinate, gameArray[i].y_coordinate);
+                printf("[%i][%i]: Player\n", thePlayer.x_coordinate, thePlayer.y_coordinate);
 		
 		} while (keypress != 'q');
 

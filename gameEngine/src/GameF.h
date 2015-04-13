@@ -8,7 +8,7 @@
 #define  ENEMY_HITPOINTS 5
 #define  START_PLAYER_MISSILES 2
 #define  NUM_OBJECTS 6
-#define  NUMBER_OF_TANKS 5
+#define  NUMBER_OF_TANKS 1
 #define  NUMBER_TILES 1
 #define  MAXSPEED  5
 #define  TRUE 1

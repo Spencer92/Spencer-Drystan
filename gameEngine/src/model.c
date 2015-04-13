@@ -99,15 +99,19 @@ playerCanMoveY(Tank* player, Tank* enemies, int num_enemies)
 	for(index = 0; index < num_enemies && canMove; index++)
 	{
 		canMove = yMove(player,&enemies[index]);
-		if((enemies[index].x_coordinate - player->x_coordinate < 0
+			if((enemies[index].x_coordinate - player->x_coordinate < 0
 			&& enemies[index].y_coordinate - player->y_coordinate < 0)
-	/*		||
+		||
 	 		(player->x_coordinate - enemies[index].x_coordinate < 0 &&
-			 player->y_coordinate - enemies[index].y_coordinate < 0)*/) 
+			 player->y_coordinate - enemies[index].y_coordinate < 0)) 
 			 {
-				while(1)
+				/*while(1)*/
 				DSconws("Overlapping\r\0");
 			 }
+        if(!canMove)
+        {
+            DSconws("Can't move y\r\0");
+        }
 	}
 }
 
@@ -118,11 +122,20 @@ playerCanMoveX(Tank* player,Tank* enemies, int num_enemies)
 	for(index = 0; index < num_enemies && canMove; index++)
 	{
 		canMove = xMove(player,&enemies[index]);
-		if(!canMove)
-		{
-			while(1)
-			DSconws("Can't move x\r\0");
-		}
+        if(!canMove)
+        {
+        
+        if((enemies[index].x_coordinate - player->x_coordinate < 0
+			&& enemies[index].y_coordinate - player->y_coordinate < 0)
+		||
+	 		(player->x_coordinate - enemies[index].x_coordinate < 0 &&
+			 player->y_coordinate - enemies[index].y_coordinate < 0))
+             {
+        
+              DSconws("Can't move x\r\0");
+             }
+        }
+
 	}
 }
 
