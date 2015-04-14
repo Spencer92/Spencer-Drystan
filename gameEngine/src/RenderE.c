@@ -1,5 +1,7 @@
 
 #include "RenderE.h"
+#include "System.h"
+#
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -336,17 +338,18 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 {
 
+
     register UINT32 bufferleft;
 	register UINT32 bufferright;
-	register UINT32 *ptr = spriteLocation;
 
 	UINT32 *writePtrLH = (UINT32*)fbstart;
 	UINT32 *writePtrRH = NULL;
-	UINT8 *arrayRd1;
-	UINT8 *arrayRd2;
+	UINT8  *arrayRd1;
+	
 
 	UINT16 *trackPtr = (UINT16*)fbstart;
-	UINT8  *track8Ptr = (UINT8*)fbstart;
+	UINT8 *track8Ptr = (UINT8*)fbstart;
+	UINT8 *ref8Ptr;
 
 	UINT8 offset = size >> 1;
 
@@ -356,12 +359,15 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	int xnegBound = xpostoPlot - offset;
 	int startLine = ypostoPlot - offset;
 
-	UINT8 i = 0;
+	UINT8  i = 0;
 	UINT8  j = 4;
 	UINT8  k = 0;
 
 	UINT8 shiftright;
 	UINT8 shiftleft;
+    long time_now = getTime();
+    
+   
 
 	if ((xpostoPlot > -16 && (xpostoPlot < SCREEN_WIDTH + 15))
 	&& (ypostoPlot > -16 && (ypostoPlot < SCREEN_HEIGHT + 15)))/*It's within bounds lets plot it*/
@@ -390,67 +396,81 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 		/* X Clipping section ====================================*/
 
-		if (xnegBound < 0 || xposoffset > SCREEN_WIDTH) {
+		if (xnegBound < 0 || xposoffset > SCREEN_WIDTH) 
+		{		
+			
+			track8Ptr = (UINT8*) writePtrLH; 
 
-			shiftleft = SCREEN_WIDTH - (SCREEN_WIDTH + xnegBound);
-
-			shiftright = (SCREEN_WIDTH + xposoffset) - SCREEN_WIDTH;
-
-			track8Ptr =(UINT8*) writePtrLH; 
-
-			arrayRd1 = (UINT8*)spriteLocation;
-
+			arrayRd1 = (UINT8*)spriteLocation;			
+			
 			offset = 0;
+		
+			if(xnegBound > 0 )
+			{
 
-			if (shiftright > shiftleft) {
-
+				shiftright = xposoffset - SCREEN_WIDTH;
+				
 				offset = 1;
-				track8Ptr +=78;
+				track8Ptr +=77;							
+				j = 3;
 
-				if (shiftright <= 16 && shiftright > 8) {
+				if (shiftright <= 16 && shiftright > 8){
 
+				
 					j = 2;
-					track8Ptr += 79;
+					track8Ptr += 1;
 					offset = 2;
 
 				}
-
 				else {
+					
 					j = 1;
-					track8Ptr += 80;
+					track8Ptr += 2;
 					offset = 3;
 				}
 
 			}
+			
+			else 
+			{                
+				shiftleft =  (SCREEN_WIDTH - (SCREEN_WIDTH + xnegBound));
+				
+				k = 1;		
+		
+				if (shiftleft <= 16 && shiftleft > 8) 
+				{
 
-			else {
-
-				if (shiftleft <= 16 && shiftleft > 8) {
-
-					k = 1;
-
-				} else {
 					k = 2;
+
+				} 
+				else 
+				{
+					k = 3;
 
 				}
 
 			}
 
+			
 			arrayRd1 += k;
+			ref8Ptr = track8Ptr;
 
-			while (size--) { /*TODO some loop unrolling here  do a reduction to a power of two.. Then do two operations per loop*/
-				for (i = k; i < j; i++) {
+			while (size--) 
+			{ 
+				
+				for (i = k; i < j; i++) 
+				{
 
-					*(track8Ptr) |= *(arrayRd1);
-
+					*(track8Ptr) = *(arrayRd1);
 					track8Ptr++;
 					arrayRd1++;
 				}
 
-				arrayRd1 += ((j - i) + k + offset);
-				track8Ptr -= j - k;
-				track8Ptr += 80;
-
+				ref8Ptr +=80;
+				track8Ptr = ref8Ptr;												
+				arrayRd1 += offset + k;				
+			
+				
 			}
 
 		}
@@ -458,10 +478,10 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 		else { /*No x clipping is taking place*/
 
-			writePtrLH 	+= ((xpostoPlot - offset) >> 5);
-			trackPtr	 = (UINT16*)writePtrLH;
+			writePtrLH += ((xpostoPlot - offset) >> 5);
+			trackPtr = (UINT16*) writePtrLH;
 			trackPtr++;
-			writePtrRH	 = (UINT32*)trackPtr;
+			writePtrRH = (UINT32*) trackPtr;
 
 			shiftleft = ((xpostoPlot - offset) & 15);
 			shiftright = (16 - shiftleft);
@@ -492,6 +512,41 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 	return;
 }
+
+
+
+
+void blanKscore(char *fbstart)
+{
+
+	UINT16 *blankPtr = (UINT16*)fbstart;
+	UINT16 *refPtr;
+	UINT16 i;
+	UINT16 j = SCORE_AREA_LENGTH;
+	
+	blankPtr += SCORE_AREA_OFFSET;
+	refPtr = blankPtr;
+	
+	while(j--){
+	
+		for(i = 0 ; i < SCORE_SIZE ; i++)
+	{
+	*(blankPtr) = BLANK ;
+	blankPtr += (i * 40);		
+	}
+	
+	refPtr++;
+	blankPtr = refPtr;
+	
+	
+	}
+
+}
+
+
+
+
+
 /*TODO for the length of the string convert into a integer value array then use this value to offset
  * into the font array. The   xpos and ypos are assumed to be left hand side of the string.
  *(X,Y )->[String] all fonts limited to 16x16 max.
@@ -501,11 +556,11 @@ void plotString(char *fbstart, char *theString, int length, int xpos, int ypos)
 {
 
 
-register UINT8	   *trackPtr  = fbstart;
+register UINT8	   *trackPtr  = (UINT8*) fbstart;
 register UINT8     *fonts  	  = GameFontBitmaps;
 register UINT16    *lookupPtr = GameFontDescriptors;
 register UINT8     *refPtr;
-register UINT8 	   *arrayRd = theString;
+register UINT8 	   *arrayRd = (UINT8*) theString;
 register UINT8     lookup;
 		 UINT8     width;
 
@@ -525,6 +580,7 @@ register UINT8     lookup;
 		lookup = (*(arrayRd) - 32);
 		fonts += (lookupPtr[(lookup * 2) + 1 ]);
 		width = (lookupPtr[lookup *2]);	
+			
 			if(width > 8)
 			{
 			
@@ -573,7 +629,7 @@ register UINT8     lookup;
 	
 	}
 	
-	
+
 
 void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,int ypostoPlot, int size)
 
@@ -672,11 +728,18 @@ void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,in
 }
 
 
-void plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int size)
+/*
+Copies directly now from Grass.c 
+
+
+*/
+
+void plotBackground(char *fbstart, UINT32 *background,int xpos, int ypos ,int size)
 	{
 	
 	UINT32 *cpyPtrLH =  (UINT32*)fbstart;
 	UINT32 *cpyPtrRH =  (UINT32*)fbstart;
+	UINT32 *backPtr  = background;
 	UINT8  offset = size >>1;
 	int xnegBound = xpos - offset;
 	int xposBound = xpos + offset;
@@ -700,16 +763,28 @@ void plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int siz
 		}
 		
 		
-		cpyPtrLH +=(ynegBound * 20);
-		
-		
+		cpyPtrLH +=(ynegBound * 20);		
 	
 		
 		if(xnegBound < 0 || xposBound > SCREEN_WIDTH )
 		   
 		{
 		
-		/*TODO x clipping issue to deal with.*/
+		cpyPtrLH += (xpos >> 5);
+		backPtr += (UINT32*)((&(cpyPtrLH) - &(fbstart)) * 20);
+		
+			while(size--)
+			{
+			
+				
+				*(cpyPtrLH) = *(backPtr);
+				  cpyPtrLH +=20;
+				  backPtr +=20;
+				
+				
+				
+			}
+		
 		
 		
 		}
@@ -721,12 +796,14 @@ void plotBackground(char *fbstart,UINT32 *background,int xpos, int ypos ,int siz
 			cpyPtrLH += (xnegBound >> 5);
 			cpyPtrRH = cpyPtrLH;
 			cpyPtrRH++;
-			
+			backPtr += (UINT32*)((&(cpyPtrLH) - &(fbstart)) * 20);
 	
 			while(size--)
 		{
-			  *(cpyPtrLH) = *(background++);
-			  *(cpyPtrRH) = *(background++);		
+			  *(cpyPtrLH) = *(background);
+				background++;
+			  *(cpyPtrRH) = *(background);		
+			  background++;
 			  cpyPtrLH += 20;
 			  cpyPtrRH += 20;
 
@@ -755,7 +832,7 @@ BOOL findRez()
 	
 	
 	
-	long *oldssp;
+	long oldssp;
 	oldssp = Super(0);
 	
 	infoPtr += 0xff8260;

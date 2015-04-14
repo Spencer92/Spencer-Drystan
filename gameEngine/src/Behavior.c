@@ -3,6 +3,7 @@
 #include "osbind.h"
 #include "gamef.h"
 #include "bitmaps.h"
+#include "system.h"
 
 BOOL event()
 {
@@ -29,6 +30,7 @@ BOOL event()
 BOOL die_check(Tank *enemy, Missile *missile, int num_missiles)
 {
 	int index;
+    long time = getTime();
 	for(index = 0; index < num_missiles; index++)
 	{
 		if((enemy->x_coordinate >= missile[index].x_coordinate-16
@@ -37,11 +39,79 @@ BOOL die_check(Tank *enemy, Missile *missile, int num_missiles)
 		(enemy->y_coordinate >= missile[index].y_coordinate-16
 		&& enemy->y_coordinate <= missile[index].y_coordinate+16))
 		{
+            if(enemy->x_coordinate >= missile[index].x_coordinate-16)
+            {
+                DSconws("1\r\n\0");
+            }
+            else
+            {
+                DSconws("0\r\n\0");
+            }
+            if(enemy->x_coordinate <= missile[index].x_coordinate+16)
+            {
+                DSconws("1\r\n\0");
+            }
+            else
+            {
+                DSconws("1\r\n\0");
+            }
+            if(enemy->y_coordinate >= missile[index].y_coordinate-16)
+            {
+                DSconws("1\r\n\0");
+            }
+            else
+            {
+                DSconws("0\r\n\0");
+            }
+            if(enemy->y_coordinate <= missile[index].y_coordinate+16)
+            {
+                DSconws("1\r\n\0");
+            }
+            else
+            {
+                DSconws("0\r\n\0");
+            }
+            while(getTime() <= time+350);
+            
 			missile[index].is_visible = 0;
 			return 1;
 		}
 		else
 		{
+            if(enemy->x_coordinate >= missile[index].x_coordinate-16)
+            {
+                DSconws("1\r\n\0");
+            }
+            else
+            {
+                DSconws("0\r\n\0");
+            }
+            if(enemy->x_coordinate <= missile[index].x_coordinate+16)
+            {
+                DSconws("1\r\n\0");
+            }
+            else
+            {
+                DSconws("1\r\n\0");
+            }
+            if(enemy->y_coordinate >= missile[index].y_coordinate-16)
+            {
+                DSconws("1\r\n\0");
+            }
+            else
+            {
+                DSconws("0\r\n\0");
+            }
+            if(enemy->y_coordinate <= missile[index].y_coordinate+16)
+            {
+                DSconws("1\r\n\0");
+            }
+            else
+            {
+                DSconws("0\r\n\0");
+            }
+            while(getTime() <= time+350);
+
 			return 0;
 		}
 	}

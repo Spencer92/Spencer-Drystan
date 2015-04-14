@@ -3,10 +3,13 @@
 
 #define START_OF_RENDER_AREA 0
 #define SCORE_AREA_OFFSET 0
+#define SCORE_SIZE 15
+#define SCORE_AREA_LENGTH 0
 #define RESULUTION_ADDRESS 0xff8260
 #define SCREEN_MEM_HIGH 0xff8201
 #define SCREEN_MEM_LOW  0xff8203
 #define SCREEN_SIZE     0x7D00L
+#define BLANK 0x0000
 
 /*Define screen dimensions  */
 #define SCREEN_WIDTH 640
@@ -28,6 +31,7 @@
 #include "types.h"
 #include <osbind.h>
 
+void blanKscore(char *fbstart);
 
 void plotPixel(char *fbstart, int x, int y);
 
@@ -53,9 +57,8 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation , int xpostoPlot,
 
 void plotString(char *fbstart, char *theString,int length, int xpos,int ypos);
 
-void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,int ypostoPlot, int size);
+void plotBackground(char *fbstart, UINT32 *background,int xpos, int ypos ,int size);
 
-void plotBackground(char *fbstart,UINT32 *background, int xpos, int ypos ,int size);
 
 
 typedef struct ScoreBox

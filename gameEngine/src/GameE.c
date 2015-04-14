@@ -61,6 +61,7 @@ int main() {
 	Stationary_Object landobjects[NUM_OBJECTS];
 	long missile_time;
 	BOOL stuff_happened = 0;
+    UINT32* background = (UINT32*) grass;
 	
 	
 	BOOL playerInput = 0;
@@ -73,6 +74,7 @@ int main() {
 	UINT8 j = 0;
 	UINT8 k = 0;
 	UINT8 l = 0;
+    UINT8 tanksLeft = 0;
 	long tank_reset_timer[NUMBER_OF_TANKS];
 	long player_reset_timer;
 	
@@ -145,15 +147,16 @@ int main() {
 		
 		gameStart(gameArray, &thePlayer, missile,NUMBER_OF_TANKS, (int*)&playerScore);
 		
-		copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
-		
+/*		copyBackground(gameScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
+*/		
 		plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
 		
 		plottingScreen = gameScreen;
 		
 		for(i = 0; i < NUMBER_OF_TANKS; i++)
 		{
-			copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
+/*			copyBackground(gameScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
+*/
 			plotLargeSprite(gameScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
 		}
 	
@@ -170,7 +173,6 @@ int main() {
 		}
 		i = 0;
 		do {
-	
 		
 			if(DSconis())
 			{
@@ -216,20 +218,26 @@ int main() {
 			
 			
 			}
-			
-			
+		
 			thing2();		
 			assess_situation(&gameArray[j], &thePlayer, landobjects, missile, 1/*NUMBER_OF_TANKS*/, MAX_MISSILES);
 		
-
+        
+        
+        
 			exploding_check(&missile[k],&thePlayer);
 			exploding_check(&missile[k],&gameArray[j]);
+            
+            
+           
 
 			if(missile[k].current_behaviour != EXPLODE && getTime() <= missile_time+2)
 			{
 				move_missile(&missile[k]);
 			}
 			
+          
+            
 			if(getTime() >= time_now+10)
 			{
 	
@@ -266,38 +274,51 @@ int main() {
 			
 				if(plottingScreen != gameScreen)
 				{
- 					DSconws("Screen flip1\r\0");
  					plottingScreen = gameScreen;
 					plottingTankScreen = backGamescreen;
  				}
 				else
 				{
-					DSconws("Screen flip2\r\0");
 					plottingScreen = backGamescreen;
 					plottingTankScreen = gameScreen;
  				}
-				plotBackground(plottingScreen,thePlayer.backMask,thePlayer.x_coordinate, thePlayer.y_coordinate ,32);					
+				plotBackground(plottingScreen,background,thePlayer.x_coordinate, thePlayer.y_coordinate ,32);					
 				
-				copyBackground(plottingScreen, thePlayer.backMask, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
-				
+/*				copyBackground(plottingScreen, background, thePlayer.x_coordinate,thePlayer.y_coordinate, SPRITE_SIZE);
+*/				
 				plotLargeSprite(plottingScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
-						
+				tanksLeft = NUMBER_OF_TANKS;
 				for(i = 0; i < NUMBER_OF_TANKS; i++)
 				{
-			    copyBackground(plottingScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);
-				plotLargeSprite(plottingScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
+                    
+/*			    copyBackground(plottingScreen, gameArray[i].backMask, gameArray[i].x_coordinate,gameArray[i].y_coordinate, SPRITE_SIZE);*/
+                
+                    if(gameArray[i].is_visible)
+                    {
+                        plotLargeSprite(plottingScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
+                    }
+                    else
+                    {
+                        tanksLeft--;
+                    }
+                    
 				}
-								
+                if(tanksLeft == 0)
+                {
+                    break;
+                }
+                tanksLeft = NUMBER_OF_TANKS;
+                i = 0;
 				for(l = 0; l < MAX_MISSILES; l++)
 				{
-					if(missile[k].is_visible)
+					if(missile[l].is_visible)
 					{
 						plotSprite(plottingScreen, missile[k].sprite, missile[k].x_coordinate ,
 						missile[k].y_coordinate, SMALL_SPRITE_SIZE);
 					}
 				
 				}
-				
+                l = 0;
 				Vsync();
 		        Setscreen(-1L, plottingScreen, -1L);	
 				memCopy((char*)grass,plottingTankScreen);
@@ -326,7 +347,8 @@ int main() {
 				{
 					k = 0;
 				}
-            DSconws("Testing\r\n\0");
+                
+
         
 		} while (keypress != 'q');
 
