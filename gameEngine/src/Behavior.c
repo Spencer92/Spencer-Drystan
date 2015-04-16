@@ -26,95 +26,148 @@ BOOL event()
 					
 				If not then the current behaviour will just be used
 ***************************************************************************/
+BOOL up_m(register int missile_x, register int missile_y, register int tank_x, register int tank_y, register MISSILE_BEHAVIOUR behaviour) 
+{
+	if(behaviour != MOVE_UP)
+	{
+		return 0;
+	}
+
+	if((missile_x - tank_x > 32
+		||
+		missile_x - tank_x < -32)
+		||
+		((missile_x - tank_x < 32
+		&&
+		 missile_x - tank_x > -32)
+		&&
+		 (missile_y-40 > tank_y
+		 ||
+		  tank_y-40 > missile_y)))
+		{
+			return 0;
+		}
+	else
+	{
+		return 1;
+	}
+	
+}
+
+BOOL down_m(register int missile_x, register int missile_y, register int tank_x, register int tank_y, register MISSILE_BEHAVIOUR behaviour) 
+{
+	if(behaviour != MOVE_DOWN)
+	{
+		return 0;
+	}
+
+	if((missile_x - tank_x > 32
+		||
+		missile_x - tank_x < -32)
+		||
+		((missile_x - tank_x < 32
+		&&
+		 missile_x - tank_x > -32)
+		&&
+		 (missile_y+40 > tank_y
+		 ||
+		  tank_y+40 > missile_y)))
+		{
+			return 0;
+		}
+	else
+	{
+		return 1;
+	}
+	
+}
+
+BOOL ri_m(register int missile_x, register int missile_y, register int tank_x, register int tank_y, register MISSILE_BEHAVIOUR behaviour) 
+{
+	if(behaviour != MOVE_RIGHT)
+	{
+		return 0;
+	}
+	if((missile_y - tank_y > 32
+		||
+		missile_y - tank_y < -32)
+		||
+		((missile_y - tank_y < 32
+		&&
+		 missile_y - tank_y > -32)
+		&&
+		 (missile_x+40 > tank_x
+		 ||
+		  tank_x+40 > missile_x)))
+		{
+			return 0;
+		}
+	else
+	{
+		return 1;
+	}
+	
+}
+
+BOOL lef_m(register int missile_x, register int missile_y, register int tank_x, register int tank_y, register MISSILE_BEHAVIOUR behaviour) 
+{
+	if(behaviour != MOVE_LEFT)
+	{
+		return 0;
+	}
+	if((missile_y - tank_y > 32
+		||
+		missile_y - tank_y < -32)
+		||
+		((missile_y - tank_y < 32
+		&&
+		 missile_y - tank_y > -32)
+		&&
+		 (missile_x-40 > tank_x
+		 ||
+		  tank_x-40 > missile_x)))
+		{
+			return 0;
+		}
+	else
+	{
+		return 1;
+	}
+	
+}
 
 BOOL die_check(Tank *enemy, Missile *missile, int num_missiles)
 {
 	int index;
-    long time = getTime();
-	for(index = 0; index < num_missiles; index++)
-	{
-		if((enemy->x_coordinate >= missile[index].x_coordinate-16
-		&& enemy->x_coordinate <= missile[index].x_coordinate+16) 
-		&& 
-		(enemy->y_coordinate >= missile[index].y_coordinate-16
-		&& enemy->y_coordinate <= missile[index].y_coordinate+16))
-		{
-            if(enemy->x_coordinate >= missile[index].x_coordinate-16)
-            {
-                DSconws("1\r\n\0");
-            }
-            else
-            {
-                DSconws("0\r\n\0");
-            }
-            if(enemy->x_coordinate <= missile[index].x_coordinate+16)
-            {
-                DSconws("1\r\n\0");
-            }
-            else
-            {
-                DSconws("1\r\n\0");
-            }
-            if(enemy->y_coordinate >= missile[index].y_coordinate-16)
-            {
-                DSconws("1\r\n\0");
-            }
-            else
-            {
-                DSconws("0\r\n\0");
-            }
-            if(enemy->y_coordinate <= missile[index].y_coordinate+16)
-            {
-                DSconws("1\r\n\0");
-            }
-            else
-            {
-                DSconws("0\r\n\0");
-            }
-            while(getTime() <= time+350);
-            
-			missile[index].is_visible = 0;
-			return 1;
-		}
-		else
-		{
-            if(enemy->x_coordinate >= missile[index].x_coordinate-16)
-            {
-                DSconws("1\r\n\0");
-            }
-            else
-            {
-                DSconws("0\r\n\0");
-            }
-            if(enemy->x_coordinate <= missile[index].x_coordinate+16)
-            {
-                DSconws("1\r\n\0");
-            }
-            else
-            {
-                DSconws("1\r\n\0");
-            }
-            if(enemy->y_coordinate >= missile[index].y_coordinate-16)
-            {
-                DSconws("1\r\n\0");
-            }
-            else
-            {
-                DSconws("0\r\n\0");
-            }
-            if(enemy->y_coordinate <= missile[index].y_coordinate+16)
-            {
-                DSconws("1\r\n\0");
-            }
-            else
-            {
-                DSconws("0\r\n\0");
-            }
-            while(getTime() <= time+350);
+	BOOL die = 0;
 
-			return 0;
+	for(index = 0; index < num_missiles && !die; index++)
+	{
+		if(missile[index].is_visible)
+		{
+			if(up_m(missile[index].x_coordinate, missile[index].y_coordinate, enemy->x_coordinate, enemy->y_coordinate, missile[index].current_behaviour))
+			{
+				die = 1;
+			}
+			else if(down_m(missile[index].x_coordinate, missile[index].y_coordinate, enemy->x_coordinate, enemy->y_coordinate, missile[index].current_behaviour))
+			{
+				die = 1;
+			}
+			else if(ri_m(missile[index].x_coordinate, missile[index].y_coordinate, enemy->x_coordinate, enemy->y_coordinate, missile[index].current_behaviour))
+			{
+				die = 1;
+			}
+			else if(lef_m(missile[index].x_coordinate, missile[index].y_coordinate, enemy->x_coordinate, enemy->y_coordinate, missile[index].current_behaviour))
+			{
+				die = 1;
+			}
+			else
+			{
+				die = 0;
+			}
 		}
 	}
+	return die;
 }
 
 
@@ -172,7 +225,7 @@ void die(Tank *tank)
 					
 ***************************************************************************/
 
-volatile void thin11() {}
+/*volatile void thin11() {}
 void shoot(Tank *tank, Missile *missile)
 {
 	BOOL missile_available = 0;
@@ -224,9 +277,9 @@ void shoot(Tank *tank, Missile *missile)
 	else
 	{
 		tank->is_firing = 0;
-/* 		Cconws("I cannot fire!\r\n\0"); */
+ 		Cconws("I cannot fire!\r\n\0"); 
 	}
-}
+}*/
 
 
 /***************************************************************************

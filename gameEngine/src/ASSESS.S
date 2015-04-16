@@ -1,20 +1,22 @@
-TANK		equ	290
+TANK		equ	294
 X_COORD		equ	0
 Y_COORD		equ	2
-HITPOINT	equ	4
-SPEED		equ	8
-MOVING		equ	9
-FIRING		equ	10                          	
-X_POSMASK	equ	12
-Y_POSMASK	equ	14             	
-H_FACING	equ	16
-V_FACING	equ	18
-IS_VISIBLE	equ	20
-BEHAVIOUR	equ	22
-AVAILABLE	equ	24
-SPRITE		equ	26
-MISSILE		equ	30
-BACKMASK	equ	34
+X_PREV		equ	4
+Y_PREV		equ	6
+HITPOINT	equ	8
+SPEED		equ	12
+MOVING		equ	13
+FIRING		equ	14                          	
+X_POSMASK	equ	16
+Y_POSMASK	equ	18             	
+H_FACING	equ	20
+V_FACING	equ	22
+IS_VISIBLE	equ	24
+BEHAVIOUR	equ	26
+AVAILABLE	equ	28
+SPRITE		equ	30
+MISSILE		equ	34
+BACKMASK	equ	38
 
 ;BEHAVIOURS
 SHOOT		equ	0

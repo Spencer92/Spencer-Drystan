@@ -1,15 +1,22 @@
 #ifndef RENDERE_H
 #define RENDERE_H
 
-#define START_OF_RENDER_AREA 0
-#define SCORE_AREA_OFFSET 0
-#define SCORE_SIZE 15
-#define SCORE_AREA_LENGTH 0
+
 #define RESULUTION_ADDRESS 0xff8260
 #define SCREEN_MEM_HIGH 0xff8201
 #define SCREEN_MEM_LOW  0xff8203
 #define SCREEN_SIZE     0x7D00L
 #define BLANK 0x0000
+
+#define START_OF_RENDER_AREA 0
+#define LIVES_AREA_START 80
+#define LIVES_AREA_END 144
+#define SCORE_LINE 374
+#define SCORE_AREA_START 368
+#define SCORE_AREA_FIN   464
+#define BLANK_SIZE_LIVES 4
+#define MAX_SCORE_SIZE 6
+#define SCORE_HEIGHT 18
 
 /*Define screen dimensions  */
 #define SCREEN_WIDTH 640
@@ -21,9 +28,6 @@
 #define FONT_SIZE 15
 #define COPY_MASK 0x00000000
 
-#define INFO_BOX_LINE 374
-#define LIVES_OFFSET 10
-#define SCORE_OFFSET 46
 
 
 
@@ -59,7 +63,7 @@ void plotString(char *fbstart, char *theString,int length, int xpos,int ypos);
 
 void plotBackground(char *fbstart, UINT32 *background,int xpos, int ypos ,int size);
 
-
+extern char scoreString[6];
 
 typedef struct ScoreBox
 {
@@ -77,6 +81,7 @@ void setScreen(char *newScreen, char *oldScreen);
 
 BOOL findRez();
 	
+void plotScore(char* fbstart,UINT16 score, int xpos,int ypos,int size);
 
 #endif 
 

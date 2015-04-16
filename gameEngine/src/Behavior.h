@@ -39,6 +39,8 @@ typedef struct Tank
 
 	UINT16 x_coordinate;	
 	UINT16 y_coordinate;
+	UINT16 x_prev;
+	UINT16 y_prev;
 	UINT32 hitpoints;
 	UINT8  current_speed;
 	BOOL is_moving;
@@ -60,11 +62,11 @@ typedef struct Missile
 	UINT16 x_coordinate;
 	UINT16 y_coordinate;
 	UINT8 max_speed;
-	UINT8 *sprite;
 	BOOL is_visible;
 	MISSILE_BEHAVIOUR current_behaviour;
 	H_DIRECTION horizontal_movement;
 	V_DIRECTION vertical_movement;
+	UINT8 *sprite;	
 }Missile;
 
 typedef struct Stationary_Object
@@ -124,7 +126,7 @@ void move_left(Missile *missile, int offset);
 void offscreen(Missile *missile);
 void explode(Missile *missile, Tank *tank);
 void player_action_check(Tank *player, Tank *enemy, int num_enemies, char input, Missile* missile, int num_missiles);
-void player_action(Tank* player, Missile* missile);
+void player_action(Tank* player, Missile* missile, int num_missiles);
 
 char DSnecin();
 void DSconws(String output);

@@ -1,12 +1,11 @@
 
 #include "RenderE.h"
 #include "System.h"
-#
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <osbind.h>
-
+char scoreString[6];
 
 
 /*
@@ -336,8 +335,8 @@ void plotSprite(char *fbstart, UINT8 *spriteLocation, int xpostoPlot,
 void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 		int ypostoPlot, int size)
 
-{
 
+{
 
     register UINT32 bufferleft;
 	register UINT32 bufferright;
@@ -365,9 +364,6 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 	UINT8 shiftright;
 	UINT8 shiftleft;
-    long time_now = getTime();
-    
-   
 
 	if ((xpostoPlot > -16 && (xpostoPlot < SCREEN_WIDTH + 15))
 	&& (ypostoPlot > -16 && (ypostoPlot < SCREEN_HEIGHT + 15)))/*It's within bounds lets plot it*/
@@ -461,7 +457,7 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 				for (i = k; i < j; i++) 
 				{
 
-					*(track8Ptr) = *(arrayRd1);
+					*(track8Ptr) |= *(arrayRd1);
 					track8Ptr++;
 					arrayRd1++;
 				}
@@ -478,25 +474,25 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 
 		else { /*No x clipping is taking place*/
 
-			writePtrLH += ((xpostoPlot - offset) >> 5);
-			trackPtr = (UINT16*) writePtrLH;
-			trackPtr++;
-			writePtrRH = (UINT32*) trackPtr;
+			writePtrLH += (( xnegBound ) >> 5);			
+			writePtrRH = writePtrLH + 1;
 
-			shiftleft = ((xpostoPlot - offset) & 15);
-			shiftright = (16 - shiftleft);
+			shiftleft = (  ( xnegBound % 32 ) );
+			shiftright = (32 - shiftleft);
+			
+			
 
 			while (size--) {
 
 				bufferleft = spriteLocation[i];
 				bufferright = bufferleft;
 
-				bufferleft >>= shiftleft;
-				bufferright <<= shiftright;
+				bufferleft   >>= shiftleft;
+				bufferright  <<= shiftright;
 	
 				*(writePtrLH) |= bufferleft;
 
-				(bufferright) &= 0x0000FFFF;			
+				/*(bufferright) &= 0x0000FFFF;	*/		
 				*(writePtrRH) |= bufferright;
 
 				writePtrLH += 20;
@@ -511,36 +507,6 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 	}
 
 	return;
-}
-
-
-
-
-void blanKscore(char *fbstart)
-{
-
-	UINT16 *blankPtr = (UINT16*)fbstart;
-	UINT16 *refPtr;
-	UINT16 i;
-	UINT16 j = SCORE_AREA_LENGTH;
-	
-	blankPtr += SCORE_AREA_OFFSET;
-	refPtr = blankPtr;
-	
-	while(j--){
-	
-		for(i = 0 ; i < SCORE_SIZE ; i++)
-	{
-	*(blankPtr) = BLANK ;
-	blankPtr += (i * 40);		
-	}
-	
-	refPtr++;
-	blankPtr = refPtr;
-	
-	
-	}
-
 }
 
 
@@ -737,10 +703,13 @@ Copies directly now from Grass.c
 void plotBackground(char *fbstart, UINT32 *background,int xpos, int ypos ,int size)
 	{
 	
-	UINT32 *cpyPtrLH =  (UINT32*)fbstart;
-	UINT32 *cpyPtrRH =  (UINT32*)fbstart;
-	UINT32 *backPtr  = background;
+	register UINT32 *cpyPtrLH =  (UINT32*)fbstart;
+	register UINT32 *cpyPtrRH =  (UINT32*)fbstart;
+	register UINT32 *backPtr  = background;
+	
+
 	UINT8  offset = size >>1;
+	
 	int xnegBound = xpos - offset;
 	int xposBound = xpos + offset;
 	int yposBound = ypos + offset;
@@ -756,58 +725,79 @@ void plotBackground(char *fbstart, UINT32 *background,int xpos, int ypos ,int si
 
 		}
 
-		else if(ynegBound < 0)
+	    if(ynegBound < 0)
 		{
 			size = size  + ynegBound;
 			ynegBound = 0;
 		}
 		
 		
-		cpyPtrLH +=(ynegBound * 20);		
+		cpyPtrLH +=(ynegBound * 20);
+		backPtr += ynegBound * 20;
 	
 		
-		if(xnegBound < 0 || xposBound > SCREEN_WIDTH )
-		   
+		if(xnegBound < 0 || xposBound > SCREEN_WIDTH )		   
 		{
 		
-		cpyPtrLH += (xpos >> 5);
-		backPtr += (UINT32*)((&(cpyPtrLH) - &(fbstart)) * 20);
-		
-			while(size--)
+		 if(xposBound > SCREEN_WIDTH )
+		 {
+		  cpyPtrLH +=19;
+		  backPtr += 19;
+		 }
+			 
+			do
 			{
-			
-				
 				*(cpyPtrLH) = *(backPtr);
 				  cpyPtrLH +=20;
 				  backPtr +=20;
 				
-				
-				
-			}
+			}while(size--);
 		
 		
 		
-		}
+		}		
 		
 		else
 		{
+			cpyPtrLH += (xnegBound >> 5);		
+			backPtr +=(xnegBound >> 5);			
 			
 			
-			cpyPtrLH += (xnegBound >> 5);
-			cpyPtrRH = cpyPtrLH;
-			cpyPtrRH++;
-			backPtr += (UINT32*)((&(cpyPtrLH) - &(fbstart)) * 20);
+			cpyPtrRH = cpyPtrLH;			
+			cpyPtrRH++;			
 	
-			while(size--)
-		{
-			  *(cpyPtrLH) = *(background);
-				background++;
-			  *(cpyPtrRH) = *(background);		
-			  background++;
+			
+			if (size & 1){
+			 *cpyPtrLH = *backPtr++;			
+			 *cpyPtrRH = *backPtr--; 			  
+				
 			  cpyPtrLH += 20;
-			  cpyPtrRH += 20;
-
-		}
+			  cpyPtrRH += 20;		
+			  backPtr += 20;
+			}
+			
+			size >>=1;
+		
+		do
+		{
+			  *cpyPtrLH = *backPtr++;			
+			  *cpyPtrRH = *backPtr--; 			  
+				
+			  cpyPtrLH += 20;
+			  cpyPtrRH += 20;	  
+			
+			  backPtr += 20;
+				
+				
+			  *cpyPtrLH = *backPtr++;			
+			  *cpyPtrRH = *backPtr--; 			  
+				
+			  cpyPtrLH += 20;
+			  cpyPtrRH += 20;			  
+		
+			  backPtr += 20;
+		
+		}while(size--);
 			
 		
 			
@@ -856,7 +846,24 @@ BOOL findRez()
 
 
 
+void plotScore(char* fbstart,UINT16 score, int xpos, int ypos, int size)
+{
+	int i;
 
+	
+	
+	for(i = 0; i < size; i++)
+	{
+	
+	 scoreString[(size - 1 ) - i] = ((score % 10) + '0');	 
+	 score /= 10;	
+	}
+		
+	plotString(fbstart,scoreString, size, xpos, ypos);
+
+		
+	
+}
 
 
 

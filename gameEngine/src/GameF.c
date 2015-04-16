@@ -55,6 +55,7 @@ void gameStart(struct Tank gameArray[], Tank *player, Missile missile[], int num
 		missile[i].x_coordinate = -1;
 		missile[i].y_coordinate = -1;
 		missile[i].sprite = NULL;
+		missile[i].current_behaviour = DO_NOTHING_MISSILE;
 	}
 
 	

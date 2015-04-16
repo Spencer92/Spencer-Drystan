@@ -56,9 +56,10 @@ MISSILE_BEHAVIOUR move_left_check(Missile *missile)
 }
 
 
-
+volatile void thin14() {}
 void exploding_check(Missile *missile, Tank *tank)
 {
+	thin14();
 	if(missile->x_coordinate+8 >= tank->x_coordinate-32 && missile->y_coordinate+8 <= tank->y_coordinate-32
 		|| missile->x_coordinate-8 <= tank->x_coordinate+32 && missile->y_coordinate-8 >= tank->y_coordinate+32)
 	{
@@ -68,28 +69,32 @@ void exploding_check(Missile *missile, Tank *tank)
 	}
 }
 
+volatile thin16() {}
 void move_missile(Missile *missile)
 {
-	if(missile->horizontal_movement == RIGHT)
+	thin16();
+	if(missile->current_behaviour == MOVE_RIGHT)
 	{	
-		missile->x_coordinate++;
+		missile->x_coordinate += 8;
 	}
-	else if(missile->horizontal_movement == LEFT)
+	else if(missile->current_behaviour == MOVE_LEFT)
 	{
-		missile->x_coordinate--;
+		missile->x_coordinate -= 8;
 	}
-	else if(missile->vertical_movement == UP)
+	else if(missile->current_behaviour == MOVE_UP)
 	{
-		missile->y_coordinate--;
+		missile->y_coordinate -= 8;
 	}
-	else if(missile->vertical_movement == DOWN)
+	else if(missile->current_behaviour == MOVE_DOWN)
 	{
-		missile->y_coordinate++;
+		missile->y_coordinate += 8;
 	}
 	if(missile->x_coordinate > 640 || missile->x_coordinate < 0 || missile->y_coordinate < 0 || missile->y_coordinate > 400)
 	{
 		missile->is_visible = 0;
 		missile->sprite = 0;
+		missile->y_coordinate = -1;
+		missile->x_coordinate = -1;
 	}
 }
 
