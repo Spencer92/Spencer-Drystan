@@ -66,7 +66,7 @@ typedef struct Missile
 	MISSILE_BEHAVIOUR current_behaviour;
 	H_DIRECTION horizontal_movement;
 	V_DIRECTION vertical_movement;
-	UINT8 *sprite;	
+	UINT32 *sprite;	
 }Missile;
 
 typedef struct Stationary_Object
@@ -136,6 +136,13 @@ int thing();
 void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles);
 void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks, Stationary_Object *object, int num_objects);
 
+BOOL playAlinVertical(Tank* enemy, Tank* player);
+BOOL playAlinHorizontal(Tank* enemy, Tank* player);
+
+BOOL needTurnRight(Tank* enemy, Tank* player);
+BOOL needTurnLeft(Tank* enemy, Tank* player);
+BOOL needTurnUp(Tank* enemy, Tank* player);
+BOOL needTurnDown(Tank* enemy, Tank* player);
 
 
 

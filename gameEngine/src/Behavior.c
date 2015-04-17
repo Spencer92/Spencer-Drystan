@@ -783,6 +783,15 @@ void move_y(Tank *tank, Stationary_Object *object, int offset, int num_objects)
 	if(all_clear)
 	{
 		tank->y_coordinate += offset;
+		if(offset < 0)
+		{
+			tank->v_facing = UP;
+		}
+		else
+		{
+			tank->v_facing = DOWN;
+		}
+		tank->h_facing = VERTICAL;
 	}
 	else
 	{
@@ -820,7 +829,7 @@ void move_x(Tank *tank, Stationary_Object *object, int offset, int num_objects)
 {
 	int index;
 	BOOL all_clear = 1;
-	for(index = 0; index < num_objects && all_clear; index++)
+/*	for(index = 0; index < num_objects && all_clear; index++)
 	{
 		if(!((tank->x_coordinate+offset >= object[index].x_coordinate-16
 			&& tank->x_coordinate+offset <= object[index].x_coordinate+16)
@@ -830,10 +839,19 @@ void move_x(Tank *tank, Stationary_Object *object, int offset, int num_objects)
 			all_clear = 0;
 		}
 		
-	}
+	}*/
 	if(all_clear)
 	{
 		tank->x_coordinate += offset;
+		if(offset < 0)
+		{
+			tank->h_facing = LEFT;
+		}
+		else
+		{
+			tank->h_facing = RIGHT;
+		}
+		tank->v_facing = HORIZONTAL;
 	}
 	else
 	{

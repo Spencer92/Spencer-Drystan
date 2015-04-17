@@ -66,6 +66,8 @@ void exploding_check(Missile *missile, Tank *tank)
 		missile->current_behaviour = EXPLODE;
 		tank->current_behaviour = DIE;
 		missile->is_visible = 0;
+		missile->x_coordinate;
+		missile->y_coordinate;
 	}
 }
 
@@ -89,12 +91,13 @@ void move_missile(Missile *missile)
 	{
 		missile->y_coordinate += 8;
 	}
-	if(missile->x_coordinate > 640 || missile->x_coordinate < 0 || missile->y_coordinate < 0 || missile->y_coordinate > 400)
+	if(missile->x_coordinate > 640 || missile->x_coordinate < 0 || missile->y_coordinate < 0 || missile->y_coordinate > 360)
 	{
 		missile->is_visible = 0;
 		missile->sprite = 0;
 		missile->y_coordinate = -1;
 		missile->x_coordinate = -1;
+		missile->current_behaviour = DO_NOTHING_MISSILE;
 	}
 }
 

@@ -20,8 +20,7 @@ extern const UINT32 explosion[SPRITE_SIZE];
 extern const UINT32 lake[SPRITE_SIZE];
 extern const UINT32 tree2[SPRITE_SIZE]; 
 
-extern const UINT8 player_missile[SMALL_SPRITE_SIZE];
-extern const UINT8 enemy_missile[SMALL_SPRITE_SIZE];
+extern const UINT32 player_missile[SPRITE_SIZE];
 
 
 

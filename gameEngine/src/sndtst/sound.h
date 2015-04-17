@@ -1,7 +1,7 @@
 #ifndef SOUND_H
 #define	SOUND_H
 #include "types.h"
-#define A_TONE 0
+/*#define A_TONE 0
 #define B_TONE 1
 #define C_TONE 2
 #define A_CHANNEL 0x3F
@@ -21,7 +21,7 @@
 #define G 301
 #define A_FLAT 284
 #define A 268
-#define B_FLAT 253
+#define B_FLAT 253*/
 
 
 extern void psg_write(int reg,UINT8 val);

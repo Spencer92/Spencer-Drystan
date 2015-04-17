@@ -1,10 +1,14 @@
 #ifndef ASSEMBLER_ROUTINES_H
 #define ASSEMBLER_ROUTINES_H
 
-void clear(char* screen);
+extern void clear(char* screen);
 
-char* physBase();
+extern char* phys_Base();
 
-void set_Screen(char* screen);
+extern void set_Screen(char* screen);
+
+extern void enterSuper();
+
+extern void exitSuper();
 
 #endif

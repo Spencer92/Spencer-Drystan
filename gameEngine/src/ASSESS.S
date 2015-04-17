@@ -31,15 +31,21 @@ DO_NOTHING	equ	8
 
 	xref		_missiles_alive_x
 	xref		_missiles_alive_y
-	xref		_playAlin
-	xref		_needTurn
+	xref		_playAlinHorizontal
+	xref		_playAlinVertical
+;	xref		_needTurn
 	xref		_yMove
 	xref		_xMove
 	xref		_die_check
 	xref		_missile_fired
 	xref		_yfacing
 	xref		_xfacing
+	xref		_needTurnRight
+	xref		_needTurnLeft
+	xref		_needTurnDown
+	xref		_needTurnUp
 	xdef		_tankBehav
+	
 
 
 
@@ -84,34 +90,73 @@ check_y_miss:	move.w	NUM_MISSILES(a6),-(sp)
 		jsr	_missiles_alive_y
 		add.l	#10,sp
 		tst.b	d0
-		beq	play_alin
+		beq	play_alin_horizontal
 		movea.l	ENEMY_TANK(a6),a3
 		moveq.w	#DODGE_Y,d3
 		move.w	d3,BEHAVIOUR(a3)
 		bra	end
 
-play_alin:	move.l	PLAY_TANK(a6),-(sp)
+play_alin_horizontal:
+		move.l	PLAY_TANK(a6),-(sp)
 		move.l	ENEMY_TANK(a6),-(sp)
-		jsr	_playAlin
+		jsr	_playAlinHorizontal
 		addq.l	#8,sp
 		tst.b	d0
-		beq	need_turn
+		beq	play_alin_vertical
+		movea.l	ENEMY_TANK(a6),a3
+		moveq.w	#SHOOT,d3
+		move.w	d3,BEHAVIOUR(a3)
+		bra	end
+		
+play_alin_vertical:
+		move.l	PLAY_TANK(a6),-(sp)
+		move.l	ENEMY_TANK(a6),-(sp)
+		jsr	_playAlinVertical
+		addq.l	#8,sp
+		tst.b	d0
+		beq	need_turn_right
 		movea.l	ENEMY_TANK(a6),a3
 		moveq.w	#SHOOT,d3
 		move.w	d3,BEHAVIOUR(a3)
 		bra	end
 
-need_turn:	move.l	PLAY_TANK(a6),-(sp)
+need_turn_right:	
+		move.l	PLAY_TANK(a6),-(sp)
 		move.l	ENEMY_TANK(a6),-(sp)
-		jsr	_needTurn
+		jsr	_needTurnRight
+		addq.l	#8,sp
+		tst.b	d0
+		beq	need_turn_left
+		movea.l ENEMY_TANK(a6),a3
+		moveq.w	#TURN,d3
+		move.w	d3,BEHAVIOUR(a3)
+		bra	end
+		
+need_turn_left:
+		move.l	PLAY_TANK(a6),-(sp)
+		move.l	ENEMY_TANK(a6),-(sp)
+		jsr	_needTurnLeft
+		addq.l	#8,sp
+		tst.b	d0
+		beq	need_turn_up
+		movea.l ENEMY_TANK(a6),a3
+		moveq.w	#TURN,d3
+		move.w	d3,BEHAVIOUR(a3)
+		bra	end		
+
+need_turn_up:
+		move.l	PLAY_TANK(a6),-(sp)
+		move.l	ENEMY_TANK(a6),-(sp)
+		jsr	_needTurnLeft
 		addq.l	#8,sp
 		tst.b	d0
 		beq	y_move
 		movea.l ENEMY_TANK(a6),a3
 		moveq.w	#TURN,d3
 		move.w	d3,BEHAVIOUR(a3)
-		bra	end
+		bra	end				
 
+		
 y_move:		move.l	PLAY_TANK(a6),-(sp)
 		move.l	ENEMY_TANK(a6),-(sp)
 		jsr	_yMove

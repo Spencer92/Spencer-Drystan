@@ -4,9 +4,9 @@
 
 			XDEF _clear
 			
-			XDEF _physBase
+			XDEF _phys_Base
 			
-			XDEF _setScreen
+			XDEF _set_Screen
 			
 			XDEF _enterSuper
 			
@@ -51,21 +51,22 @@ clr:	    move.l	d1,(a0)
 			
 ;/*======================================================*/
 			
-_physBase:
+_phys_Base:
 			link a6,#0
 			movem.l d1/a0,-(sp)			
 			moveq.l #0,d1	
 			
 			
-			jsr super
-			
+			jsr _enterSuper
+		 	move.w	#$2700,sr  		;turn off the interupts
+		
 			move.l #$ff8200,a0
 			movep.l 1(a0),d1
+			move.w	#$2300,sr 			;best to turn them back on
 			
-			jsr exSuper
-			
+			jsr _exitSuper			
 		
-			lsr.l #8,d1
+			lsl.l #8,d1
 			clr.b d1
 			
 			move.l d1,d0
@@ -81,26 +82,35 @@ _physBase:
 ;/*======================================================*/
 
 
-_setScreen
+STACK_SAVE		equ	-4
+_set_Screen
 				
 			link a6,#0
-			movem.l d1/a0,-(sp)
-			movea.l	SCREEN(a6),a0
-					
+			movem.l d0/d3-d4/a3-4,-(sp)
+			movea.l	SCREEN(a6),a4
+			clr.l 	d3
 			
-			clr.l 	d1
+			move.l  a4,d3
+			lsr.l #8,d3
+
+		
 			
-			move.l  a0,d1
-			lsl.l #8,d1
-			move.l  #$FF8200,a0	
-							
-			jsr super			
-					
-			movep.l d1,1(a0)
 			
-			jsr exSuper
+			clr.l	-(sp)
+			move.w	#32,-(sp)
+			trap	#1
+			addq.l	#6,sp
+			move.l	d0,old_stack
+			movea.l  #$FFFF8200,a3	
+			adda.l	#1,a3			
+			movep.w d3,(a3)
+			move.l	old_stack,-(sp)
+			move.w	#32,-(sp)
+			trap	#1
+			addq.l	#6,sp
+	
 			
-			movem.l (sp)+,d1/a0
+			movem.l (sp)+,d0/d3-4/a3-4
 			unlk a6
 			rts
 ;/*======================================================*/
@@ -109,30 +119,33 @@ _setScreen
 
 ;/*======================================================*/
 
-super:                     		;go into super user mode
-   			
+_enterSuper:                     		;go into super user mode
+   			link	a6,#0
 			movem.l d0-d1/a0,-(sp)
 			clr.l -(a7)
    			move.w #32,-(a7)  
    			trap #1    
-   			addq.l #6,a7  
+   			adda.l #6,a7  
   			move.l d0,old_stack
    			movem.l  (sp)+,d0-d1/a0
+			unlk	a6
 			rts		
 			
 
-exSuper:							;leave super mode
+_exitSuper:	
+			link	a6,#0;leave super mode
 			movem.l d0-d1/a0,-(sp)
 			move.l old_stack,-(a7)
    			move.w #32,-(a7)
    			trap #1    
    			addq.l #6,a7
 			movem.l  (sp)+,d0-d1/a0
+			unlk	a6
    			rts
 			
 
 ;/*======================================================*/
 
-old_stack:  ds.l 0
+old_stack:  dc.l 0
 
            

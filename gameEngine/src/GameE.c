@@ -41,6 +41,7 @@
 #include  "GameF.h"
 #include  "BackDrop.h"
 #include  "Bitmaps.h"
+#include "soundgen.h"
 
 /*===================================================*/
 #define  BUFFER_SIZE  0x8400L
@@ -52,6 +53,8 @@ void waitForinput();
 	UINT8 screen1[BUFFER_SIZE];
 	UINT8 screen2[BUFFER_SIZE];
 	UINT8 welcomeScreen[BUFFER_SIZE];
+
+	
 
 int main() {
 
@@ -80,12 +83,14 @@ int main() {
 	
 	char *mainScreen;
 	char *logMainscreen;
-	
 	char *gameScreen;
 	char *backGamescreen;
 	char *backdropScreen;
 	char *plottingScreen;
 	char *plottingTankScreen;
+	char *tmp;
+	
+	long music_time;
 	long time_now;
 	int tank_one_action;
 	int tank_two_action;
@@ -98,9 +103,12 @@ int main() {
 
 
 	/*=========Will Change in next system=========================*/
-	mainScreen 		= (Physbase());
-/* 	mainScreen		= physBase(); */
-	logMainscreen 	= (Logbase());
+
+/*	mainScreen 		= (Physbase());*/
+	thing2();
+ 	mainScreen		= phys_Base();
+
+/*	logMainscreen 	= (Logbase());*/
 	
 	backdropScreen 	= (char*) welcomeScreen;
 	backdropScreen 	= (char*) ((UINT32) (backdropScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
@@ -120,11 +128,13 @@ int main() {
 	 memCopy((char*)backdrop, backdropScreen);
 	 memCopy((char*)grass,gameScreen);
 	 memCopy(gameScreen,backGamescreen);
+	 memCopy(backdropScreen,mainScreen);
 	
-		
-	 Vsync();	 
-	 Setscreen(-1L,backdropScreen,-1L);
-	
+	 thing2();
+	 
+	 Vsync();
+/*	 Setscreen(-1L,backdropScreen,-1L);*/
+	 set_Screen(backdropScreen);	
 
 	while (!DSconis()) {
 
@@ -150,27 +160,35 @@ int main() {
 		
 		plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
 		
-		plottingScreen = gameScreen;
+/*		plottingScreen = gameScreen;*/
 		
-		for(i = 0; i < NUMBER_OF_TANKS; i++)
+/*		for(i = 0; i < NUMBER_OF_TANKS; i++)
 		{
 			plotLargeSprite(gameScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
 		}
-	
+*/	
 
 		Vsync();
-/* 		set_Screen(plottingScreen); */
- 		Setscreen(plottingScreen, plottingScreen, -1L);
+ 		set_Screen(plottingScreen); 
+/* 		Setscreen(plottingScreen, plottingScreen, -1L);*/
  
 	
 	/*=====================here is main game loop==================*/	
-		time_now = missile_time = player_reset_timer = getTime();
+		music_time = time_now = missile_time = player_reset_timer = getTime();
 		for(i = 0; i < NUMBER_OF_TANKS; i++)
 		{
 			tank_reset_timer[i] = time_now;
 		}
 		i = 0;
+		start_music();
 		do {
+		
+			tanksLeft = NUMBER_OF_TANKS;
+			if(getTime() >= music_time+8)
+			{
+				music();
+				getTime();
+			}
 		
 			if(DSconis())
 			{
@@ -183,8 +201,8 @@ int main() {
 			
 				
 				Vsync();
-/* 				set_Screen(mainScreen); */
- 				Setscreen(logMainscreen, mainScreen, -1L);
+ 				set_Screen(mainScreen); 
+/* 				Setscreen(logMainscreen, mainScreen, -1L);*/
 			
 				Cconws("In pause game loop \r\n\0");
 				Cconws("Please press any key to start \r\n\0");
@@ -239,7 +257,7 @@ int main() {
 			
 			if(die_check(&gameArray[j],missile,MAX_MISSILES))
 			{
-				thing2();
+
 				gameArray[j].is_visible = 0;
 			}
 			if(die_check(&thePlayer,missile,MAX_MISSILES))
@@ -287,7 +305,7 @@ int main() {
 				{
 					if(missile[i].is_visible)
 					{
-						plotBackground(plottingScreen,background,missile[i].x_coordinate, missile[i].y_coordinate ,SMALL_SPRITE_SIZE);
+						plotBackground(plottingScreen,background,missile[i].x_coordinate, missile[i].y_coordinate ,SPRITE_SIZE);
 					}
 				}	
 				plotBackground(plottingScreen,background,thePlayer.x_prev, thePlayer.y_prev ,SPRITE_SIZE);				
@@ -300,7 +318,13 @@ int main() {
                     if(gameArray[i].is_visible)
                     {
                         plotLargeSprite(plottingScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
-                    }                    
+                    }
+					else
+					{
+						gameArray[i].x_coordinate = -1;
+						gameArray[i].y_coordinate = -1;
+						tanksLeft--;
+					}
 				}
 				
 				plotLargeSprite(plottingScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);		
@@ -309,8 +333,8 @@ int main() {
 				{
 					if(missile[l].is_visible)
 					{
-						plotSprite(plottingScreen, missile[l].sprite, missile[l].x_coordinate ,
-						missile[l].y_coordinate, SMALL_SPRITE_SIZE);
+						plotLargeSprite(plottingScreen, missile[l].sprite, missile[l].x_coordinate ,
+						missile[l].y_coordinate, SPRITE_SIZE);
 					}
 				
 				}
@@ -327,7 +351,7 @@ int main() {
 				
 				
 /*				plotLargeSprite(plottingScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);*/
- 				tanksLeft = NUMBER_OF_TANKS;
+
 /*				for(i = 0; i < NUMBER_OF_TANKS; i++)
 				{
 
@@ -341,19 +365,8 @@ int main() {
                     }
                     
 				}*/
-                if(tanksLeft <= 0)
-                {
-                    break;
-                }
-				else if(gameArray[j].is_visible)
-				{
-					DSconws("Still alive\r\0");
-				}
-				else
-				{
-					DSconws("Die\r\0");
-				}
-                tanksLeft = NUMBER_OF_TANKS;
+
+
                 i = 0;
 /*				for(l = 0; l < MAX_MISSILES; l++)
 				{
@@ -366,8 +379,8 @@ int main() {
 				}*/
                 l = 0;
 				Vsync();
- 		        Setscreen(-1L, plottingScreen, -1L);	 
-/* 				set_Screen(plottingScreen); */
+/*  		        Setscreen(-1L, plottingScreen, -1L);*/	 
+				set_Screen(plottingScreen); 
 /* 				memCopy((char*)grass,plottingTankScreen);
 */				
 
@@ -397,6 +410,10 @@ int main() {
 					k = 0;
 				}
       
+	            if(tanksLeft <= 0)
+                {
+                    break;
+                }
 		} while (keypress != 'q');
 
 	}
@@ -412,12 +429,10 @@ int main() {
 
 	
 	Vsync();
-	set_Screen(mainScreen);
-/* 	Setscreen(mainScreen ,mainScreen ,-1L);
- */
-	for(i = 0; i < MAX_MISSILES; i++)
-		printf("%i,%i\n",missile[i].x_coordinate,missile[k].y_coordinate);
-	printf("after printing missile info\n");
+	set_Screen(mainScreen); 
+/* 	Setscreen(mainScreen ,mainScreen ,-1L);*/
+
+	stop_sound();
 	if(thePlayer.is_visible)
 	{
 		printf("\n Player wins\n");
