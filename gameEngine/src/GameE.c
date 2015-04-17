@@ -80,6 +80,7 @@ int main() {
     UINT8 tanksLeft = NUMBER_OF_TANKS;
 	long tank_reset_timer[NUMBER_OF_TANKS];
 	long player_reset_timer;
+	int score = 0;
 	
 	char *mainScreen;
 	char *logMainscreen;
@@ -104,9 +105,9 @@ int main() {
 
 	/*=========Will Change in next system=========================*/
 
-/*	mainScreen 		= (Physbase());*/
-	thing2();
- 	mainScreen		= phys_Base();
+
+  	mainScreen		= phys_Base(); 
+/*	set_Screen(mainScreen);*/
 
 /*	logMainscreen 	= (Logbase());*/
 	
@@ -132,9 +133,8 @@ int main() {
 	
 	 thing2();
 	 
-	 Vsync();
-/*	 Setscreen(-1L,backdropScreen,-1L);*/
 	 set_Screen(backdropScreen);	
+	 Vsync();
 
 	while (!DSconis()) {
 
@@ -160,18 +160,10 @@ int main() {
 		
 		plotLargeSprite(gameScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);
 		
-/*		plottingScreen = gameScreen;*/
-		
-/*		for(i = 0; i < NUMBER_OF_TANKS; i++)
-		{
-			plotLargeSprite(gameScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
-		}
-*/	
 
-		Vsync();
  		set_Screen(plottingScreen); 
-/* 		Setscreen(plottingScreen, plottingScreen, -1L);*/
- 
+		Vsync();
+
 	
 	/*=====================here is main game loop==================*/	
 		music_time = time_now = missile_time = player_reset_timer = getTime();
@@ -184,10 +176,10 @@ int main() {
 		do {
 		
 			tanksLeft = NUMBER_OF_TANKS;
-			if(getTime() >= music_time+8)
+			if(getTime() >= music_time+16)
 			{
 				music();
-				getTime();
+				music_time = getTime();
 			}
 		
 			if(DSconis())
@@ -202,7 +194,6 @@ int main() {
 				
 				Vsync();
  				set_Screen(mainScreen); 
-/* 				Setscreen(logMainscreen, mainScreen, -1L);*/
 			
 				Cconws("In pause game loop \r\n\0");
 				Cconws("Please press any key to start \r\n\0");
@@ -238,13 +229,11 @@ int main() {
 		
     
         
-/*			exploding_check(&missile[k],&thePlayer);
-			exploding_check(&missile[k],&gameArray[j]);*/
             
             
            
 
-			if(missile[k].current_behaviour != EXPLODE && /*getTime() <= missile_time+2 &&*/ missile[k].is_visible)
+			if(missile[k].current_behaviour != EXPLODE && missile[k].is_visible)
 			{
 				move_missile(&missile[k]);
 			}
@@ -324,10 +313,17 @@ int main() {
 						gameArray[i].x_coordinate = -1;
 						gameArray[i].y_coordinate = -1;
 						tanksLeft--;
+						if(gameArray[i].current_behaviour == DIE)
+						{
+							score += (int) (getTime()%100);
+							
+						}
 					}
 				}
 				
-				plotLargeSprite(plottingScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);		
+				plotLargeSprite(plottingScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);	
+
+				plotScore(plottingScreen,score,80,376,4);
 
 				for(l = 0; l < MAX_MISSILES; l++)
 				{
@@ -441,8 +437,8 @@ int main() {
 	{
 		printf("\n Enemy wins\n");
 	}
-	printf("\nabout to print missiles info\n");	
-	printf("%i,%i\n",gameArray[j].x_coordinate,gameArray[j].y_coordinate);
+	printf("%i\n", gameArray[0].v_facing);
+
 	return 0;
 
 }
@@ -459,7 +455,7 @@ void memCopy(char* screenChunk1 ,char* screenChunk2)
 	register UINT32 *srcPtr =  (UINT32*) screenChunk1;
 	register UINT32 *dstPtr =  (UINT32*) screenChunk2;
 	register UINT32 i;
-	
+	thing2();
 	copySize = SCREEN_SIZE >> 2;
 	i = copySize>>3;
 	

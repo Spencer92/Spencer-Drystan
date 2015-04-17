@@ -50,19 +50,21 @@ clr:	    move.l	d1,(a0)
 			rts
 			
 ;/*======================================================*/
-			
+
+SR_SAVE		equ	-2			
 _phys_Base:
-			link a6,#0
+			link a6,#-2
 			movem.l d1/a0,-(sp)			
-			moveq.l #0,d1	
+			moveq.l #0,d1
 			
 			
 			jsr _enterSuper
+			move.w	sr,SR_SAVE(a6)
 		 	move.w	#$2700,sr  		;turn off the interupts
 		
 			move.l #$ff8200,a0
-			movep.l 1(a0),d1
-			move.w	#$2300,sr 			;best to turn them back on
+			movep.w 1(a0),d1
+			move.w	SR_SAVE(a6),sr 			;best to turn them back on
 			
 			jsr _exitSuper			
 		
@@ -82,7 +84,7 @@ _phys_Base:
 ;/*======================================================*/
 
 
-STACK_SAVE		equ	-4
+
 _set_Screen
 				
 			link a6,#0

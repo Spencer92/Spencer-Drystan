@@ -361,7 +361,7 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 		if(enemy[index].is_visible && enemy[index].current_behaviour != DO_NOTHING)
 		{
 
-			if(!(notBehaviour(&enemy[index],SHOOT)))
+			if(enemy[index].current_behaviour == SHOOT)
 			{
 				missile_avail = enemy[index].missile_available;
 				thing4(enemy[index].h_facing, enemy[index].v_facing);							
@@ -374,7 +374,7 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 					time = getTime();
 				}
 			}
-			else if(!(notBehaviour(&enemy[index],DODGE_X)))
+			else if(enemy[index].current_behaviour == DODGE_X)
 			{
 				enemy[index].x_prev = enemy[index].x_coordinate;
 				enemy[index].y_prev = enemy[index].y_coordinate;			
@@ -387,7 +387,7 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 				dodge_y(&enemy[index], object, 
 										dodge_loc*TANK_OFFSET, num_objects);
 			}
-			else if(!(notBehaviour(&enemy[index],MOVE_X)))
+			else if(enemy[index].current_behaviour == MOVE_X)
 			{
 				enemy[index].x_prev = enemy[index].x_coordinate;
 				enemy[index].y_prev = enemy[index].y_coordinate;
@@ -396,21 +396,43 @@ void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks
 					   num_objects);
 
 			}
-			else if(!(notBehaviour(&enemy[index],MOVE_Y)))
+			else if(enemy[index].current_behaviour == MOVE_Y)
 			{
 				enemy[index].x_prev = enemy[index].x_coordinate;
 				enemy[index].y_prev = enemy[index].y_coordinate;
 				move_loc = enemy[index].v_facing;
 				move_y(&enemy[index], object, move_loc*TANK_OFFSET, num_objects);
 			}
-			else if(!(notBehaviour(&enemy[index],DIE)))
+			else if(enemy[index].current_behaviour == DIE)
 			{
 				enemy[index].is_visible = 0;
 				enemy[index].sprite = NULL;
+				enemy[index].x_coordinate = -1;
+				enemy[index].y_coordinate = -1;
 			}
-			else if(!(notBehaviour(&enemy[index],TURN)))
+			else if(!(notBehaviour(&enemy[index],TURN_UP)))
 			{
-				turn(&enemy[index]);
+				enemy[index].h_facing = VERTICAL;
+				enemy[index].v_facing = UP;
+				enemy[index].sprite = playerTankNorth;
+			}
+			else if(enemy[index].current_behaviour == TURN_DOWN)
+			{
+				enemy[index].h_facing = VERTICAL;
+				enemy[index].v_facing = DOWN;
+				enemy[index].sprite = playerTankSouth;
+			}
+			else if(enemy[index].current_behaviour == TURN_LEFT)
+			{
+				enemy[index].h_facing = LEFT;
+				enemy[index].v_facing = HORIZONTAL;
+				enemy[index].sprite = playerTankWest;
+			}
+			else if(enemy[index].current_behaviour == TURN_RIGHT)
+			{
+				enemy[index].h_facing = RIGHT;
+				enemy[index].v_facing = HORIZONTAL;
+				enemy[index].sprite = playerTankEast;
 			}
 		}
 		enemy[index].current_behaviour = DO_NOTHING;
@@ -861,7 +883,7 @@ BOOL needTurnDown(Tank* enemy, Tank* player)
 		enemy->x_coordinate-player->x_coordinate)
 	||
 		enemy->y_coordinate-player->y_coordinate <
-		player->x_coordinate-enemy->x_coordinate)
+		player->x_coordinate-enemy->x_coordinate))
 	{
 		return 1;
 	}
@@ -994,6 +1016,8 @@ BOOL xMove(Tank* enemy, Tank* player)
               && enemy->x_coordinate - player->x_coordinate > 64)*/)
         {
 /*             DSconws("Can move left\r\0"); */
+			enemy->v_facing = HORIZONTAL;
+			enemy->h_facing = LEFT;
             return 1;
         }
         else
@@ -1015,6 +1039,8 @@ BOOL xMove(Tank* enemy, Tank* player)
               && enemy->x_coordinate - player->x_coordinate < -64)*/)
         {
 /*             DSconws("Can move left\r\0"); */
+			enemy->v_facing = HORIZONTAL;
+			enemy->h_facing = RIGHT;
             return 1;
         }
         else
@@ -1070,6 +1096,8 @@ BOOL yMove(Tank* enemy, Tank* player)
             ((enemy->x_coordinate - player->x_coordinate < 32 && enemy->x_coordinate - player->x_coordinate > -32)
               && enemy->y_coordinate - player->y_coordinate > 64)*/)
         {
+			enemy->v_facing = UP;
+			enemy->h_facing = VERTICAL;
             return 1;
         }
         else
@@ -1094,6 +1122,8 @@ BOOL yMove(Tank* enemy, Tank* player)
         {
 
 /*             DSconws("Can move down\r\0"); */
+			enemy->v_facing = DOWN;
+			enemy->h_facing = VERTICAL;
             return 1;
         }
         else

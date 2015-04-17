@@ -290,11 +290,11 @@ void shoot(Tank *tank, Missile *missile)
    Input Arguments: Tank - The tank that is going to turn left
 ***************************************************************************/
 
-
-void turn(Tank *tank)
+/*
+void turn_up(Tank *tank)
 {
 	/*TODO change sprite for tank */
-	switch(tank->h_facing)
+	/*	switch(tank->h_facing)
 	{
 		case VERTICAL:
 			tank->h_facing = LEFT;
@@ -308,9 +308,10 @@ void turn(Tank *tank)
 			tank->v_facing = DOWN;
 		default:
 			break;
-	}
-
+	}*/
+/*
 }
+*/
 
 /***************************************************************************
    Function Name:   dodge_x
@@ -632,7 +633,7 @@ BEHAVIOUR shoot_check(Tank *enemy, Tank *player, Missile *missile)
 					If not then the current behaviour will just be used
 ***************************************************************************/
 
-
+/*
 BEHAVIOUR turn_check(Tank *enemy, Tank *player)
 {
 	if(((enemy->x_coordinate >= player->x_coordinate-16
@@ -648,7 +649,7 @@ BEHAVIOUR turn_check(Tank *enemy, Tank *player)
 		return enemy->current_behaviour;
 	}
 }
-
+*/
 /***************************************************************************
    Function Name:  	respawn check
   

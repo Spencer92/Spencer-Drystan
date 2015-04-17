@@ -26,8 +26,11 @@ MOVE_X		equ	3
 MOVE_Y		equ	4
 DIE		equ	5
 RESPAWN		equ	6
-TURN		equ	7
-DO_NOTHING	equ	8
+TURN_RIGHT		equ	7
+TURN_UP		equ	8
+TURN_DOWN	equ	9
+TURN_LEFT	equ	10
+DO_NOTHING	equ	11
 
 	xref		_missiles_alive_x
 	xref		_missiles_alive_y
@@ -128,7 +131,7 @@ need_turn_right:
 		tst.b	d0
 		beq	need_turn_left
 		movea.l ENEMY_TANK(a6),a3
-		moveq.w	#TURN,d3
+		moveq.w	#TURN_RIGHT,d3
 		move.w	d3,BEHAVIOUR(a3)
 		bra	end
 		
@@ -140,21 +143,33 @@ need_turn_left:
 		tst.b	d0
 		beq	need_turn_up
 		movea.l ENEMY_TANK(a6),a3
-		moveq.w	#TURN,d3
+		moveq.w	#TURN_LEFT,d3
 		move.w	d3,BEHAVIOUR(a3)
 		bra	end		
 
 need_turn_up:
 		move.l	PLAY_TANK(a6),-(sp)
 		move.l	ENEMY_TANK(a6),-(sp)
-		jsr	_needTurnLeft
+		jsr	_needTurnUp
 		addq.l	#8,sp
 		tst.b	d0
 		beq	y_move
 		movea.l ENEMY_TANK(a6),a3
-		moveq.w	#TURN,d3
+		moveq.w	#TURN_UP,d3
 		move.w	d3,BEHAVIOUR(a3)
-		bra	end				
+		bra	end
+
+need_turn_down:
+		move.l	PLAY_TANK(a6),-(sp)
+		move.l	ENEMY_TANK(a6),-(sp)
+		jsr	_needTurnDown
+		addq.l	#8,sp
+		tst.b	d0
+		beq	y_move
+		movea.l ENEMY_TANK(a6),a3
+		moveq.w	#TURN_DOWN,d3
+		move.w	d3,BEHAVIOUR(a3)
+		bra	end		
 
 		
 y_move:		move.l	PLAY_TANK(a6),-(sp)
