@@ -104,13 +104,8 @@ int main() {
 
 
 
-	/*=========Will Change in next system=========================*/
-
-
   	mainScreen		= phys_Base(); 
-/*	set_Screen(mainScreen);*/
 
-/*	logMainscreen 	= (Logbase());*/
 	
 	backdropScreen 	= (char*) welcomeScreen;
 	backdropScreen 	= (char*) ((UINT32) (backdropScreen + 255) & 0xFFFFFF00L); /* The screens have to be 256 byte aligned */
@@ -367,10 +362,8 @@ int main() {
 				}*/
                 l = 0;
 				Vsync();
-/*  		        Setscreen(-1L, plottingScreen, -1L);*/	 
+
 				set_Screen(plottingScreen); 
-/* 				memCopy((char*)grass,plottingTankScreen);
-*/				
 
 				if(getTime() <= tank_reset_timer[j]+210)
 				{
@@ -418,7 +411,7 @@ int main() {
 	
 	Vsync();
 	set_Screen(mainScreen); 
-/* 	Setscreen(mainScreen ,mainScreen ,-1L);*/
+
 
 	stop_sound();
 	if(thePlayer.is_visible)
@@ -466,14 +459,4 @@ void memCopy(char* screenChunk1 ,char* screenChunk2)
 	}while(i--);
 	
 	
-}
-
-void waitForinput() {
-
-	UINT32 i;
-
-	for(i = 0;i < 100000;i++)
-	{
-
-	}
 }
