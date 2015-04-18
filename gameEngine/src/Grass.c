@@ -1,6 +1,25 @@
 
 #include "types.h"
 #include "Grass.h"
+/*
+ ============================================================================
+ *Title       : Grass.c
+ *Author      : Drystan Mazur & Spencer Maslen
+ *Email       : dmazu602@mtroyal.ca & smasl811@mtroyal.ca
+ Due on       : Apr 17th 2015
+ *Version     : 1
+ *Assignment  : Stage 9
+ *Course      : Comp 2659
+ *Instructor  : Paul Pospisil
+ *Copyright   : Released under GPL v3
+ *Description : Raster library for Atarti St, ANSI-style C89
+ *Source File : Grass.c
+ =============================================================================
+ Purpose      : The grass background
+ =============================================================================
+ Method       : 
+
+ ============================================================================ */
 
 
 const UINT8 grass[] = {
