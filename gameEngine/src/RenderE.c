@@ -510,14 +510,35 @@ void plotLargeSprite(char *fbstart, UINT32 *spriteLocation, int xpostoPlot,
 }
 
 
+/*=============================================================================
+ *
+ * Function Name    : plotString
+ *
+ * Purpose          : To plot a string to the screen
+ *
+ *
+ * Method           :The screen pointer is shifted to the top of the string xy,
+ *					 then the screen pointer is shift left to the nearest byte.
+ *					 IE x pos mod 8. Then the font is ploted line by line. Each
+ *					 char from the string has 32 subtracted from it. Then this value is 
+ *					 used as a lookup point into the font array.
+ *					 
+ *
+ *
+ *
+ * Input Parameters :(x,y) start position, a pointer to the
+ * 					 screen buffer memory, sprite size and a
+ * 					 a pointer to the sprite array.
+ *
+ *
+ * Return Value     :A modified screen buffer
+ *
+ * Limitations      :Ploting in the X direction is an approximation
+ *					I have rounded it down to the nearest 8bit postion.
+ *					Y postion is to the top of the font
+ *
+ =============================================================================*/
 
-
-
-/*TODO for the length of the string convert into a integer value array then use this value to offset
- * into the font array. The   xpos and ypos are assumed to be left hand side of the string.
- *(X,Y )->[String] all fonts limited to 16x16 max.
- *Maybe a boolean to confirm it is within limits ?
- * */
 void plotString(char *fbstart, char *theString, int length, int xpos, int ypos)
 {
 
@@ -597,108 +618,30 @@ register UINT8     lookup;
 	
 
 
-void copyBackground(char *fbstart, UINT32 *backgroundLocation, int xpostoPlot,int ypostoPlot, int size)
-
-{
-	register UINT32 mask = COPY_MASK;
-	register UINT32 *cpyPtrLH =  (UINT32*)fbstart;
-	register UINT32 *cpyPtrRH =  (UINT32*)fbstart;
-	UINT8  offset = size >>1;
-	int xnegBound = xpostoPlot - offset;
-	int xposBound = xpostoPlot + offset;
-	int yposBound = ypostoPlot + offset;
-	int ynegBound = ypostoPlot - offset;
-
-
-	if((((xpostoPlot + offset) <= POSTIVE_X_LIMIT ) && ((xpostoPlot - offset) >= NEGTIVE_X_LIMIT)) &&
-			((ypostoPlot + offset) <= POSTIVE_Y_LIMIT) && (ypostoPlot - offset) >= NEGTIVE_Y_LIMIT) 
-	{
-
-	
-		if (yposBound > SCREEN_HEIGHT  )/*Y clipping in effect*/
-		{
-
-			size = size -  (yposBound - SCREEN_HEIGHT);
-			
-
-		}
-
-		else if(ynegBound < 0)
-		{
-			size = size  + ynegBound;
-			ynegBound = 0;
-		}
-
-	/*X clipping section*/	
-		cpyPtrLH += (ynegBound *20);
-		
-		if(xnegBound < 0 || xposBound > SCREEN_WIDTH )
-		{
-		
-			size = size << 1;
-			
-			if(xnegBound < 0)
-			{
-			for(offset = 1; offset < size; offset +2)
-			{
-			
-			backgroundLocation[offset - 1] = mask;
-			backgroundLocation[offset] = *(cpyPtrLH);	
-			
-			}
-				
-			}
-			else
-			{
-			for(offset = 0; offset < size; offset +2)
-			{
-			
-			backgroundLocation[offset + 1] = mask;
-			backgroundLocation[offset] = *(cpyPtrLH);	
-			
-			}
-			
-			
-			}
-			
-			
-		}	
-		
-			
-		else
-		{
-			
-			
-			cpyPtrLH += (xnegBound >> 5);
-			cpyPtrRH = cpyPtrLH;
-			cpyPtrRH++;
-			
-	
-			while(size--)
-		{
-			*(backgroundLocation++) = *(cpyPtrLH);
-			*(backgroundLocation++) = *(cpyPtrRH);		
-			  cpyPtrLH += 20;
-			  cpyPtrRH += 20;
-
-		}
-			
-		
-			
-		}
-		
-	
-	}	
-		return;
-  
-}
-
-
-/*
-Copies directly now from Grass.c 
-
-
-*/
+/*=============================================================================
+ *
+ * Function Name    : plotBackground
+ *
+ * Purpose          : To restore the background
+ *
+ *
+ * Method           :The screen pointer is shifted to the top of the background 
+ *					to be restored. Then the background ptr is shfted by the same
+ *					amount. Then it is copied directly over. The area copied is
+ *                  cliped as requied.
+ *					 
+ *
+ *
+ * Input Parameters :(x,y) start position, a pointer to the
+ * 					 screen buffer memory and a referance to the memory area
+ *					 used as the background.
+ *
+ *
+ * Return Value     :A modified screen buffer
+ *
+ * Limitations      :restores on a 64 bit width
+ *
+ =============================================================================*/
 
 void plotBackground(char *fbstart, UINT32 *background,int xpos, int ypos ,int size)
 	{
@@ -812,6 +755,28 @@ void setScreen(char *newScreen, char *oldScreen)
 
 
 }
+/*=============================================================================
+ *
+ * Function Name    : findRez
+ *
+ * Purpose          : To check if the system is in the right
+ *
+ *
+ * Method           :The screen pointer is shifted to the top of the background 
+ *					 to be restored. Then the background ptr is shfted by 
+ *					 
+ *
+ *
+ * Input Parameters :(x,y) start position, a pointer to the
+ * 					 screen buffer memory and a referance to the memory area
+ *					 used as the background.
+ *
+ *
+ * Return Value     :A modified screen buffer
+ *
+ * Limitations      :restores on a 64 bit width
+ *
+ =============================================================================*/
 
 BOOL findRez()
 {
@@ -844,14 +809,34 @@ BOOL findRez()
 
 }
 
-
+/*=============================================================================
+ *
+ * Function Name    : plotScore
+ *
+ * Purpose          : To convert a interger into a string and then plot it.
+ *
+ *
+ * Method           :The Intger is converted into a string, then plot string
+ * 					 is called.
+ *					 
+ *		
+ * Input Parameters :(x,y) start position, a pointer to the
+ * 					 screen buffer memory and a referance to the memory area
+ *					 used as the background.
+ *
+ *
+ * Return Value     :A modified screen buffer
+ *
+ * Limitations      :scoreString size is limited by MAX_SCORE_SIZE
+ *
+ =============================================================================*/
 
 void plotScore(char* fbstart,UINT16 score, int xpos, int ypos, int size)
 {
 	int i;
 
-	
-	
+	if(size <= MAX_SCORE_SIZE )
+	{
 	for(i = 0; i < size; i++)
 	{
 	
@@ -860,10 +845,14 @@ void plotScore(char* fbstart,UINT16 score, int xpos, int ypos, int size)
 	}
 		
 	plotString(fbstart,scoreString, size, xpos, ypos);
-
+	}
 		
 	
 }
+
+
+
+
 
 
 
