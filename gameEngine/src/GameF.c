@@ -4,7 +4,26 @@
 
 const int xPostions[] = {250,250,300,400,200};
 const int yPostions[] = {30,30,50,70,100};
-volatile void thing3(){}
+
+/*
+ ============================================================================
+ *Title       : GameF.c
+ *Author      : Drystan Mazur & Spencer Maslen
+ *Email       : dmazu602@mtroyal.ca & smasl811@mtroyal.ca
+ Due on       : Apr 17th 2015
+ *Version     : 1
+ *Assignment  : Stage 9
+ *Course      : Comp 2659
+ *Instructor  : Paul Pospisil
+ *Copyright   : Released under GPL v3
+ *Description : Raster library for Atarti St, ANSI-style C89
+ *Source File : testLib.c
+ =============================================================================
+ Purpose      : To intialize the array's for the game
+ =============================================================================
+ Method       : 
+
+ ============================================================================ */
 
 void gameStart(struct Tank gameArray[], Tank *player, Missile missile[], int numOfEnemy, int *score )
 {
