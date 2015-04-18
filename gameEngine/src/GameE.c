@@ -81,6 +81,7 @@ int main() {
 	long tank_reset_timer[NUMBER_OF_TANKS];
 	long player_reset_timer;
 	int score = 0;
+
 	
 	char *mainScreen;
 	char *logMainscreen;
@@ -131,7 +132,7 @@ int main() {
 	 memCopy(gameScreen,backGamescreen);
 	 memCopy(backdropScreen,mainScreen);
 	
-	 thing2();
+
 	 
 	 set_Screen(backdropScreen);	
 	 Vsync();
@@ -253,28 +254,20 @@ int main() {
 			{
 				thePlayer.is_visible = 0;
 			}
-			
+
           
             
 			if(getTime() >= time_now+10)
 			{
-	
-			model(&thePlayer,gameArray,missile, landobjects, 			
-				NUMBER_OF_TANKS,MAX_MISSILES, NUM_OBJECTS
-				  ,keypress,playerInput); 
+				tank_respond(&gameArray[j], missile, MAX_MISSILES, NUMBER_OF_TANKS);	
 				 time_now = getTime();
 			}
 
 			
 			
-			if(lives > 0)
-			{
-/* 			Vsync();
-			Setscreen(-1L, plottingScreen, -1L);
- */			}
+	
 			
-			
-			else
+			if(lives <= 0)
 			{
 			
 				/*ask player if he/she would wish to play again*/
@@ -292,10 +285,7 @@ int main() {
 
 				for(i = 0; i < MAX_MISSILES; i++)
 				{
-					if(missile[i].is_visible)
-					{
-						plotBackground(plottingScreen,background,missile[i].x_coordinate, missile[i].y_coordinate ,SPRITE_SIZE);
-					}
+					plotBackground(plottingScreen,background,missile[i].x_coordinate, missile[i].y_coordinate ,SPRITE_SIZE);
 				}	
 				plotBackground(plottingScreen,background,thePlayer.x_prev, thePlayer.y_prev ,SPRITE_SIZE);				
 				for(i = 0; i < NUMBER_OF_TANKS; i++)
@@ -308,22 +298,24 @@ int main() {
                     {
                         plotLargeSprite(plottingScreen, gameArray[i].sprite ,gameArray[i].x_coordinate,gameArray[i].y_coordinate,SPRITE_SIZE);
                     }
-					else
+					else if(!gameArray[i].is_visible)
 					{
+						thing2();
 						gameArray[i].x_coordinate = -1;
 						gameArray[i].y_coordinate = -1;
 						tanksLeft--;
 						if(gameArray[i].current_behaviour == DIE)
 						{
 							score += (int) (getTime()%100);
-							
+							gameArray[i].current_behaviour = DO_NOTHING;
 						}
 					}
 				}
 				
 				plotLargeSprite(plottingScreen, thePlayer.sprite, thePlayer.x_coordinate, thePlayer.y_coordinate, SPRITE_SIZE);	
 
-				plotScore(plottingScreen,score,80,376,4);
+				plotScore(plottingScreen,score,368,376,5);
+				plotScore(plottingScreen,thePlayer.hitpoints,80,376,4);
 
 				for(l = 0; l < MAX_MISSILES; l++)
 				{
@@ -455,7 +447,6 @@ void memCopy(char* screenChunk1 ,char* screenChunk2)
 	register UINT32 *srcPtr =  (UINT32*) screenChunk1;
 	register UINT32 *dstPtr =  (UINT32*) screenChunk2;
 	register UINT32 i;
-	thing2();
 	copySize = SCREEN_SIZE >> 2;
 	i = copySize>>3;
 	

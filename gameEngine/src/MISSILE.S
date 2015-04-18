@@ -5,17 +5,17 @@ _move_up_check:
 	link	a6,#0
 	move.l	a3,-(a7)
 	move.l	8(a6),a3
-	;line	7
+	;line	8
 	tst.b	5(a3)
 	beq	L1
 	cmp.w	#-1,10(a3)
 	bne	L1
-	;line	9
+	;line	10
 	moveq	#0,d0
 	bra	L2
 	bra	L3
 L1:
-	;line	13
+	;line	14
 	move.w	6(a3),d0
 L3:
 L2:
@@ -26,17 +26,17 @@ _move_down_check:
 	link	a6,#0
 	move.l	a3,-(a7)
 	move.l	8(a6),a3
-	;line	21
+	;line	22
 	tst.b	5(a3)
 	beq	L4
 	cmp.w	#1,10(a3)
 	bne	L4
-	;line	23
+	;line	24
 	moveq	#1,d0
 	bra	L5
 	bra	L6
 L4:
-	;line	27
+	;line	28
 	move.w	6(a3),d0
 L6:
 L5:
@@ -47,17 +47,17 @@ _move_right_check:
 	link	a6,#0
 	move.l	a3,-(a7)
 	move.l	8(a6),a3
-	;line	34
+	;line	35
 	tst.b	5(a3)
 	beq	L7
 	cmp.w	#1,8(a3)
 	bne	L7
-	;line	36
+	;line	37
 	moveq	#3,d0
 	bra	L8
 	bra	L9
 L7:
-	;line	40
+	;line	41
 	move.w	6(a3),d0
 L9:
 L8:
@@ -68,17 +68,17 @@ _move_left_check:
 	link	a6,#0
 	move.l	a3,-(a7)
 	move.l	8(a6),a3
-	;line	47
+	;line	48
 	tst.b	5(a3)
 	beq	L10
 	cmp.w	#-1,8(a3)
 	bne	L10
-	;line	49
+	;line	50
 	moveq	#2,d0
 	bra	L11
 	bra	L12
 L10:
-	;line	53
+	;line	54
 	move.w	6(a3),d0
 L12:
 L11:
@@ -87,7 +87,7 @@ L11:
 	rts
 _thin14:
 	link	a6,#0
-	;line	59
+	;line	60
 	unlk	a6
 	rts
 _exploding_check:
@@ -96,9 +96,7 @@ _exploding_check:
 	move.l	8(a6),a3
 	move.l	12(a6),a4
 	moveq	#32,d3
-	;line	62
-	jsr	_thin14
-	;line	63
+	;line	64
 	move.w	(a4),d0
 	sub.w	d3,d0
 	moveq	#8,d1
@@ -125,79 +123,92 @@ L15:
 	cmp.w	d0,d1
 	bcs	L13
 L14:
-	;line	66
-	move.w	#4,6(a3)
 	;line	67
-	move.w	#5,26(a4)
+	jsr	_thin14
 	;line	68
+	move.w	#4,6(a3)
+	;line	69
+	pea	200
+	jsr	_getTime
+	move.l	d0,-(a7)
+	jsr	.Xlrem
+	ext.l	d0
+	sub.l	d0,8(a4)
+	;line	70
+	tst.l	8(a4)
+	bgt	L16
+	;line	72
+	move.w	#5,26(a4)
+L16:
+	;line	74
 	clr.b	5(a3)
 L13:
-	;line	70
+	;line	76
 	movem.l	-12(a6),d3/a3/a4
 	unlk	a6
 	rts
 _thin16:
 	link	a6,#0
-	;line	74
+	;line	80
 	unlk	a6
 	rts
 _move_missile:
 	link	a6,#0
 	move.l	a3,-(a7)
 	move.l	8(a6),a3
-	;line	77
+	;line	83
 	jsr	_thin16
-	;line	78
-	cmp.w	#3,6(a3)
-	bne	L16
-	;line	80
-	addq.w	#8,(a3)
-	bra	L17
-L16:
-	;line	82
-	cmp.w	#2,6(a3)
-	bne	L18
 	;line	84
-	subq.w	#8,(a3)
-	bra	L19
-L18:
+	cmp.w	#3,6(a3)
+	bne	L17
 	;line	86
-	tst.w	6(a3)
-	bne	L20
-	;line	88
-	subq.w	#8,2(a3)
-	bra	L21
-L20:
-	;line	90
-	cmp.w	#1,6(a3)
-	bne	L22
-	;line	92
-	addq.w	#8,2(a3)
-L22:
-L21:
-L19:
+	addq.w	#8,(a3)
+	bra	L18
 L17:
+	;line	88
+	cmp.w	#2,6(a3)
+	bne	L19
+	;line	90
+	subq.w	#8,(a3)
+	bra	L20
+L19:
+	;line	92
+	tst.w	6(a3)
+	bne	L21
 	;line	94
-	cmp.w	#640,(a3)
-	bhi	L24
-	tst.w	(a3)
-	bcs	L24
-	tst.w	2(a3)
-	bcs	L24
-	cmp.w	#360,2(a3)
-	bls	L23
-L24:
+	subq.w	#8,2(a3)
+	bra	L22
+L21:
 	;line	96
-	clr.b	5(a3)
-	;line	97
-	clr.l	12(a3)
+	cmp.w	#1,6(a3)
+	bne	L23
 	;line	98
-	move.w	#65535,2(a3)
-	;line	99
-	move.w	#65535,(a3)
-	;line	100
-	move.w	#5,6(a3)
+	addq.w	#8,2(a3)
 L23:
+L22:
+L20:
+L18:
+	;line	100
+	cmp.w	#640,(a3)
+	bhi	L25
+	tst.w	(a3)
+	bcs	L25
+	tst.w	2(a3)
+	bcs	L25
+	cmp.w	#360,2(a3)
+	bls	L24
+L25:
+	;line	102
+	clr.b	5(a3)
+	;line	103
+	clr.l	12(a3)
+	;line	104
+	move.w	#65535,2(a3)
+	;line	105
+	move.w	#65535,(a3)
+	;line	106
+	move.w	#5,6(a3)
+L24:
 	move.l	-4(a6),a3
 	unlk	a6
 	rts
@@ -205,11 +216,11 @@ _move_up:
 	link	a6,#0
 	move.l	a3,-(a7)
 	move.l	8(a6),a3
-	;line	110
+	;line	116
 	move.w	#-1,10(a3)
-	;line	111
+	;line	117
 	clr.w	8(a3)
-	;line	112
+	;line	118
 	move.w	12(a6),d0
 	sub.w	d0,2(a3)
 	move.l	(a7)+,a3
@@ -219,11 +230,11 @@ _move_down:
 	link	a6,#0
 	move.l	a3,-(a7)
 	move.l	8(a6),a3
-	;line	118
+	;line	124
 	move.w	#1,10(a3)
-	;line	119
+	;line	125
 	clr.w	8(a3)
-	;line	120
+	;line	126
 	move.w	12(a6),d0
 	add.w	d0,2(a3)
 	move.l	(a7)+,a3
@@ -233,11 +244,11 @@ _move_right:
 	link	a6,#0
 	move.l	a3,-(a7)
 	move.l	8(a6),a3
-	;line	125
+	;line	131
 	clr.w	10(a3)
-	;line	126
+	;line	132
 	move.w	#1,8(a3)
-	;line	127
+	;line	133
 	move.w	12(a6),d0
 	add.w	d0,(a3)
 	move.l	(a7)+,a3
@@ -247,11 +258,11 @@ _move_left:
 	link	a6,#0
 	move.l	a3,-(a7)
 	move.l	8(a6),a3
-	;line	132
+	;line	138
 	clr.w	10(a3)
-	;line	133
+	;line	139
 	move.w	#-1,8(a3)
-	;line	134
+	;line	140
 	move.w	12(a6),d0
 	sub.w	d0,(a3)
 	move.l	(a7)+,a3

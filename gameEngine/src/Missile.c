@@ -1,5 +1,6 @@
 #include "Model.h"
 #include "behavior.h"
+#include "system.h"
 
 
 MISSILE_BEHAVIOUR move_up_check(Missile *missile)
@@ -59,12 +60,17 @@ MISSILE_BEHAVIOUR move_left_check(Missile *missile)
 volatile void thin14() {}
 void exploding_check(Missile *missile, Tank *tank)
 {
-	thin14();
+
 	if(missile->x_coordinate+8 >= tank->x_coordinate-32 && missile->y_coordinate+8 <= tank->y_coordinate-32
 		|| missile->x_coordinate-8 <= tank->x_coordinate+32 && missile->y_coordinate-8 >= tank->y_coordinate+32)
 	{
+		thin14();	
 		missile->current_behaviour = EXPLODE;
-		tank->current_behaviour = DIE;
+		tank->hitpoints -= (int) (getTime()%200);
+		if(tank->hitpoints <= 0)
+		{
+			tank->current_behaviour = DIE;
+		}
 		missile->is_visible = 0;
 		missile->x_coordinate;
 		missile->y_coordinate;

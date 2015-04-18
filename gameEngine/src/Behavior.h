@@ -44,7 +44,7 @@ typedef struct Tank
 	UINT16 y_coordinate;
 	UINT16 x_prev;
 	UINT16 y_prev;
-	UINT32 hitpoints;
+	long hitpoints;
 	UINT8  current_speed;
 	BOOL is_moving;
 	BOOL is_firing;
@@ -83,10 +83,10 @@ typedef struct Stationary_Object
 
 
 void turn(Tank *tank);
-void dodge_y(Tank *tank, Stationary_Object *object, int direction, int num_objects);
-void dodge_x(Tank *tank, Stationary_Object *object, int direction, int num_objects);
-void move_y(Tank *tank, Stationary_Object *object, int offset, int num_objects);
-void move_x(Tank *tank, Stationary_Object *object, int offset, int num_objects);
+void dodge_y(Tank *tank, int direction);
+void dodge_x(Tank *tank, int direction);
+void move_y(Tank *tank, int offset);
+void move_x(Tank *tank, int offset);
 void shoot(Tank *tank, Missile *missile);
 void die(Tank *tank);
 void respawn(Tank *tank);
@@ -119,7 +119,6 @@ void move_missile(Missile *missile);
 BOOL missile_exist_check(Tank *tank, Missile *missile, int offset);
 BOOL missiles_alive_y(Tank *enemy, Missile* missile, int num_missiles);
 BOOL missiles_alive_x(Tank *enemy, Missile* missile, int num_missiles);
-BOOL tanks_at(Tank* player, Tank* enemy, int num_tanks);
 BOOL DSconis();
 
 void move_up(Missile *missile, int offset);
@@ -137,7 +136,7 @@ void missile_check(Tank *tank, Missile *missile, int num_missiles, int num_tanks
 void DSconout(char output);
 int thing();
 void assess_situation(Tank enemy[], Tank *player, Stationary_Object *object, Missile* missile, int num_enemies, int num_missiles);
-void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks, Stationary_Object *object, int num_objects);
+void tank_respond(Tank *enemy, Missile *missile, int num_missiles, int num_tanks);
 
 BOOL playAlinVertical(Tank* enemy, Tank* player);
 BOOL playAlinHorizontal(Tank* enemy, Tank* player);
@@ -146,6 +145,10 @@ BOOL needTurnRight(Tank* enemy, Tank* player);
 BOOL needTurnLeft(Tank* enemy, Tank* player);
 BOOL needTurnUp(Tank* enemy, Tank* player);
 BOOL needTurnDown(Tank* enemy, Tank* player);
+BOOL yMove(Tank* enemy, Tank* player);
+BOOL xMove(Tank* enemy, Tank* player);
+void yfacing(Tank* enemy, Tank* player);
+void xfacing(Tank* enemy, Tank* player);
 
 
 

@@ -4,6 +4,7 @@
 #include "gamef.h"
 #include "bitmaps.h"
 #include "system.h"
+#include "renderE.h"
 
 BOOL event()
 {
@@ -135,7 +136,7 @@ BOOL lef_m(register int missile_x, register int missile_y, register int tank_x, 
 	}
 	
 }
-
+volatile thin24() {}
 BOOL die_check(Tank *enemy, Missile *missile, int num_missiles)
 {
 	int index;
@@ -147,19 +148,56 @@ BOOL die_check(Tank *enemy, Missile *missile, int num_missiles)
 		{
 			if(up_m(missile[index].x_coordinate, missile[index].y_coordinate, enemy->x_coordinate, enemy->y_coordinate, missile[index].current_behaviour))
 			{
-				die = 1;
+				thin24();
+				missile[index].is_visible = 0;
+				enemy->hitpoints -= (getTime()%(200));
+				if(enemy->hitpoints < 0)
+				{
+					die = 1;
+				}
+				else
+				{
+					die = 0;
+				}
 			}
 			else if(down_m(missile[index].x_coordinate, missile[index].y_coordinate, enemy->x_coordinate, enemy->y_coordinate, missile[index].current_behaviour))
 			{
-				die = 1;
+				missile[index].is_visible = 0;
+				enemy->hitpoints -= (getTime()%(200));
+				if(enemy->hitpoints < 0)
+				{
+					die = 1;
+				}
+				else
+				{
+					die = 0;
+				}
 			}
 			else if(ri_m(missile[index].x_coordinate, missile[index].y_coordinate, enemy->x_coordinate, enemy->y_coordinate, missile[index].current_behaviour))
 			{
-				die = 1;
+				missile[index].is_visible = 0;
+				enemy->hitpoints -= (getTime()%(200));
+				if(enemy->hitpoints < 0)
+				{
+					die = 1;
+				}
+				else
+				{
+					die = 0;
+				}
 			}
 			else if(lef_m(missile[index].x_coordinate, missile[index].y_coordinate, enemy->x_coordinate, enemy->y_coordinate, missile[index].current_behaviour))
 			{
-				die = 1;
+				missile[index].is_visible = 0;
+				enemy->hitpoints -= (getTime()%(200));
+				if(enemy->hitpoints < 0)
+				{
+					die = 1;
+				}
+				else
+				{
+					die = 0;
+				}
 			}
 			else
 			{
@@ -326,16 +364,16 @@ void turn_up(Tank *tank)
 					to determine if the tank is going to dodge left or right
 ***************************************************************************/
 
-void dodge_x(Tank *tank, Stationary_Object *object, int direction, int num_objects)
+void dodge_x(Tank *tank, int direction)
 {
 
 	if(flip(tank->x_coordinate))
 	{
-		move_x(tank, object, direction, num_objects);
+		move_x(tank, direction);
 	}
 	else
 	{
-		move_x(tank, object, direction *-1, num_objects);
+		move_x(tank, direction *-1);
 	}
 
 
@@ -354,15 +392,15 @@ void dodge_x(Tank *tank, Stationary_Object *object, int direction, int num_objec
 					to determine if the tank is going to dodge up or down
 ***************************************************************************/
 
-void dodge_y(Tank *tank, Stationary_Object *object, int direction, int num_objects)
+void dodge_y(Tank *tank, int direction)
 {
 	if(flip(tank->y_coordinate))
 	{
-		move_y(tank, object, direction, num_objects);
+		move_y(tank, direction);
 	}
 	else
 	{
-		move_y(tank, object, direction * -1, num_objects);
+		move_y(tank, direction * -1);
 	}
 	
 }
@@ -767,44 +805,18 @@ BOOL flip(int position)
 ***************************************************************************/
 
 
-void move_y(Tank *tank, Stationary_Object *object, int offset, int num_objects)
+void move_y(Tank *tank, int offset)
 {
-	int index;
-	BOOL all_clear = 1;
-/*	for(index = 0; index < num_objects && all_clear; index++)
+	tank->y_coordinate += offset;
+	if(offset < 0)
 	{
-		if(!((tank->y_coordinate+offset >= object[index].y_coordinate-16
-			&& tank->y_coordinate+offset <= object[index].y_coordinate+16)
-			&& tank->x_coordinate <= object[index].x_coordinate+16
-			&& tank->x_coordinate >= object[index].x_coordinate-16))
-		{
-			all_clear = 0;
-		} 
-	}*/
-	if(all_clear)
-	{
-		tank->y_coordinate += offset;
-		if(offset < 0)
-		{
-			tank->v_facing = UP;
-		}
-		else
-		{
-			tank->v_facing = DOWN;
-		}
-		tank->h_facing = VERTICAL;
+		tank->v_facing = UP;
 	}
 	else
 	{
-		if(flip(tank->y_coordinate))
-		{
-			move_x(tank, object, 1, num_objects);
-		}
-		else
-		{
-			move_x(tank, object, -1, num_objects);
-		}
+		tank->v_facing = DOWN;
 	}
+	tank->h_facing = VERTICAL;
 	
 }
 
@@ -826,45 +838,19 @@ void move_y(Tank *tank, Stationary_Object *object, int offset, int num_objects)
 
 
 
-void move_x(Tank *tank, Stationary_Object *object, int offset, int num_objects)
+void move_x(Tank *tank, int offset)
 {
-	int index;
-	BOOL all_clear = 1;
-/*	for(index = 0; index < num_objects && all_clear; index++)
+	tank->x_coordinate += offset;
+	if(offset < 0)
 	{
-		if(!((tank->x_coordinate+offset >= object[index].x_coordinate-16
-			&& tank->x_coordinate+offset <= object[index].x_coordinate+16)
-			&& tank->y_coordinate <= object[index].y_coordinate+16
-			&& tank->y_coordinate >= object[index].y_coordinate+16))
-		{
-			all_clear = 0;
-		}
-		
-	}*/
-	if(all_clear)
-	{
-		tank->x_coordinate += offset;
-		if(offset < 0)
-		{
-			tank->h_facing = LEFT;
-		}
-		else
-		{
-			tank->h_facing = RIGHT;
-		}
-		tank->v_facing = HORIZONTAL;
+		tank->h_facing = LEFT;
 	}
 	else
 	{
-		if(flip(tank->x_coordinate))
-		{
-			move_y(tank, object, 1, num_objects);
-		}
-		else
-		{
-			move_y(tank, object, -1, num_objects);
-		}
+		tank->h_facing = RIGHT;
 	}
+	tank->v_facing = HORIZONTAL;
+
 }
 
 
