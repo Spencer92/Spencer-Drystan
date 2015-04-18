@@ -1,5 +1,29 @@
 ;/*======================================================*/
+;/*======================================================*/
 
+ *Title       : AsRous.c
+ *Author      : Drystan Mazur & Spencer Maslen
+ *Email       : dmazu602@mtroyal.ca & smasl811@mtroyal.ca
+ *Due on       : Apr 17th 2015
+ *Version     : 1
+ *Assignment  : Stage 9
+ *Course      : Comp 2659
+ *Instructor  : Paul Pospisil
+ *Copyright   : Released under GPL v3
+ *Description : AssemberRoutines.s
+ *Source File : Bitmaps.c
+ *=========================================================
+ *Purpose      : Uilty routines in 68000 asmbley
+ *==========================================================
+ *Method       : physBase returns the current phyiscal screen
+ *			   : _set_Screen sets the screen registers to the selected 
+ *			   : pointer
+ *			   :
+ *				
+ *
+ *
+ *Varibles 	   :old_stack: used to hold the stack for the Supercall
+;/*======================================================*/
 ;/*======================================================*/
 
 			XDEF _clear
