@@ -26,7 +26,7 @@
 #define POSTIVE_Y_LIMIT 424
 #define NEGTIVE_Y_LIMIT -24
 #define FONT_SIZE 15
-#define COPY_MASK 0x00000000
+
 
 
 
@@ -65,19 +65,6 @@ void plotBackground(char *fbstart, UINT32 *background,int xpos, int ypos ,int si
 
 extern char scoreString[6];
 
-typedef struct ScoreBox
-{
-
-  UINT16 const xpos;
-  UINT16 const ypos;
-  UINT16 const width;
-  UINT16 const hight;
-	
-	
-} ScoreBox;
-
-
-void setScreen(char *newScreen, char *oldScreen);
 
 BOOL findRez();
 	
